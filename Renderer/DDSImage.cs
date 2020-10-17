@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 
@@ -40,10 +41,10 @@ namespace Lego_Pak_Explorer.Renderer
                     if (dwMagic != 542327876)
                         throw new Exception("This is not a DDS!");
                     Read_DDS_HEADER(header, r);
-                    if ((header.ddspf.dwFlags & 4) != 0 && header.ddspf.dwFourCC == 808540228)
+                    if ((header.ddspf.dwFlags & 4) != 0 && header.ddspf.dwFourCC == FOURCC_DX10)
                         throw new Exception("DX10 not supported yet!");
                     var length = 1;
-                    if ((header.dwFlags & 131072) != 0)
+                    if ((header.dwFlags & DDSD_MIPMAPCOUNT) != 0)
                         length = header.dwMipMapCount;
                     images = new Bitmap[length];
                     bdata = r.ReadBytes(header.dwPitchOrLinearSize);
@@ -52,28 +53,30 @@ namespace Lego_Pak_Explorer.Renderer
                         var w = (int)(header.dwWidth / Math.Pow(2.0, index));
                         var h = (int)(header.dwHeight / Math.Pow(2.0, index));
                         if ((header.ddspf.dwFlags & 64) != 0)
-                            images[index] = readLinearImage(bdata, w, h);
+                            images[index] = ReadLinearImage(bdata, w, h);
                         else if ((header.ddspf.dwFlags & 4) != 0)
-                            images[index] = readBlockImage(bdata, w, h);
-                        else if ((header.ddspf.dwFlags & 4) == 0 && header.ddspf.dwRGBBitCount == 16 && (header.ddspf.dwRBitMask == byte.MaxValue && header.ddspf.dwGBitMask == 65280) && (header.ddspf.dwBBitMask == 0 && header.ddspf.dwABitMask == 0))
+                            images[index] = ReadBlockImage(bdata, w, h);
+                        else if ((header.ddspf.dwFlags & 4) == 0 && header.ddspf.dwRGBBitCount == 16 &&
+                                 (header.ddspf.dwRBitMask == byte.MaxValue && header.ddspf.dwGBitMask == 65280) &&
+                                 (header.ddspf.dwBBitMask == 0 && header.ddspf.dwABitMask == 0))
                             images[index] = UncompressV8U8(bdata, w, h);
                     }
                 }
             }
         }
 
-        private Bitmap readBlockImage(byte[] data, int w, int h)
+        private Bitmap ReadBlockImage(byte[] data, int w, int h)
         {
             switch (header.ddspf.dwFourCC)
             {
-                case 827611204:
+                case FOURCC_DXT1:
                     return UncompressDXT1(data, w, h);
 
-                case 894720068:
+                case FOURCC_DXT5:
                     return UncompressDXT5(data, w, h);
 
                 default:
-                    throw new Exception($"0x{header.ddspf.dwFourCC.ToString("X")} texture compression not implemented.");
+                    throw new Exception($"0x{header.ddspf.dwFourCC:X} texture compression not implemented.");
             }
         }
 
@@ -94,7 +97,7 @@ namespace Lego_Pak_Explorer.Renderer
             return image;
         }
 
-        private void DecompressBlockDXT1(int x, int y, byte[] blockStorage, Bitmap image)
+        private static void DecompressBlockDXT1(int x, int y, IList<byte> blockStorage, Bitmap image)
         {
             var num1 = (ushort)(blockStorage[0] | (uint)blockStorage[1] << 8);
             var num2 = (ushort)(blockStorage[2] | (uint)blockStorage[3] << 8);
@@ -164,7 +167,7 @@ namespace Lego_Pak_Explorer.Renderer
             }
         }
 
-        private Bitmap UncompressDXT5(byte[] data, int w, int h)
+        private static Bitmap UncompressDXT5(byte[] data, int w, int h)
         {
             var image = new Bitmap(w < 4 ? 4 : w, h < 4 ? 4 : h);
             using (var memoryStream = new MemoryStream(data))
@@ -181,11 +184,11 @@ namespace Lego_Pak_Explorer.Renderer
             return image;
         }
 
-        private void DecompressBlockDXT5(int x, int y, byte[] blockStorage, Bitmap image)
+        private static void DecompressBlockDXT5(int x, int y, byte[] blockStorage, Bitmap image)
         {
             var num1 = blockStorage[0];
             var num2 = blockStorage[1];
-            var index1 = 2;
+            const int index1 = 2;
             var num3 = (uint)(blockStorage[index1 + 2] | blockStorage[index1 + 3] << 8 | blockStorage[index1 + 4] << 16 | blockStorage[index1 + 5] << 24);
             var num4 = (ushort)(blockStorage[index1] | (uint)blockStorage[index1 + 1] << 8);
             var num5 = (ushort)(blockStorage[8] | (uint)blockStorage[9] << 8);
@@ -208,7 +211,11 @@ namespace Lego_Pak_Explorer.Renderer
                 for (var index3 = 0; index3 < 4; ++index3)
                 {
                     var num20 = 3 * (4 * index2 + index3);
-                    var num21 = num20 > 12 ? (num20 != 15 ? (int)(num3 >> num20 - 16) & 7 : (int)(num4 >> 15 | (uint)((int)num3 << 1 & 6))) : num4 >> num20 & 7;
+                    var num21 = num20 > 12
+                        ? (num20 != 15
+                            ? (int)(num3 >> num20 - 16) & 7
+                            : (int)(num4 >> 15 | (uint)((int)num3 << 1 & 6)))
+                        : num4 >> num20 & 7;
                     byte num22;
                     switch (num21)
                     {
@@ -267,7 +274,7 @@ namespace Lego_Pak_Explorer.Renderer
             }
         }
 
-        private Bitmap UncompressV8U8(byte[] data, int w, int h)
+        private static Bitmap UncompressV8U8(byte[] data, int w, int h)
         {
             var bitmap = new Bitmap(w, h);
             using (var memoryStream = new MemoryStream(data))
@@ -280,7 +287,7 @@ namespace Lego_Pak_Explorer.Renderer
                         {
                             var num1 = binaryReader.ReadSByte();
                             var num2 = binaryReader.ReadSByte();
-                            var maxValue = byte.MaxValue;
+                            const byte maxValue = byte.MaxValue;
                             bitmap.SetPixel(x, y, Color.FromArgb(sbyte.MaxValue - num1, sbyte.MaxValue - num2, maxValue));
                         }
                     }
@@ -289,7 +296,7 @@ namespace Lego_Pak_Explorer.Renderer
             return bitmap;
         }
 
-        private Bitmap readLinearImage(byte[] data, int w, int h)
+        private static Bitmap ReadLinearImage(byte[] data, int w, int h)
         {
             var bitmap = new Bitmap(w, h);
             using (var memoryStream = new MemoryStream(data))
@@ -306,7 +313,7 @@ namespace Lego_Pak_Explorer.Renderer
             return bitmap;
         }
 
-        private void Read_DDS_HEADER(DDS_HEADER h, BinaryReader r)
+        private static void Read_DDS_HEADER(DDS_HEADER h, BinaryReader r)
         {
             h.dwSize = r.ReadInt32();
             h.dwFlags = r.ReadInt32();
@@ -325,7 +332,7 @@ namespace Lego_Pak_Explorer.Renderer
             h.dwReserved2 = r.ReadInt32();
         }
 
-        private void Read_DDS_PIXELFORMAT(DDS_PIXELFORMAT p, BinaryReader r)
+        private static void Read_DDS_PIXELFORMAT(DDS_PIXELFORMAT p, BinaryReader r)
         {
             p.dwSize = r.ReadInt32();
             p.dwFlags = r.ReadInt32();
