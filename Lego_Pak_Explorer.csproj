@@ -11,7 +11,7 @@
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <ApplicationVersion>1.0.0.0</ApplicationVersion>
     <FileAlignment>512</FileAlignment>
-    <RootNamespace>Lego_Pak_Explorer</RootNamespace>
+    <RootNamespace>TT_Games_Explorer</RootNamespace>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -32,15 +32,21 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>Lego_Pak_Explorer.Properties.Program</StartupObject>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
     <Reference Include="TTGames.SyntaxColor">
       <HintPath>lib\TTGames.SyntaxColor.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common.cs" />
     <Compile Include="ListViewSorter\Enums\SortTypes.cs" />
     <Compile Include="Renderer\DDSImage.cs" />
     <Compile Include="Renderer\DDS_HEADER.cs" />
@@ -53,11 +59,11 @@
     <Compile Include="Structs\DatFileEntry.cs" />
     <Compile Include="Structs\DatFileName.cs" />
     <Compile Include="Structs\PkgInfo.cs" />
-    <Compile Include="UI\About.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Components\NoFocusTrackBar.cs">
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UI\About.cs">
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="UI\About.Designer.cs">
       <DependentUpon>About.cs</DependentUpon>
@@ -65,11 +71,35 @@
     <Compile Include="UI\DatExtractor.Designer.cs">
       <DependentUpon>DatExtractor.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\GhgManager.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\GhgManager.Designer.cs">
+      <DependentUpon>GhgManager.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Home.Designer.cs">
       <DependentUpon>Home.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\CodePreview.Designer.cs">
       <DependentUpon>CodePreview.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\ModelPreview.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\ModelPreview.Designer.cs">
+      <DependentUpon>ModelPreview.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\PakExtractor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\PakExtractor.Designer.cs">
+      <DependentUpon>PakExtractor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Studio.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Studio.Designer.cs">
+      <DependentUpon>Studio.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\TexturePreview.cs">
       <SubType>Form</SubType>
@@ -102,8 +132,12 @@
     <EmbeddedResource Include="UI\DatExtractor.resx">
       <DependentUpon>DatExtractor.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\GhgManager.resx">
+      <DependentUpon>GhgManager.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\Home.resx">
       <DependentUpon>Home.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\CodePreview.resx">
       <DependentUpon>CodePreview.cs</DependentUpon>
@@ -116,10 +150,18 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\ModelPreview.resx">
+      <DependentUpon>ModelPreview.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Studio.resx">
+      <DependentUpon>Studio.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\TexturePreview.resx">
       <DependentUpon>TexturePreview.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Pluggi\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

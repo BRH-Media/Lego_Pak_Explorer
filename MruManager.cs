@@ -2,6 +2,7 @@
 using Microsoft.Win32;
 using System;
 using System.Windows.Forms;
+using TT_Games_Explorer.Properties;
 
 // ReSharper disable PossibleNullReferenceException
 // ReSharper disable LocalizableElement

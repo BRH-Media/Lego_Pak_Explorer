@@ -23,251 +23,331 @@ namespace Lego_Pak_Explorer.UI
 
         private void InitializeComponent()
         {
-            components = new Container();
-            resources = new ComponentResourceManager(typeof(Home));
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Home));
+            this.containerMain = new System.Windows.Forms.SplitContainer();
+            this.trvMain = new System.Windows.Forms.TreeView();
+            this.imgMain = new System.Windows.Forms.ImageList(this.components);
+            this.lstMain = new System.Windows.Forms.ListView();
+            this._columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this._columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this._columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this._columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.cxtListView = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.itmCxtOpen = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuMain = new System.Windows.Forms.MenuStrip();
+            this._fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmLoadGame = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmRecentGame = new System.Windows.Forms.ToolStripMenuItem();
+            this.sepMain = new System.Windows.Forms.ToolStripSeparator();
+            this.itmQuit = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmAbout = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmActions = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmGameModReady = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmOptions = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmOptionDoubleClick = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmOptionRightClick = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmRefresh = new System.Windows.Forms.ToolStripMenuItem();
+            this.fbdOpenGameFolder = new System.Windows.Forms.FolderBrowserDialog();
+            this.ofdOpenExecutable = new System.Windows.Forms.OpenFileDialog();
+            this.statusMain = new System.Windows.Forms.StatusStrip();
+            this._toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
+            this.pbMain = new System.Windows.Forms.ToolStripProgressBar();
+            ((System.ComponentModel.ISupportInitialize)(this.containerMain)).BeginInit();
+            this.containerMain.Panel1.SuspendLayout();
+            this.containerMain.Panel2.SuspendLayout();
+            this.containerMain.SuspendLayout();
+            this.cxtListView.SuspendLayout();
+            this.menuMain.SuspendLayout();
+            this.statusMain.SuspendLayout();
+            this.SuspendLayout();
+            // 
+            // containerMain
+            // 
+            this.containerMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.containerMain.Enabled = false;
+            this.containerMain.Location = new System.Drawing.Point(0, 24);
+            this.containerMain.Margin = new System.Windows.Forms.Padding(3, 3, 3, 22);
+            this.containerMain.Name = "containerMain";
+            // 
+            // containerMain.Panel1
+            // 
+            this.containerMain.Panel1.Controls.Add(this.trvMain);
+            // 
+            // containerMain.Panel2
+            // 
+            this.containerMain.Panel2.Controls.Add(this.lstMain);
+            this.containerMain.Size = new System.Drawing.Size(683, 326);
+            this.containerMain.SplitterDistance = 202;
+            this.containerMain.TabIndex = 0;
+            this.containerMain.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ContainerMain_MouseDown);
+            this.containerMain.MouseUp += new System.Windows.Forms.MouseEventHandler(this.ContainerMain_MouseUp);
+            // 
+            // trvMain
+            // 
+            this.trvMain.BackColor = System.Drawing.SystemColors.MenuBar;
+            this.trvMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.trvMain.Enabled = false;
+            this.trvMain.ImageIndex = 0;
+            this.trvMain.ImageList = this.imgMain;
+            this.trvMain.Location = new System.Drawing.Point(0, 0);
+            this.trvMain.Name = "trvMain";
+            this.trvMain.SelectedImageIndex = 0;
+            this.trvMain.Size = new System.Drawing.Size(202, 326);
+            this.trvMain.TabIndex = 0;
+            this.trvMain.AfterExpand += new System.Windows.Forms.TreeViewEventHandler(this.TrvMain_AfterExpand);
+            this.trvMain.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.TrvMain_NodeMouseClick);
+            // 
+            // imgMain
+            // 
+            this.imgMain.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imgMain.ImageStream")));
+            this.imgMain.TransparentColor = System.Drawing.Color.Transparent;
+            this.imgMain.Images.SetKeyName(0, "folder.png");
+            this.imgMain.Images.SetKeyName(1, "page.png");
+            this.imgMain.Images.SetKeyName(2, "page_code.png");
+            this.imgMain.Images.SetKeyName(3, "brick.png");
+            this.imgMain.Images.SetKeyName(4, "image.png");
+            this.imgMain.Images.SetKeyName(5, "application.png");
+            // 
+            // lstMain
+            // 
+            this.lstMain.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this._columnHeader1,
+            this._columnHeader2,
+            this._columnHeader3,
+            this._columnHeader4});
+            this.lstMain.ContextMenuStrip = this.cxtListView;
+            this.lstMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lstMain.Enabled = false;
+            this.lstMain.FullRowSelect = true;
+            this.lstMain.GridLines = true;
+            this.lstMain.HideSelection = false;
+            this.lstMain.Location = new System.Drawing.Point(0, 0);
+            this.lstMain.Name = "lstMain";
+            this.lstMain.Size = new System.Drawing.Size(477, 326);
+            this.lstMain.SmallImageList = this.imgMain;
+            this.lstMain.TabIndex = 0;
+            this.lstMain.UseCompatibleStateImageBehavior = false;
+            this.lstMain.View = System.Windows.Forms.View.Details;
+            this.lstMain.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.LstMain_MouseDoubleClick);
+            // 
+            // _columnHeader1
+            // 
+            this._columnHeader1.Text = "Name";
+            // 
+            // _columnHeader2
+            // 
+            this._columnHeader2.Text = "Type";
+            // 
+            // _columnHeader3
+            // 
+            this._columnHeader3.Text = "Size";
+            this._columnHeader3.Width = 97;
+            // 
+            // _columnHeader4
+            // 
+            this._columnHeader4.Text = "Last Modified";
+            // 
+            // cxtListView
+            // 
+            this.cxtListView.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.itmCxtOpen});
+            this.cxtListView.Name = "cxtListView";
+            this.cxtListView.Size = new System.Drawing.Size(181, 48);
+            this.cxtListView.Opening += new System.ComponentModel.CancelEventHandler(this.CxtListView_Opening);
+            // 
+            // itmCxtOpen
+            // 
+            this.itmCxtOpen.Image = global::TT_Games_Explorer.Properties.Resources.magnifier;
+            this.itmCxtOpen.Name = "itmCxtOpen";
+            this.itmCxtOpen.Size = new System.Drawing.Size(180, 22);
+            this.itmCxtOpen.Text = "Open";
+            this.itmCxtOpen.Click += new System.EventHandler(this.ItmCxtOpen_Click);
+            // 
+            // menuMain
+            // 
+            this.menuMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this._fileToolStripMenuItem,
+            this.itmAbout,
+            this.itmActions,
+            this.itmOptions,
+            this.itmRefresh});
+            this.menuMain.Location = new System.Drawing.Point(0, 0);
+            this.menuMain.Name = "menuMain";
+            this.menuMain.Size = new System.Drawing.Size(683, 24);
+            this.menuMain.TabIndex = 1;
+            this.menuMain.Text = "menuMain";
+            // 
+            // _fileToolStripMenuItem
+            // 
+            this._fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.itmLoadGame,
+            this.itmRecentGame,
+            this.sepMain,
+            this.itmQuit});
+            this._fileToolStripMenuItem.Image = global::TT_Games_Explorer.Properties.Resources.brick_go;
+            this._fileToolStripMenuItem.Name = "_fileToolStripMenuItem";
+            this._fileToolStripMenuItem.Size = new System.Drawing.Size(53, 20);
+            this._fileToolStripMenuItem.Text = "File";
+            // 
+            // itmLoadGame
+            // 
+            this.itmLoadGame.Image = global::TT_Games_Explorer.Properties.Resources.folder_brick;
+            this.itmLoadGame.Name = "itmLoadGame";
+            this.itmLoadGame.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.L)));
+            this.itmLoadGame.Size = new System.Drawing.Size(183, 22);
+            this.itmLoadGame.Text = "Load Game...";
+            this.itmLoadGame.Click += new System.EventHandler(this.ItmLoadGame_Click);
+            // 
+            // itmRecentGame
+            // 
+            this.itmRecentGame.Image = global::TT_Games_Explorer.Properties.Resources.folder_go;
+            this.itmRecentGame.Name = "itmRecentGame";
+            this.itmRecentGame.Size = new System.Drawing.Size(183, 22);
+            this.itmRecentGame.Text = "Recent Game...";
+            // 
+            // sepMain
+            // 
+            this.sepMain.Name = "sepMain";
+            this.sepMain.Size = new System.Drawing.Size(180, 6);
+            // 
+            // itmQuit
+            // 
+            this.itmQuit.Image = ((System.Drawing.Image)(resources.GetObject("itmQuit.Image")));
+            this.itmQuit.Name = "itmQuit";
+            this.itmQuit.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F4)));
+            this.itmQuit.Size = new System.Drawing.Size(183, 22);
+            this.itmQuit.Text = "Quit";
+            this.itmQuit.Click += new System.EventHandler(this.ItmQuit_Click);
+            // 
+            // itmAbout
+            // 
+            this.itmAbout.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.itmAbout.Image = global::TT_Games_Explorer.Properties.Resources.BlackFigure;
+            this.itmAbout.Name = "itmAbout";
+            this.itmAbout.Size = new System.Drawing.Size(68, 20);
+            this.itmAbout.Text = "About";
+            this.itmAbout.Click += new System.EventHandler(this.ItmAbout_Click);
+            // 
+            // itmActions
+            // 
+            this.itmActions.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.itmGameModReady});
+            this.itmActions.Enabled = false;
+            this.itmActions.Image = global::TT_Games_Explorer.Properties.Resources.cog;
+            this.itmActions.Name = "itmActions";
+            this.itmActions.Size = new System.Drawing.Size(75, 20);
+            this.itmActions.Text = "Actions";
+            // 
+            // itmGameModReady
+            // 
+            this.itmGameModReady.Name = "itmGameModReady";
+            this.itmGameModReady.Size = new System.Drawing.Size(196, 22);
+            this.itmGameModReady.Text = "Do Game \"Mod Ready\"";
+            this.itmGameModReady.Click += new System.EventHandler(this.ItmGameModReady_Click);
+            // 
+            // itmOptions
+            // 
+            this.itmOptions.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.itmOptionDoubleClick,
+            this.itmOptionRightClick});
+            this.itmOptions.Enabled = false;
+            this.itmOptions.Image = global::TT_Games_Explorer.Properties.Resources.wrench;
+            this.itmOptions.Name = "itmOptions";
+            this.itmOptions.Size = new System.Drawing.Size(77, 20);
+            this.itmOptions.Text = "Options";
+            // 
+            // itmOptionDoubleClick
+            // 
+            this.itmOptionDoubleClick.Checked = true;
+            this.itmOptionDoubleClick.CheckOnClick = true;
+            this.itmOptionDoubleClick.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.itmOptionDoubleClick.Name = "itmOptionDoubleClick";
+            this.itmOptionDoubleClick.Size = new System.Drawing.Size(234, 22);
+            this.itmOptionDoubleClick.Text = "Open File by Double Click";
+            // 
+            // itmOptionRightClick
+            // 
+            this.itmOptionRightClick.Checked = true;
+            this.itmOptionRightClick.CheckOnClick = true;
+            this.itmOptionRightClick.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.itmOptionRightClick.Name = "itmOptionRightClick";
+            this.itmOptionRightClick.Size = new System.Drawing.Size(234, 22);
+            this.itmOptionRightClick.Text = "Open File by Right Click Menu";
+            // 
+            // itmRefresh
+            // 
+            this.itmRefresh.Enabled = false;
+            this.itmRefresh.Image = global::TT_Games_Explorer.Properties.Resources.arrow_refresh;
+            this.itmRefresh.Name = "itmRefresh";
+            this.itmRefresh.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.R)));
+            this.itmRefresh.ShowShortcutKeys = false;
+            this.itmRefresh.Size = new System.Drawing.Size(74, 20);
+            this.itmRefresh.Text = "Refresh";
+            this.itmRefresh.Click += new System.EventHandler(this.ItmRefresh_Click);
+            // 
+            // ofdOpenExecutable
+            // 
+            this.ofdOpenExecutable.Filter = "Lego Games Executables|*.exe";
+            // 
+            // statusMain
+            // 
+            this.statusMain.AllowMerge = false;
+            this.statusMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this._toolStripStatusLabel1,
+            this.lblStatus,
+            this.pbMain});
+            this.statusMain.Location = new System.Drawing.Point(0, 350);
+            this.statusMain.Name = "statusMain";
+            this.statusMain.Size = new System.Drawing.Size(683, 22);
+            this.statusMain.TabIndex = 2;
+            this.statusMain.Text = "statusMain";
+            // 
+            // _toolStripStatusLabel1
+            // 
+            this._toolStripStatusLabel1.Name = "_toolStripStatusLabel1";
+            this._toolStripStatusLabel1.Size = new System.Drawing.Size(0, 17);
+            // 
+            // lblStatus
+            // 
+            this.lblStatus.Name = "lblStatus";
+            this.lblStatus.Size = new System.Drawing.Size(566, 17);
+            this.lblStatus.Spring = true;
+            // 
+            // pbMain
+            // 
+            this.pbMain.Maximum = 0;
+            this.pbMain.Name = "pbMain";
+            this.pbMain.Size = new System.Drawing.Size(100, 16);
+            this.pbMain.Step = 1;
+            // 
+            // Home
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(683, 372);
+            this.Controls.Add(this.containerMain);
+            this.Controls.Add(this.menuMain);
+            this.Controls.Add(this.statusMain);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MainMenuStrip = this.menuMain;
+            this.Name = "Home";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "TT Games Explorer [BETA]";
+            this.Load += new System.EventHandler(this.Home_Load);
+            this.containerMain.Panel1.ResumeLayout(false);
+            this.containerMain.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.containerMain)).EndInit();
+            this.containerMain.ResumeLayout(false);
+            this.cxtListView.ResumeLayout(false);
+            this.menuMain.ResumeLayout(false);
+            this.menuMain.PerformLayout();
+            this.statusMain.ResumeLayout(false);
+            this.statusMain.PerformLayout();
+            this.ResumeLayout(false);
+            this.PerformLayout();
 
-            _splitContainer1 = new SplitContainer();
-            _treeView1 = new TreeView();
-            _imageList1 = new ImageList(components);
-            _listView1 = new ListView();
-            _columnHeader1 = new ColumnHeader();
-            _columnHeader2 = new ColumnHeader();
-            _columnHeader3 = new ColumnHeader();
-            _columnHeader4 = new ColumnHeader();
-            _contextMenuStrip1 = new ContextMenuStrip(components);
-            _menuStrip1 = new MenuStrip();
-            _folderBrowserDialog1 = new FolderBrowserDialog();
-            _openFileDialog1 = new OpenFileDialog();
-            _statusStrip1 = new StatusStrip();
-            _toolStripStatusLabel1 = new ToolStripStatusLabel();
-            _toolStripStatusLabel2 = new ToolStripStatusLabel();
-            _toolStripProgressBar1 = new ToolStripProgressBar();
-            _openToolStripMenuItem1 = new ToolStripMenuItem();
-            _fileToolStripMenuItem = new ToolStripMenuItem();
-            _openToolStripMenuItem = new ToolStripMenuItem();
-            _recentGameToolStripMenuItem = new ToolStripMenuItem();
-            _toolStripSeparator1 = new ToolStripSeparator();
-            _quitToolStripMenuItem = new ToolStripMenuItem();
-            _aboutToolStripMenuItem = new ToolStripMenuItem();
-            _actionToolStripMenuItem = new ToolStripMenuItem();
-            _doGameModReadyToolStripMenuItem = new ToolStripMenuItem();
-            _optionsToolStripMenuItem = new ToolStripMenuItem();
-            _openFileByDoubleClickToolStripMenuItem = new ToolStripMenuItem();
-            _openFileByRightClickMenuToolStripMenuItem = new ToolStripMenuItem();
-            _refreshToolStripMenuItem = new ToolStripMenuItem();
-            _splitContainer1.BeginInit();
-            _splitContainer1.Panel1.SuspendLayout();
-            _splitContainer1.Panel2.SuspendLayout();
-            _splitContainer1.SuspendLayout();
-            _contextMenuStrip1.SuspendLayout();
-            _menuStrip1.SuspendLayout();
-            _statusStrip1.SuspendLayout();
-            SuspendLayout();
-            _splitContainer1.Dock = DockStyle.Fill;
-            _splitContainer1.Enabled = false;
-            _splitContainer1.Location = new Point(0, 24);
-            _splitContainer1.Margin = new Padding(3, 3, 3, 22);
-            _splitContainer1.Name = "_splitContainer1";
-            _splitContainer1.Panel1.Controls.Add(_treeView1);
-            _splitContainer1.Panel2.Controls.Add(_listView1);
-            _splitContainer1.Size = new Size(683, 326);
-            _splitContainer1.SplitterDistance = 202;
-            _splitContainer1.TabIndex = 0;
-            _splitContainer1.MouseDown += SplitContainer1_MouseDown;
-            _splitContainer1.MouseUp += SplitContainer1_MouseUp;
-            _treeView1.BackColor = SystemColors.MenuBar;
-            _treeView1.Dock = DockStyle.Fill;
-            _treeView1.Enabled = false;
-            _treeView1.ImageIndex = 0;
-            _treeView1.ImageList = _imageList1;
-            _treeView1.Location = new Point(0, 0);
-            _treeView1.Name = "_treeView1";
-            _treeView1.SelectedImageIndex = 0;
-            _treeView1.Size = new Size(202, 326);
-            _treeView1.TabIndex = 0;
-            _treeView1.AfterExpand += TreeView1_AfterExpand;
-            _treeView1.NodeMouseClick += TreeView1_NodeMouseClick;
-            _imageList1.ImageStream = (ImageListStreamer)resources.GetObject("_imageList1.ImageStream");
-            _imageList1.TransparentColor = Color.Transparent;
-            _imageList1.Images.SetKeyName(0, "folder.png");
-            _imageList1.Images.SetKeyName(1, "page.png");
-            _imageList1.Images.SetKeyName(2, "page_code.png");
-            _imageList1.Images.SetKeyName(3, "brick.png");
-            _imageList1.Images.SetKeyName(4, "image.png");
-            _imageList1.Images.SetKeyName(5, "application.png");
-            _listView1.Columns.AddRange(new ColumnHeader[]
-            {
-        _columnHeader1,
-        _columnHeader2,
-        _columnHeader3,
-        _columnHeader4
-            });
-            _listView1.ContextMenuStrip = _contextMenuStrip1;
-            _listView1.Dock = DockStyle.Fill;
-            _listView1.Enabled = false;
-            _listView1.FullRowSelect = true;
-            _listView1.GridLines = true;
-            _listView1.Location = new Point(0, 0);
-            _listView1.Name = "_listView1";
-            _listView1.Size = new Size(477, 326);
-            _listView1.SmallImageList = _imageList1;
-            _listView1.TabIndex = 0;
-            _listView1.UseCompatibleStateImageBehavior = false;
-            _listView1.View = View.Details;
-            _listView1.MouseDoubleClick += ListView1_MouseDoubleClick;
-            _columnHeader1.Text = @"Name";
-            _columnHeader2.Text = @"Type";
-            _columnHeader3.Text = @"Size";
-            _columnHeader3.Width = 97;
-            _columnHeader4.Text = @"Last Modified";
-            _contextMenuStrip1.Items.AddRange(new ToolStripItem[]
-            {
-        _openToolStripMenuItem1
-            });
-            _contextMenuStrip1.Name = "_contextMenuStrip1";
-            _contextMenuStrip1.Size = new Size(104, 26);
-            _contextMenuStrip1.Opening += ContextMenuStrip1_Opening;
-            _menuStrip1.Items.AddRange(new ToolStripItem[]
-            {
-        _fileToolStripMenuItem,
-        _aboutToolStripMenuItem,
-        _actionToolStripMenuItem,
-        _optionsToolStripMenuItem,
-        _refreshToolStripMenuItem
-            });
-            _menuStrip1.Location = new Point(0, 0);
-            _menuStrip1.Name = "_menuStrip1";
-            _menuStrip1.Size = new Size(683, 24);
-            _menuStrip1.TabIndex = 1;
-            _menuStrip1.Text = @"menuStrip1";
-            _openFileDialog1.Filter = @"Lego Games Executables|*.exe";
-            _statusStrip1.AllowMerge = false;
-            _statusStrip1.Items.AddRange(new ToolStripItem[]
-            {
-        _toolStripStatusLabel1,
-        _toolStripStatusLabel2,
-        _toolStripProgressBar1
-            });
-            _statusStrip1.Location = new Point(0, 350);
-            _statusStrip1.Name = "_statusStrip1";
-            _statusStrip1.Size = new Size(683, 22);
-            _statusStrip1.TabIndex = 2;
-            _statusStrip1.Text = @"statusStrip1";
-            _toolStripStatusLabel1.Name = "_toolStripStatusLabel1";
-            _toolStripStatusLabel1.Size = new Size(0, 17);
-            _toolStripStatusLabel2.Name = "_toolStripStatusLabel2";
-            _toolStripStatusLabel2.Size = new Size(566, 17);
-            _toolStripStatusLabel2.Spring = true;
-            _toolStripProgressBar1.Maximum = 0;
-            _toolStripProgressBar1.Name = "_toolStripProgressBar1";
-            _toolStripProgressBar1.Size = new Size(100, 16);
-            _toolStripProgressBar1.Step = 1;
-            _openToolStripMenuItem1.Image = Resources.magnifier;
-            _openToolStripMenuItem1.Name = "_openToolStripMenuItem1";
-            _openToolStripMenuItem1.Size = new Size(103, 22);
-            _openToolStripMenuItem1.Text = @"Open";
-            _openToolStripMenuItem1.Click += OpenToolStripMenuItem1_Click;
-            _fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[]
-            {
-        _openToolStripMenuItem,
-        _recentGameToolStripMenuItem,
-        _toolStripSeparator1,
-        _quitToolStripMenuItem
-            });
-            _fileToolStripMenuItem.Image = Resources.brick_go;
-            _fileToolStripMenuItem.Name = "_fileToolStripMenuItem";
-            _fileToolStripMenuItem.Size = new Size(53, 20);
-            _fileToolStripMenuItem.Text = @"File";
-            _openToolStripMenuItem.Image = Resources.folder_brick;
-            _openToolStripMenuItem.Name = "_openToolStripMenuItem";
-            _openToolStripMenuItem.ShortcutKeys = Keys.L | Keys.Control;
-            _openToolStripMenuItem.Size = new Size(182, 22);
-            _openToolStripMenuItem.Text = @"Load Game...";
-            _openToolStripMenuItem.Click += OpenToolStripMenuItem_Click;
-            _recentGameToolStripMenuItem.Image = Resources.folder_go;
-            _recentGameToolStripMenuItem.Name = "_recentGameToolStripMenuItem";
-            _recentGameToolStripMenuItem.Size = new Size(182, 22);
-            _recentGameToolStripMenuItem.Text = @"Recent Game...";
-            _toolStripSeparator1.Name = "_toolStripSeparator1";
-            _toolStripSeparator1.Size = new Size(179, 6);
-            _quitToolStripMenuItem.Image = (Image)resources.GetObject("_quitToolStripMenuItem.Image");
-            _quitToolStripMenuItem.Name = "_quitToolStripMenuItem";
-            _quitToolStripMenuItem.ShortcutKeys = Keys.F4 | Keys.Alt;
-            _quitToolStripMenuItem.Size = new Size(182, 22);
-            _quitToolStripMenuItem.Text = @"Quit";
-            _quitToolStripMenuItem.Click += QuitToolStripMenuItem_Click;
-            _aboutToolStripMenuItem.Alignment = ToolStripItemAlignment.Right;
-            _aboutToolStripMenuItem.Image = Resources.BlackFigure;
-            _aboutToolStripMenuItem.Name = "_aboutToolStripMenuItem";
-            _aboutToolStripMenuItem.Size = new Size(68, 20);
-            _aboutToolStripMenuItem.Text = @"About";
-            _aboutToolStripMenuItem.Click += AboutToolStripMenuItem_Click;
-            _actionToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[]
-            {
-        _doGameModReadyToolStripMenuItem
-            });
-            _actionToolStripMenuItem.Enabled = false;
-            _actionToolStripMenuItem.Image = Resources.cog;
-            _actionToolStripMenuItem.Name = "_actionToolStripMenuItem";
-            _actionToolStripMenuItem.Size = new Size(75, 20);
-            _actionToolStripMenuItem.Text = @"Actions";
-            _doGameModReadyToolStripMenuItem.Name = "_doGameModReadyToolStripMenuItem";
-            _doGameModReadyToolStripMenuItem.Size = new Size(197, 22);
-            _doGameModReadyToolStripMenuItem.Text = @"Do Game ""Mod Ready""";
-            _doGameModReadyToolStripMenuItem.Click += DoGameModReadyToolStripMenuItem_Click;
-            _optionsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[]
-            {
-        _openFileByDoubleClickToolStripMenuItem,
-        _openFileByRightClickMenuToolStripMenuItem
-            });
-            _optionsToolStripMenuItem.Enabled = false;
-            _optionsToolStripMenuItem.Image = Resources.wrench;
-            _optionsToolStripMenuItem.Name = "_optionsToolStripMenuItem";
-            _optionsToolStripMenuItem.Size = new Size(77, 20);
-            _optionsToolStripMenuItem.Text = @"Options";
-            _openFileByDoubleClickToolStripMenuItem.Checked = true;
-            _openFileByDoubleClickToolStripMenuItem.CheckOnClick = true;
-            _openFileByDoubleClickToolStripMenuItem.CheckState = CheckState.Checked;
-            _openFileByDoubleClickToolStripMenuItem.Name = "_openFileByDoubleClickToolStripMenuItem";
-            _openFileByDoubleClickToolStripMenuItem.Size = new Size(233, 22);
-            _openFileByDoubleClickToolStripMenuItem.Text = @"Open File by Double Click";
-            _openFileByRightClickMenuToolStripMenuItem.Checked = true;
-            _openFileByRightClickMenuToolStripMenuItem.CheckOnClick = true;
-            _openFileByRightClickMenuToolStripMenuItem.CheckState = CheckState.Checked;
-            _openFileByRightClickMenuToolStripMenuItem.Name = "_openFileByRightClickMenuToolStripMenuItem";
-            _openFileByRightClickMenuToolStripMenuItem.Size = new Size(233, 22);
-            _openFileByRightClickMenuToolStripMenuItem.Text = @"Open File by Right Click Menu";
-            _refreshToolStripMenuItem.Enabled = false;
-            _refreshToolStripMenuItem.Image = Resources.arrow_refresh;
-            _refreshToolStripMenuItem.Name = "_refreshToolStripMenuItem";
-            _refreshToolStripMenuItem.ShortcutKeys = Keys.R | Keys.Control;
-            _refreshToolStripMenuItem.ShowShortcutKeys = false;
-            _refreshToolStripMenuItem.Size = new Size(74, 20);
-            _refreshToolStripMenuItem.Text = @"Refresh";
-            _refreshToolStripMenuItem.Click += RefreshToolStripMenuItem_Click;
-            AutoScaleDimensions = new SizeF(6f, 13f);
-            AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(683, 372);
-            Controls.Add(_splitContainer1);
-            Controls.Add(_menuStrip1);
-            Controls.Add(_statusStrip1);
-            Icon = (Icon)resources.GetObject("$this.Icon");
-            MainMenuStrip = _menuStrip1;
-            Name = @"Home";
-            StartPosition = FormStartPosition.CenterScreen;
-            Text = @"TT Games Explorer [BETA]";
-            Load += Home_Load;
-            _splitContainer1.Panel1.ResumeLayout(false);
-            _splitContainer1.Panel2.ResumeLayout(false);
-            _splitContainer1.EndInit();
-            _splitContainer1.ResumeLayout(false);
-            _contextMenuStrip1.ResumeLayout(false);
-            _menuStrip1.ResumeLayout(false);
-            _menuStrip1.PerformLayout();
-            _statusStrip1.ResumeLayout(false);
-            _statusStrip1.PerformLayout();
-            ResumeLayout(false);
-            PerformLayout();
         }
 
         private string _legoGameFolder;
@@ -276,34 +356,34 @@ namespace Lego_Pak_Explorer.UI
         private Thread _thReadDir;
         private TreeNode _newSelected;
         private Control _focused;
-        private SplitContainer _splitContainer1;
-        private TreeView _treeView1;
-        private ImageList _imageList1;
-        private ListView _listView1;
+        private SplitContainer containerMain;
+        private TreeView trvMain;
+        private ImageList imgMain;
+        private ListView lstMain;
         private ColumnHeader _columnHeader1;
         private ColumnHeader _columnHeader2;
         private ColumnHeader _columnHeader3;
-        private MenuStrip _menuStrip1;
+        private MenuStrip menuMain;
         private ToolStripMenuItem _fileToolStripMenuItem;
-        private ToolStripMenuItem _openToolStripMenuItem;
-        private FolderBrowserDialog _folderBrowserDialog1;
-        private ToolStripSeparator _toolStripSeparator1;
-        private ToolStripMenuItem _quitToolStripMenuItem;
-        private ToolStripMenuItem _aboutToolStripMenuItem;
-        private ToolStripMenuItem _actionToolStripMenuItem;
-        private ToolStripMenuItem _doGameModReadyToolStripMenuItem;
-        private ToolStripMenuItem _optionsToolStripMenuItem;
+        private ToolStripMenuItem itmLoadGame;
+        private FolderBrowserDialog fbdOpenGameFolder;
+        private ToolStripSeparator sepMain;
+        private ToolStripMenuItem itmQuit;
+        private ToolStripMenuItem itmAbout;
+        private ToolStripMenuItem itmActions;
+        private ToolStripMenuItem itmGameModReady;
+        private ToolStripMenuItem itmOptions;
         private ColumnHeader _columnHeader4;
-        private ContextMenuStrip _contextMenuStrip1;
-        private ToolStripMenuItem _openToolStripMenuItem1;
-        private OpenFileDialog _openFileDialog1;
-        private ToolStripMenuItem _recentGameToolStripMenuItem;
-        private StatusStrip _statusStrip1;
+        private ContextMenuStrip cxtListView;
+        private ToolStripMenuItem itmCxtOpen;
+        private OpenFileDialog ofdOpenExecutable;
+        private ToolStripMenuItem itmRecentGame;
+        private StatusStrip statusMain;
         private ToolStripStatusLabel _toolStripStatusLabel1;
-        private ToolStripMenuItem _openFileByDoubleClickToolStripMenuItem;
-        private ToolStripMenuItem _openFileByRightClickMenuToolStripMenuItem;
-        private ToolStripStatusLabel _toolStripStatusLabel2;
-        private ToolStripProgressBar _toolStripProgressBar1;
-        private ToolStripMenuItem _refreshToolStripMenuItem;
+        private ToolStripMenuItem itmOptionDoubleClick;
+        private ToolStripMenuItem itmOptionRightClick;
+        private ToolStripStatusLabel lblStatus;
+        private ToolStripProgressBar pbMain;
+        private ToolStripMenuItem itmRefresh;
     }
 }

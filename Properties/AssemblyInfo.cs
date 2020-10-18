@@ -3,9 +3,9 @@ using System.Runtime.InteropServices;
 
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("BRH Media")]
-[assembly: AssemblyProduct("Lego Pak Explorer")]
+[assembly: AssemblyProduct("TT Games Explorer")]
 [assembly: AssemblyCopyright("Copyright © BRH Media 2020")]
-[assembly: AssemblyTitle("Lego Pak Explorer")]
+[assembly: AssemblyTitle("TT Games Explorer")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyTrademark("")]
 [assembly: ComVisible(false)]

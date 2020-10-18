@@ -11,6 +11,8 @@ using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 
+// ReSharper disable LocalizableElement
+
 // ReSharper disable UnusedParameter.Local
 // ReSharper disable AccessToModifiedClosure
 // ReSharper disable UnusedMember.Local
@@ -22,13 +24,12 @@ namespace Lego_Pak_Explorer.UI
     public partial class DatExtractor : Form
     {
         private readonly FileStream _hFs;
-        private BinaryReader _hBr;
-        private BinaryWriter _hBw;
+        private BinaryReader _extractInReader;
+        private BinaryWriter _extractOutWriter;
         private DatFileEntry[] _filesArray = new DatFileEntry[0];
         private readonly PkgInfo _pkgInfo;
         private readonly int[] _crcArray = new int[0];
         private ListViewColumnSorter _lvs;
-        private Control _focused;
 
         [DllImport("TTGames.UnComp.dll", CallingConvention = CallingConvention.Cdecl)]
         public static extern void Un_LZ2K(IntPtr @in, IntPtr @out, int inSz, int outSz);
@@ -39,10 +40,10 @@ namespace Lego_Pak_Explorer.UI
         public DatExtractor(string filePath)
         {
             InitializeComponent();
-            _listView1.Items.Clear();
-            _treeView1.Nodes.Clear();
-            _treeView1.Sort();
-            _extractAllToolStripMenuItem.Enabled = false;
+            lstMain.Items.Clear();
+            trvMain.Nodes.Clear();
+            trvMain.Sort();
+            itmExtractAll.Enabled = false;
             var path = _pkgInfo.FilePath = filePath;
             if (File.Exists(Path.GetDirectoryName(path) + "\\" + Path.GetFileNameWithoutExtension(path) + ".HDR"))
             {
@@ -54,54 +55,54 @@ namespace Lego_Pak_Explorer.UI
             try
             {
                 _hFs = new FileStream(path, FileMode.Open, FileAccess.ReadWrite);
-                _hBr = new BinaryReader(_hFs);
+                _extractInReader = new BinaryReader(_hFs);
                 if (_pkgInfo.Version == 2)
                 {
                     _pkgInfo.InfoFilesOffset = 0U;
-                    _pkgInfo.InfoFilesSize = ReverseBytes(_hBr.ReadUInt32());
+                    _pkgInfo.InfoFilesSize = ReverseBytes(_extractInReader.ReadUInt32());
                 }
                 else
                 {
-                    _pkgInfo.InfoFilesOffset = _hBr.ReadUInt32();
-                    _pkgInfo.InfoFilesSize = _hBr.ReadUInt32();
+                    _pkgInfo.InfoFilesOffset = _extractInReader.ReadUInt32();
+                    _pkgInfo.InfoFilesSize = _extractInReader.ReadUInt32();
                     _hFs.Seek(_pkgInfo.InfoFilesOffset, SeekOrigin.Begin);
                 }
-                _pkgInfo.TypeUnk = _hBr.ReadUInt32();
-                _pkgInfo.FilesNumber = _hBr.ReadUInt32();
+                _pkgInfo.TypeUnk = _extractInReader.ReadUInt32();
+                _pkgInfo.FilesNumber = _extractInReader.ReadUInt32();
                 _pkgInfo.InfoFilesOffset = (uint)_hFs.Position;
                 _pkgInfo.NamesNumberOffset = (uint)_hFs.Position + _pkgInfo.FilesNumber * 16U;
                 _hFs.Seek(_pkgInfo.NamesNumberOffset, SeekOrigin.Begin);
-                _pkgInfo.NamesNumber = _hBr.ReadUInt32();
+                _pkgInfo.NamesNumber = _extractInReader.ReadUInt32();
                 _pkgInfo.NameFieldSize = 8U;
                 if (_pkgInfo.TypeUnk <= 4294967291U)
                     _pkgInfo.NameFieldSize = 12U;
                 _pkgInfo.NamesCrcOffset = (uint)_hFs.Position + _pkgInfo.NamesNumber * _pkgInfo.NameFieldSize;
                 _hFs.Seek(_pkgInfo.NamesCrcOffset, SeekOrigin.Begin);
-                _pkgInfo.NamesCrcOffset += _hBr.ReadUInt32() + 4U;
+                _pkgInfo.NamesCrcOffset += _extractInReader.ReadUInt32() + 4U;
                 _pkgInfo.NamesOffset = (uint)_hFs.Position;
                 Array.Resize(ref _crcArray, (int)_pkgInfo.FilesNumber);
                 for (var index = 0; index < (int)_pkgInfo.FilesNumber; ++index)
                 {
                     _hFs.Seek(_pkgInfo.NamesCrcOffset + index * 4, SeekOrigin.Begin);
-                    _crcArray[index] = IntReverseBytes(_hBr.ReadInt32());
+                    _crcArray[index] = IntReverseBytes(_extractInReader.ReadInt32());
                 }
                 _pkgInfo.DirNumber = _pkgInfo.NamesNumber - _pkgInfo.FilesNumber;
                 _toolStripStatusLabel1.Text =
                     $@"{Path.GetFileName(filePath)} | {_pkgInfo.DirNumber} dir(s) | {_pkgInfo.FilesNumber} file(s)";
-                _textBox1.Text = $@"0x{_pkgInfo.InfoFilesOffset:X4}";
-                _textBox2.Text = $@"0x{(_pkgInfo.NamesNumberOffset + 4U):X4}";
-                _textBox3.Text = $@"0x{_pkgInfo.NamesCrcOffset:X4}";
-                _textBox4.Text = $@"0x{_pkgInfo.NamesOffset:X4}";
-                if (_toolStripProgressBar1.ProgressBar != null)
-                    _toolStripProgressBar1.ProgressBar.Maximum = (int)_pkgInfo.FilesNumber;
-                new Thread(ReadFileNameInfos)
+                txtFileInfo.Text = $@"0x{_pkgInfo.InfoFilesOffset:X4}";
+                txtNameInfo.Text = $@"0x{(_pkgInfo.NamesNumberOffset + 4U):X4}";
+                txtNameCrc.Text = $@"0x{_pkgInfo.NamesCrcOffset:X4}";
+                txtName.Text = $@"0x{_pkgInfo.NamesOffset:X4}";
+                if (pbMain.ProgressBar != null)
+                    pbMain.ProgressBar.Maximum = (int)_pkgInfo.FilesNumber;
+                new Thread(ReadFileNameInfo)
                 {
                     IsBackground = true
                 }.Start();
             }
             catch (Exception)
             {
-                MessageBox.Show(@"Error when trying to read file infos! Program will exit!");
+                MessageBox.Show(@"Error whilst trying to read file information. The program will now exit.");
                 Application.Exit();
             }
         }
@@ -111,7 +112,7 @@ namespace Lego_Pak_Explorer.UI
             if (offset > _pkgInfo.NamesCrcOffset)
                 return "";
             _hFs.Seek(offset, SeekOrigin.Begin);
-            if (_hBr.ReadByte() > 240)
+            if (_extractInReader.ReadByte() > 240)
                 return "";
             _hFs.Seek(offset, SeekOrigin.Begin);
             var array = new byte[200];
@@ -119,7 +120,7 @@ namespace Lego_Pak_Explorer.UI
             var newSize = 0;
             while (flag)
             {
-                var num = _hBr.ReadByte();
+                var num = _extractInReader.ReadByte();
                 if (num == 0)
                 {
                     Array.Resize(ref array, newSize);
@@ -145,7 +146,7 @@ namespace Lego_Pak_Explorer.UI
             return null;
         }
 
-        private void ReadFileNameInfos()
+        private void ReadFileNameInfo()
         {
             var num1 = _pkgInfo.NamesNumberOffset + 4U;
             var str1 = "";
@@ -158,12 +159,12 @@ namespace Lego_Pak_Explorer.UI
                 do
                 {
                     _hFs.Seek(num1, SeekOrigin.Begin);
-                    namesArray[i].Next = _hBr.ReadUInt16();
-                    namesArray[i].Prev = _hBr.ReadUInt16();
-                    namesArray[i].Offset = _hBr.ReadUInt32();
+                    namesArray[i].Next = _extractInReader.ReadUInt16();
+                    namesArray[i].Prev = _extractInReader.ReadUInt16();
+                    namesArray[i].Offset = _extractInReader.ReadUInt32();
                     if (_pkgInfo.TypeUnk <= 4294967291U)
                     {
-                        var num2 = (int)_hBr.ReadUInt32();
+                        var num2 = (int)_extractInReader.ReadUInt32();
                     }
                     num1 = (uint)_hFs.Position;
                     namesArray[i].Offset += _pkgInfo.NamesOffset;
@@ -185,18 +186,18 @@ namespace Lego_Pak_Explorer.UI
                         {
                             if (str1 == "")
                             {
-                                var blah2 = LocateNode("/", _treeView1.Nodes);
-                                _treeView1.Invoke((MethodInvoker)delegate { blah2.Nodes.Add(namesArray[i].Name, namesArray[i].Name); });
+                                var blah2 = LocateNode("/", trvMain.Nodes);
+                                trvMain.Invoke((MethodInvoker)delegate { blah2.Nodes.Add(namesArray[i].Name, namesArray[i].Name); });
                             }
                             else
                             {
-                                var blah2 = LocateNode("/\\" + str1.Remove(str1.Length - 1), _treeView1.Nodes);
-                                _treeView1.Invoke((MethodInvoker)delegate { blah2.Nodes.Add(namesArray[i].Name, namesArray[i].Name); });
+                                var blah2 = LocateNode("/\\" + str1.Remove(str1.Length - 1), trvMain.Nodes);
+                                trvMain.Invoke((MethodInvoker)delegate { blah2.Nodes.Add(namesArray[i].Name, namesArray[i].Name); });
                             }
                             str1 = str1 + namesArray[i].Name + Path.DirectorySeparatorChar;
                         }
                         else
-                            _treeView1.Invoke((MethodInvoker)delegate { _treeView1.Nodes.Add("/", "/"); });
+                            trvMain.Invoke((MethodInvoker)delegate { trvMain.Nodes.Add("/", "/"); });
                     }
                     ++index;
                 }
@@ -215,121 +216,143 @@ namespace Lego_Pak_Explorer.UI
                 var val = num3 & -1;
                 _filesArray[i].Crc = IntReverseBytes(val);
                 _hFs.Seek(_pkgInfo.InfoFilesOffset + Array.IndexOf(_crcArray, _filesArray[i].Crc) * 16, SeekOrigin.Begin);
-                _filesArray[i].Offset = _hBr.ReadUInt32();
+                _filesArray[i].Offset = _extractInReader.ReadUInt32();
                 _filesArray[i].Offset <<= 8;
-                _filesArray[i].Size = _hBr.ReadUInt32();
-                _filesArray[i].SizeUnComp = _hBr.ReadUInt32();
-                _filesArray[i].Pack = _hBr.ReadByte();
-                _filesArray[i].Pack += _hBr.ReadByte();
-                _filesArray[i].Pack += _hBr.ReadByte();
-                _filesArray[i].Offset2 = _hBr.ReadByte();
+                _filesArray[i].Size = _extractInReader.ReadUInt32();
+                _filesArray[i].SizeUnComp = _extractInReader.ReadUInt32();
+                _filesArray[i].Pack = _extractInReader.ReadByte();
+                _filesArray[i].Pack += _extractInReader.ReadByte();
+                _filesArray[i].Pack += _extractInReader.ReadByte();
+                _filesArray[i].Offset2 = _extractInReader.ReadByte();
                 _filesArray[i].Offset += _filesArray[i].Offset2;
-                _toolStripProgressBar1.ProgressBar?.Invoke((MethodInvoker)delegate
+                pbMain.ProgressBar?.Invoke((MethodInvoker)delegate
                 {
-                    _toolStripProgressBar1.ProgressBar.Value = i;
-                    var num2 = (int)(_toolStripProgressBar1.ProgressBar.Value / (double)_toolStripProgressBar1.ProgressBar.Maximum * 100.0);
-                    _toolStripProgressBar1.ProgressBar.CreateGraphics().DrawString(num2 + "%", new Font("Arial", 8.25f, FontStyle.Regular), Brushes.Gray, new PointF(_toolStripProgressBar1.ProgressBar.Width / 2 - 10, _toolStripProgressBar1.ProgressBar.Height / 2 - 7));
+                    pbMain.ProgressBar.Value = i;
+                    var num2 = (int)(pbMain.ProgressBar.Value / (double)pbMain.ProgressBar.Maximum * 100.0);
+                    pbMain.ProgressBar.CreateGraphics().DrawString(num2 + "%", new Font("Arial", 8.25f, FontStyle.Regular), Brushes.Gray, new PointF(pbMain.ProgressBar.Width / 2 - 10, pbMain.ProgressBar.Height / 2 - 7));
                 });
             }
-            _listView1.Invoke((MethodInvoker)delegate { _listView1.Enabled = true; });
-            _treeView1.Invoke((MethodInvoker)delegate
+            lstMain.Invoke((MethodInvoker)delegate
+           {
+               lstMain.Enabled = true;
+           });
+            trvMain.Invoke((MethodInvoker)delegate
             {
-                _treeView1.Enabled = true;
-                _treeView1.Sort();
-                _treeView1.Nodes[0].Expand();
-                _treeView1.SelectedNode = _treeView1.Nodes[0];
-                _extractAllToolStripMenuItem.Enabled = true;
-                _treeView1.Focus();
+                trvMain.Enabled = true;
+                trvMain.Sort();
+                trvMain.Nodes[0].Expand();
+                trvMain.SelectedNode = trvMain.Nodes[0];
+                itmExtractAll.Enabled = true;
+                trvMain.Focus();
             });
+
+            //release file handle
             _hFs.Close();
+        }
+
+        private byte[] ExtractFile(int fileId)
+        {
+            try
+            {
+                var inFileStream = new FileStream(_pkgInfo.FilePath, FileMode.Open, FileAccess.Read);
+                _extractInReader = new BinaryReader(inFileStream);
+                inFileStream.Seek(_filesArray[fileId].Offset, SeekOrigin.Begin);
+
+                var rawFileBytes = new byte[_filesArray[fileId].Size];
+                _extractInReader.Read(rawFileBytes, 0, (int)_filesArray[fileId].Size);
+
+                //first 4 bytes of the raw file dictates its compression function
+                var str = Encoding.UTF8.GetString(rawFileBytes, 0, 4);
+
+                //test whether a valid function has been applied
+                if (str == @"DFLT" || str == @"LZ2K")
+                {
+                    var memoryStream = new MemoryStream(rawFileBytes);
+                    var binaryReader = new BinaryReader(memoryStream);
+                    var seekTo = 4;
+                    var fileOffset = 0;
+                    var buffer = new byte[_filesArray[fileId].SizeUnComp];
+                    var totalProcessed = 0;
+                    while (totalProcessed < (int)_filesArray[fileId].Size)
+                    {
+                        memoryStream.Seek(seekTo, SeekOrigin.Begin);
+                        var totalSize = binaryReader.ReadUInt32();
+                        var finalBuffer = new byte[totalSize];
+                        var sourceBuffer = new byte[totalSize];
+                        binaryReader.Read(finalBuffer, 0, (int)totalSize);
+                        var inBytes = Marshal.AllocHGlobal(Marshal.SizeOf(finalBuffer[0]) * finalBuffer.Length);
+                        Marshal.Copy(finalBuffer, 0, inBytes, finalBuffer.Length);
+                        var outBytes = Marshal.AllocHGlobal(Marshal.SizeOf(sourceBuffer[0]) * sourceBuffer.Length);
+                        Marshal.Copy(sourceBuffer, 0, outBytes, sourceBuffer.Length);
+
+                        //detect proper decompression function
+                        switch (str)
+                        {
+                            case @"DFLT":
+                                Un_DFLT(inBytes, outBytes, (int)totalSize, (int)totalSize);
+                                break;
+
+                            case @"LZ2K":
+                                Un_LZ2K(inBytes, outBytes, (int)totalSize, (int)totalSize);
+                                break;
+                        }
+
+                        var destination = new byte[totalSize];
+                        Marshal.Copy(outBytes, destination, 0, (int)totalSize);
+                        Array.Copy(destination, 0L, buffer, fileOffset, totalSize);
+                        fileOffset += (int)totalSize;
+                        seekTo += (int)totalSize + 12;
+                        totalProcessed = totalProcessed + 12 + (int)totalSize;
+                        Marshal.FreeHGlobal(inBytes);
+                        Marshal.FreeHGlobal(outBytes);
+                    }
+
+                    inFileStream.Close();
+                    return buffer;
+                }
+
+                //default to here for no compression algorithm (return as-is)
+                return rawFileBytes;
+            }
+            catch (Exception)
+            {
+                //ignore
+            }
+
+            //default to here if an error occurs (errors will skip 'return rawFileBytes')
+            return null;
         }
 
         private bool ExtractFile(int fileId, string extractFolder)
         {
             try
             {
-                var fileStream1 = new FileStream(_pkgInfo.FilePath, FileMode.Open, FileAccess.Read);
-                _hBr = new BinaryReader(fileStream1);
-                var fileStream2 = new FileStream(extractFolder + _filesArray[fileId].Name, FileMode.Create, FileAccess.Write);
-                _hBw = new BinaryWriter(fileStream2);
-                fileStream1.Seek(_filesArray[fileId].Offset, SeekOrigin.Begin);
-                var numArray1 = new byte[_filesArray[fileId].Size];
-                _hBr.Read(numArray1, 0, (int)_filesArray[fileId].Size);
-                var str = Encoding.UTF8.GetString(numArray1, 0, 4);
-                if (str == "LZ2K")
-                {
-                    var memoryStream = new MemoryStream(numArray1);
-                    var binaryReader = new BinaryReader(memoryStream);
-                    var num1 = 4;
-                    var num2 = 0;
-                    var buffer = new byte[_filesArray[fileId].SizeUnComp];
-                    var num3 = 0;
-                    while (num3 < (int)_filesArray[fileId].Size)
-                    {
-                        memoryStream.Seek(num1, SeekOrigin.Begin);
-                        var num4 = binaryReader.ReadUInt32();
-                        var num5 = binaryReader.ReadUInt32();
-                        var numArray2 = new byte[num5];
-                        var source = new byte[num4];
-                        binaryReader.Read(numArray2, 0, (int)num5);
-                        var num6 = Marshal.AllocHGlobal(Marshal.SizeOf(numArray2[0]) * numArray2.Length);
-                        Marshal.Copy(numArray2, 0, num6, numArray2.Length);
-                        var num7 = Marshal.AllocHGlobal(Marshal.SizeOf(source[0]) * source.Length);
-                        Marshal.Copy(source, 0, num7, source.Length);
-                        Un_LZ2K(num6, num7, (int)num5, (int)num4);
-                        var destination = new byte[(int)num4];
-                        Marshal.Copy(num7, destination, 0, (int)num4);
-                        Array.Copy(destination, 0L, buffer, num2, num4);
-                        num2 += (int)num4;
-                        num1 += (int)num5 + 12;
-                        num3 = num3 + 12 + (int)num5;
-                        Marshal.FreeHGlobal(num6);
-                        Marshal.FreeHGlobal(num7);
-                    }
-                    _hBw.Write(buffer);
-                }
-                else if (str == "DFLT")
-                {
-                    var memoryStream = new MemoryStream(numArray1);
-                    var binaryReader = new BinaryReader(memoryStream);
-                    var num1 = 4;
-                    var num2 = 0;
-                    var buffer = new byte[_filesArray[fileId].SizeUnComp];
-                    var num3 = 0;
-                    while (num3 < (int)_filesArray[fileId].Size)
-                    {
-                        memoryStream.Seek(num1, SeekOrigin.Begin);
-                        var num4 = binaryReader.ReadUInt32();
-                        var num5 = binaryReader.ReadUInt32();
-                        var numArray2 = new byte[num4];
-                        var source = new byte[num5];
-                        binaryReader.Read(numArray2, 0, (int)num4);
-                        var num6 = Marshal.AllocHGlobal(Marshal.SizeOf(numArray2[0]) * numArray2.Length);
-                        Marshal.Copy(numArray2, 0, num6, numArray2.Length);
-                        var num7 = Marshal.AllocHGlobal(Marshal.SizeOf(source[0]) * source.Length);
-                        Marshal.Copy(source, 0, num7, source.Length);
-                        Un_DFLT(num6, num7, (int)num4, (int)num5);
-                        var destination = new byte[(int)num5];
-                        Marshal.Copy(num7, destination, 0, (int)num5);
-                        Array.Copy(destination, 0L, buffer, num2, num5);
-                        num2 += (int)num5;
-                        num1 += (int)num4 + 12;
-                        num3 = num3 + 12 + (int)num4;
-                        Marshal.FreeHGlobal(num6);
-                        Marshal.FreeHGlobal(num7);
-                    }
-                    _hBw.Write(buffer);
-                }
-                else
-                    _hBw.Write(numArray1);
-                fileStream1.Close();
-                fileStream2.Close();
+                var outFileStream = new FileStream(extractFolder + _filesArray[fileId].Name, FileMode.Create, FileAccess.Write);
+                _extractOutWriter = new BinaryWriter(outFileStream);
+
+                //fetch the file bytes and decompress if necessary
+                var bytes = ExtractFile(fileId);
+
+                //flush bytes to file (if valid)
+                if (bytes != null)
+                    _extractOutWriter.Write(bytes);
+
+                //release binary handle
+                _extractOutWriter.Close();
+
+                //release file handle
+                outFileStream.Close();
+
+                //report success
                 return true;
             }
             catch (Exception)
             {
-                return false;
+                //ignore
             }
+
+            //default
+            return false;
         }
 
         private static uint ReverseBytes(uint value) => (uint)(((int)value & byte.MaxValue) << 24 | ((int)value & 65280) << 8) | (value & 16711680U) >> 8 | (value & 4278190080U) >> 24;
@@ -341,11 +364,11 @@ namespace Lego_Pak_Explorer.UI
             return BitConverter.ToInt32(bytes, 0);
         }
 
-        private void TreeView1_AfterSelect(object sender, TreeViewEventArgs e)
+        private void TrvMain_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            _listView1.Items.Clear();
+            lstMain.Items.Clear();
             _lvs = new ListViewColumnSorter();
-            _lvs.Initialize(_listView1, "num,text,text,text,num,num,text", null);
+            _lvs.Initialize(lstMain, "num,text,text,text,num,num,text", null);
             for (var index = 0; index < _filesArray.Length; ++index)
             {
                 if (e.Node.FullPath.Length > 2)
@@ -361,7 +384,7 @@ namespace Lego_Pak_Explorer.UI
                         _filesArray[index].Size.ToString(),
                         $"0x{_filesArray[index].Pack:X3}"
                     };
-                    _listView1.Items.Add(index.ToString()).SubItems.AddRange(items);
+                    lstMain.Items.Add(index.ToString()).SubItems.AddRange(items);
                 }
                 else if (_filesArray[index].Parent == "")
                 {
@@ -374,12 +397,12 @@ namespace Lego_Pak_Explorer.UI
             _filesArray[index].Size.ToString(),
             $"0x{_filesArray[index].Pack:X3}"
                     };
-                    _listView1.Items.Add(index.ToString()).SubItems.AddRange(items);
+                    lstMain.Items.Add(index.ToString()).SubItems.AddRange(items);
                 }
             }
             _lvs.lv_ColumnClick(this, new ColumnClickEventArgs(1));
-            _listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
-            _listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+            lstMain.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+            lstMain.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
         }
 
         private void ExtractToolStripMenuItem_Click(object sender, EventArgs e)
@@ -387,7 +410,7 @@ namespace Lego_Pak_Explorer.UI
             _folderBrowserDialog1.SelectedPath = Path.GetDirectoryName(_pkgInfo.FilePath);
             if (_folderBrowserDialog1.ShowDialog() != DialogResult.OK)
                 return;
-            foreach (ListViewItem selectedItem in _listView1.SelectedItems)
+            foreach (ListViewItem selectedItem in lstMain.SelectedItems)
             {
                 MessageBox.Show(
                     ExtractFile(int.Parse(selectedItem.SubItems[0].Text), _folderBrowserDialog1.SelectedPath + "\\")
@@ -398,12 +421,12 @@ namespace Lego_Pak_Explorer.UI
 
         private void ContextMenuStrip1_Opening(object sender, CancelEventArgs e)
         {
-            if (_listView1.SelectedItems.Count > 0)
+            if (lstMain.SelectedItems.Count > 0)
                 return;
             e.Cancel = true;
         }
 
-        private void ToolStripMenuItem1_Click(object sender, EventArgs e)
+        private void ExtractAllMenuItem_Click(object sender, EventArgs e)
         {
             _folderBrowserDialog1.SelectedPath = Path.GetDirectoryName(_pkgInfo.FilePath);
             if (_folderBrowserDialog1.ShowDialog() != DialogResult.OK)
@@ -425,21 +448,26 @@ namespace Lego_Pak_Explorer.UI
             MessageBox.Show(@"Extract Finish!");
         }
 
-        private void PlayToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ItmPlaySound_Click(object sender, EventArgs e)
         {
-            var fileStream = new FileStream(_pkgInfo.FilePath, FileMode.Open, FileAccess.ReadWrite);
-            _hBr = new BinaryReader(fileStream);
-            var int32 = Convert.ToInt32(_listView1.SelectedItems[0].SubItems[0].Text);
-            fileStream.Seek(_filesArray[int32].Offset, SeekOrigin.Begin);
-            var buffer = new byte[_filesArray[int32].Size];
-            _hBr.Read(buffer, 0, (int)_filesArray[int32].Size);
-            fileStream.Close();
-            new SoundPlayer(new MemoryStream(buffer, true)).Play();
+            try
+            {
+                var fileStream = new FileStream(_pkgInfo.FilePath, FileMode.Open, FileAccess.ReadWrite);
+                _extractInReader = new BinaryReader(fileStream);
+                var int32 = Convert.ToInt32(lstMain.SelectedItems[0].SubItems[0].Text);
+                fileStream.Seek(_filesArray[int32].Offset, SeekOrigin.Begin);
+                var buffer = new byte[_filesArray[int32].Size];
+                _extractInReader.Read(buffer, 0, (int)_filesArray[int32].Size);
+                fileStream.Close();
+                new SoundPlayer(new MemoryStream(buffer, true)).Play();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error whilst trying to load sound content\n\n{ex}");
+            }
         }
 
         private void QuitToolStripMenuItem_Click(object sender, EventArgs e) => Close();
-
-        private void SplitContainer1_MouseDown(object sender, MouseEventArgs e) => _focused = GetFocused(Controls);
 
         private static Control GetFocused(IEnumerable controls)
         {
@@ -451,6 +479,10 @@ namespace Lego_Pak_Explorer.UI
                     return GetFocused(control.Controls);
             }
             return null;
+        }
+
+        private void DatExtractor_Load(object sender, EventArgs e)
+        {
         }
     }
 }

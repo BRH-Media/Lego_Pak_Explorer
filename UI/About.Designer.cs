@@ -1,159 +1,191 @@
-﻿using System.ComponentModel;
-using System.Drawing;
-using System.Windows.Forms;
-using Lego_Pak_Explorer.Properties;
-
-namespace Lego_Pak_Explorer.UI
+﻿namespace Lego_Pak_Explorer.UI
 {
-    public partial class About
+    partial class About
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private IContainer components = null;
+        private System.ComponentModel.IContainer components = null;
 
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
         protected override void Dispose(bool disposing)
         {
-            if (disposing && components != null)
+            if (disposing && (components != null))
+            {
                 components.Dispose();
+            }
             base.Dispose(disposing);
         }
+
+        #region Windows Form Designer generated code
+
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
         private void InitializeComponent()
         {
-            label1 = new Label();
-            label2 = new Label();
-            label3 = new Label();
-            label4 = new Label();
-            label5 = new Label();
-            button1 = new Button();
-            label6 = new Label();
-            label7 = new Label();
-            label8 = new Label();
-            label9 = new Label();
-            pictureBox1 = new PictureBox();
-            label10 = new Label();
-            ((ISupportInitialize)pictureBox1).BeginInit();
-            SuspendLayout();
-            label1.AutoSize = true;
-            label1.Font = new Font("Microsoft Sans Serif", 9.75f, FontStyle.Bold | FontStyle.Underline, GraphicsUnit.Point, 0);
-            label1.Location = new Point(72, 21);
-            label1.Name = "label1";
-            label1.Size = new Size(163, 16);
-            label1.TabIndex = 1;
-            label1.Text = "LEGO Games Explorer";
-            label2.AutoSize = true;
-            label2.Location = new Point(188, 42);
-            label2.Name = "label2";
-            label2.Size = new Size(47, 13);
-            label2.TabIndex = 2;
-            label2.Text = "by Ac_K";
-            label3.AutoSize = true;
-            label3.Location = new Point(72, 42);
-            label3.Name = "label3";
-            label3.Size = new Size(28, 13);
-            label3.TabIndex = 3;
-            label3.Text = "v0.1";
-            label4.AutoSize = true;
-            label4.Font = new Font("Microsoft Sans Serif", 8.25f, FontStyle.Bold | FontStyle.Underline, GraphicsUnit.Point, 0);
-            label4.Location = new Point(19, 95);
-            label4.Name = "label4";
-            label4.Size = new Size(50, 13);
-            label4.TabIndex = 4;
-            label4.Text = "Credits:";
-            label5.AutoSize = true;
-            label5.Location = new Point(22, 111);
-            label5.MaximumSize = new Size(220, 0);
-            label5.Name = "label5";
-            label5.Size = new Size(218, 26);
-            label5.TabIndex = 5;
-            label5.Text = "● Luigi Auriemma ( BMS Script of TT Games, LZ2K Compression and DFLT Compression )";
-            button1.Location = new Point(165, 238);
-            button1.Name = "button1";
-            button1.Size = new Size(75, 23);
-            button1.TabIndex = 6;
-            button1.Text = "OK";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += Button1_Click;
-            label6.AutoSize = true;
-            label6.Location = new Point(74, 73);
-            label6.Name = "label6";
-            label6.Size = new Size(120, 13);
-            label6.TabIndex = 7;
-            label6.Text = "pakexplorer@gmail.com";
-            label7.AutoSize = true;
-            label7.Font = new Font("Microsoft Sans Serif", 8.25f, FontStyle.Bold | FontStyle.Underline, GraphicsUnit.Point, 0);
-            label7.Location = new Point(19, 73);
-            label7.Name = "label7";
-            label7.Size = new Size(55, 13);
-            label7.TabIndex = 8;
-            label7.Text = "Contact:";
-            label8.AutoSize = true;
-            label8.Location = new Point(21, 140);
-            label8.MaximumSize = new Size(220, 0);
-            label8.Name = "label8";
-            label8.Size = new Size(211, 26);
-            label8.TabIndex = 9;
-            label8.Text = "● Pavel Torgashov ( Fast Colored TextBox for Syntax Highlighting )";
-            label9.AutoSize = true;
-            label9.Location = new Point(20, 170);
-            label9.MaximumSize = new Size(220, 0);
-            label9.Name = "label9";
-            label9.Size = new Size(142, 13);
-            label9.TabIndex = 10;
-            label9.Text = "● Kons ( Basic DDS Library )";
-            pictureBox1.Image = Resources.BlackFigure;
-            pictureBox1.Location = new Point(22, 21);
-            pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(35, 34);
-            pictureBox1.TabIndex = 0;
-            pictureBox1.TabStop = false;
-            label10.AutoSize = true;
-            label10.Location = new Point(20, 188);
-            label10.MaximumSize = new Size(220, 0);
-            label10.Name = "label10";
-            label10.Size = new Size(211, 26);
-            label10.TabIndex = 11;
-            label10.Text = "● FamFamFam and Dave Brasgalla ( Icons Pack )";
-            AutoScaleDimensions = new SizeF(6f, 13f);
-            AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(256, 277);
-            Controls.Add(label10);
-            Controls.Add(label9);
-            Controls.Add(label8);
-            Controls.Add(label7);
-            Controls.Add(label6);
-            Controls.Add(button1);
-            Controls.Add(label5);
-            Controls.Add(label4);
-            Controls.Add(label3);
-            Controls.Add(label2);
-            Controls.Add(label1);
-            Controls.Add(pictureBox1);
-            FormBorderStyle = FormBorderStyle.FixedToolWindow;
-            MaximizeBox = false;
-            MinimizeBox = false;
-            Name = @"About";
-            ShowIcon = false;
-            ShowInTaskbar = false;
-            SizeGripStyle = SizeGripStyle.Hide;
-            StartPosition = FormStartPosition.CenterParent;
-            Text = "About";
-            ((ISupportInitialize)pictureBox1).EndInit();
-            ResumeLayout(false);
-            PerformLayout();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(About));
+            this.tlpMain = new System.Windows.Forms.TableLayoutPanel();
+            this.picLogo = new System.Windows.Forms.PictureBox();
+            this.lblProductName = new System.Windows.Forms.Label();
+            this.lblVersion = new System.Windows.Forms.Label();
+            this.lblCopyright = new System.Windows.Forms.Label();
+            this.lblCompanyName = new System.Windows.Forms.Label();
+            this.txtDescription = new System.Windows.Forms.TextBox();
+            this.btnOK = new System.Windows.Forms.Button();
+            this.tlpMain.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picLogo)).BeginInit();
+            this.SuspendLayout();
+            // 
+            // tlpMain
+            // 
+            this.tlpMain.ColumnCount = 2;
+            this.tlpMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33F));
+            this.tlpMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 67F));
+            this.tlpMain.Controls.Add(this.picLogo, 0, 0);
+            this.tlpMain.Controls.Add(this.lblProductName, 1, 0);
+            this.tlpMain.Controls.Add(this.lblVersion, 1, 1);
+            this.tlpMain.Controls.Add(this.lblCopyright, 1, 2);
+            this.tlpMain.Controls.Add(this.lblCompanyName, 1, 3);
+            this.tlpMain.Controls.Add(this.txtDescription, 1, 4);
+            this.tlpMain.Controls.Add(this.btnOK, 1, 5);
+            this.tlpMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpMain.Location = new System.Drawing.Point(9, 9);
+            this.tlpMain.Name = "tlpMain";
+            this.tlpMain.RowCount = 6;
+            this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.tlpMain.Size = new System.Drawing.Size(417, 265);
+            this.tlpMain.TabIndex = 0;
+            // 
+            // picLogo
+            // 
+            this.picLogo.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("picLogo.BackgroundImage")));
+            this.picLogo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.picLogo.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.picLogo.ErrorImage = null;
+            this.picLogo.InitialImage = null;
+            this.picLogo.Location = new System.Drawing.Point(3, 3);
+            this.picLogo.Name = "picLogo";
+            this.tlpMain.SetRowSpan(this.picLogo, 6);
+            this.picLogo.Size = new System.Drawing.Size(131, 259);
+            this.picLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.picLogo.TabIndex = 12;
+            this.picLogo.TabStop = false;
+            // 
+            // lblProductName
+            // 
+            this.lblProductName.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblProductName.Location = new System.Drawing.Point(143, 0);
+            this.lblProductName.Margin = new System.Windows.Forms.Padding(6, 0, 3, 0);
+            this.lblProductName.MaximumSize = new System.Drawing.Size(0, 17);
+            this.lblProductName.Name = "lblProductName";
+            this.lblProductName.Size = new System.Drawing.Size(271, 17);
+            this.lblProductName.TabIndex = 19;
+            this.lblProductName.Text = "Product Name";
+            this.lblProductName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // lblVersion
+            // 
+            this.lblVersion.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblVersion.Location = new System.Drawing.Point(143, 26);
+            this.lblVersion.Margin = new System.Windows.Forms.Padding(6, 0, 3, 0);
+            this.lblVersion.MaximumSize = new System.Drawing.Size(0, 17);
+            this.lblVersion.Name = "lblVersion";
+            this.lblVersion.Size = new System.Drawing.Size(271, 17);
+            this.lblVersion.TabIndex = 0;
+            this.lblVersion.Text = "Version";
+            this.lblVersion.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // lblCopyright
+            // 
+            this.lblCopyright.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblCopyright.Location = new System.Drawing.Point(143, 52);
+            this.lblCopyright.Margin = new System.Windows.Forms.Padding(6, 0, 3, 0);
+            this.lblCopyright.MaximumSize = new System.Drawing.Size(0, 17);
+            this.lblCopyright.Name = "lblCopyright";
+            this.lblCopyright.Size = new System.Drawing.Size(271, 17);
+            this.lblCopyright.TabIndex = 21;
+            this.lblCopyright.Text = "Copyright";
+            this.lblCopyright.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // lblCompanyName
+            // 
+            this.lblCompanyName.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblCompanyName.Location = new System.Drawing.Point(143, 78);
+            this.lblCompanyName.Margin = new System.Windows.Forms.Padding(6, 0, 3, 0);
+            this.lblCompanyName.MaximumSize = new System.Drawing.Size(0, 17);
+            this.lblCompanyName.Name = "lblCompanyName";
+            this.lblCompanyName.Size = new System.Drawing.Size(271, 17);
+            this.lblCompanyName.TabIndex = 22;
+            this.lblCompanyName.Text = "Company Name";
+            this.lblCompanyName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // txtDescription
+            // 
+            this.txtDescription.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtDescription.Location = new System.Drawing.Point(143, 107);
+            this.txtDescription.Margin = new System.Windows.Forms.Padding(6, 3, 3, 3);
+            this.txtDescription.Multiline = true;
+            this.txtDescription.Name = "txtDescription";
+            this.txtDescription.ReadOnly = true;
+            this.txtDescription.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.txtDescription.Size = new System.Drawing.Size(271, 126);
+            this.txtDescription.TabIndex = 23;
+            this.txtDescription.TabStop = false;
+            this.txtDescription.Text = "Description";
+            this.txtDescription.TextChanged += new System.EventHandler(this.TxtDescription_TextChanged);
+            // 
+            // btnOK
+            // 
+            this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnOK.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btnOK.Location = new System.Drawing.Point(339, 239);
+            this.btnOK.Name = "btnOK";
+            this.btnOK.Size = new System.Drawing.Size(75, 23);
+            this.btnOK.TabIndex = 24;
+            this.btnOK.Text = "&OK";
+            // 
+            // About
+            // 
+            this.AcceptButton = this.btnOK;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(435, 283);
+            this.Controls.Add(this.tlpMain);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+            this.Name = "About";
+            this.Padding = new System.Windows.Forms.Padding(9);
+            this.ShowIcon = false;
+            this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.Text = "About";
+            this.Load += new System.EventHandler(this.About_Load);
+            this.tlpMain.ResumeLayout(false);
+            this.tlpMain.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picLogo)).EndInit();
+            this.ResumeLayout(false);
+
         }
 
-        private PictureBox pictureBox1;
-        private Label label1;
-        private Label label2;
-        private Label label3;
-        private Label label4;
-        private Label label5;
-        private Button button1;
-        private Label label6;
-        private Label label7;
-        private Label label8;
-        private Label label9;
-        private Label label10;
+        #endregion
+
+        private System.Windows.Forms.TableLayoutPanel tlpMain;
+        private System.Windows.Forms.PictureBox picLogo;
+        private System.Windows.Forms.Label lblProductName;
+        private System.Windows.Forms.Label lblVersion;
+        private System.Windows.Forms.Label lblCopyright;
+        private System.Windows.Forms.Label lblCompanyName;
+        private System.Windows.Forms.Button btnOK;
+        public System.Windows.Forms.TextBox txtDescription;
     }
 }

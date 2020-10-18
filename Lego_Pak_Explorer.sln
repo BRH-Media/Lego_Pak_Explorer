@@ -1,7 +1,10 @@
-
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TT Games Explorer", "Lego_Pak_Explorer.csproj", "{C84B4546-5E42-4D7F-A300-324396DE9F0F}"
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30611.23
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lego_Pak_Explorer", "Lego_Pak_Explorer.csproj", "{C84B4546-5E42-4D7F-A300-324396DE9F0F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pluggi", "..\Pluggi\Pluggi.csproj", "{6EB9AA96-75B1-4BF2-9366-B43261AD32A7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,8 +16,15 @@ Global
 		{C84B4546-5E42-4D7F-A300-324396DE9F0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C84B4546-5E42-4D7F-A300-324396DE9F0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C84B4546-5E42-4D7F-A300-324396DE9F0F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6EB9AA96-75B1-4BF2-9366-B43261AD32A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6EB9AA96-75B1-4BF2-9366-B43261AD32A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6EB9AA96-75B1-4BF2-9366-B43261AD32A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6EB9AA96-75B1-4BF2-9366-B43261AD32A7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3E52BDC9-8ABE-4535-93A4-4D9977AEA85F}
 	EndGlobalSection
 EndGlobal

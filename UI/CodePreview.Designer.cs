@@ -53,17 +53,17 @@ namespace Lego_Pak_Explorer.UI
         _toolStripSeparator1,
         _quitToolStripMenuItem
             });
-            _fileToolStripMenuItem.Image = Resources.brick_go;
+            _fileToolStripMenuItem.Image = global::TT_Games_Explorer.Properties.Resources.brick_go;
             _fileToolStripMenuItem.Name = @"_fileToolStripMenuItem";
             _fileToolStripMenuItem.Size = new Size(53, 20);
             _fileToolStripMenuItem.Text = @"File";
-            _saveToolStripMenuItem.Image = Resources.disk;
+            _saveToolStripMenuItem.Image = global::TT_Games_Explorer.Properties.Resources.disk;
             _saveToolStripMenuItem.Name = @"_saveToolStripMenuItem";
             _saveToolStripMenuItem.ShortcutKeys = Keys.S | Keys.Control;
             _saveToolStripMenuItem.Size = new Size(152, 22);
             _saveToolStripMenuItem.Text = @"Save";
             _saveToolStripMenuItem.Click += SaveToolStripMenuItem_Click;
-            _saveAsToolStripMenuItem.Image = Resources.disk;
+            _saveAsToolStripMenuItem.Image = global::TT_Games_Explorer.Properties.Resources.disk;
             _saveAsToolStripMenuItem.Name = @"_saveAsToolStripMenuItem";
             _saveAsToolStripMenuItem.Size = new Size(152, 22);
             _saveAsToolStripMenuItem.Text = @"Save as...";

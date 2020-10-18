@@ -64,7 +64,7 @@ namespace Lego_Pak_Explorer.UI
             // 
             // itmExport
             // 
-            this.itmExport.Image = global::Lego_Pak_Explorer.Properties.Resources.disk;
+            this.itmExport.Image = global::TT_Games_Explorer.Properties.Resources.disk;
             this.itmExport.Name = "itmExport";
             this.itmExport.Size = new System.Drawing.Size(69, 20);
             this.itmExport.Text = "Export";
@@ -72,7 +72,7 @@ namespace Lego_Pak_Explorer.UI
             // 
             // itmMipmap
             // 
-            this.itmMipmap.Image = global::Lego_Pak_Explorer.Properties.Resources.cog;
+            this.itmMipmap.Image = global::TT_Games_Explorer.Properties.Resources.cog;
             this.itmMipmap.Name = "itmMipmap";
             this.itmMipmap.Size = new System.Drawing.Size(80, 20);
             this.itmMipmap.Text = "Mipmap";
@@ -80,7 +80,7 @@ namespace Lego_Pak_Explorer.UI
             // 
             // itmModify
             // 
-            this.itmModify.Image = global::Lego_Pak_Explorer.Properties.Resources.help;
+            this.itmModify.Image = global::TT_Games_Explorer.Properties.Resources.help;
             this.itmModify.Name = "itmModify";
             this.itmModify.Size = new System.Drawing.Size(151, 20);
             this.itmModify.Text = "How do I modify this?";
@@ -134,7 +134,7 @@ namespace Lego_Pak_Explorer.UI
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
-            this.BackgroundImage = global::Lego_Pak_Explorer.Properties.Resources.transpback1;
+            this.BackgroundImage = global::TT_Games_Explorer.Properties.Resources.transpback1;
             this.ClientSize = new System.Drawing.Size(537, 366);
             this.Controls.Add(this.pnlMain);
             this.Controls.Add(this.menuMain);

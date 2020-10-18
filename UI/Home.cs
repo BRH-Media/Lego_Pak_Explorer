@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Globalization;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
@@ -14,89 +13,7 @@ namespace Lego_Pak_Explorer.UI
 {
     public partial class Home : Form
     {
-        private MruManager _mruManager;
-
-        private readonly Dictionary<string, string> _legoFileType = new Dictionary<string, string>
-        {
-      {
-        ".cfg",
-        "Configuration"
-      },
-      {
-        ".csv",
-        "Comma Separated Values"
-      },
-      {
-        ".dat",
-        "Data Archive"
-      },
-      {
-        ".dds",
-        "Direct Draw Surface"
-      },
-      {
-        ".exe",
-        "Executable"
-      },
-      {
-        ".fmv",
-        "Full Motion Video"
-      },
-      {
-        ".hdr",
-        "Header Data Archive"
-      },
-      {
-        ".ogg",
-        "OGG Vorbis Sound"
-      },
-      {
-        ".png",
-        "Portable Network Graphics"
-      },
-      {
-        ".sf",
-        "Script File"
-      },
-      {
-        ".tex",
-        "Texture"
-      },
-      {
-        ".txt",
-        "Text"
-      },
-      {
-        ".wav",
-        "Waveform Audio"
-      },
-      {
-        ".xma",
-        "Xbox360 Media Audio"
-      }
-    };
-
         public Home() => InitializeComponent();
-
-        private string Get_LEGO_File_Type(string ext)
-        {
-            string str;
-            try
-            {
-                str = _legoFileType[ext.ToLower()];
-            }
-            catch (Exception)
-            {
-                str = "Unknown";
-            }
-            return str + " File";
-        }
-
-        protected string FormatSize(long lSize)
-        {
-            var numberFormatInfo = new NumberFormatInfo();
-            return (lSize >= 1024L ? (lSize / 1024L).ToString("n", numberFormatInfo).Replace(".00", "") : (lSize != 0L ? "1" : "0")) + " KB";
-        }
 
         private void PopulateTreeView(string rootPath)
         {
@@ -110,7 +27,7 @@ namespace Lego_Pak_Explorer.UI
                     Tag = directoryInfo
                 };
                 GetDirectories(directoryInfo.GetDirectories(), rootNode);
-                _treeView1.BeginInvoke((MethodInvoker)delegate { _treeView1.Nodes.Add(rootNode); });
+                trvMain.BeginInvoke((MethodInvoker)delegate { trvMain.Nodes.Add(rootNode); });
             }
             catch (UnauthorizedAccessException)
             {
@@ -123,10 +40,10 @@ namespace Lego_Pak_Explorer.UI
 
         private void GetDirectories(ICollection<DirectoryInfo> subDirs, TreeNode nodeToAddTo)
         {
-            _treeView1.Invoke((MethodInvoker)delegate
+            trvMain.Invoke((MethodInvoker)delegate
             {
-                if (_toolStripProgressBar1.ProgressBar != null)
-                    _toolStripProgressBar1.ProgressBar.Maximum += subDirs.Count;
+                if (pbMain.ProgressBar != null)
+                    pbMain.ProgressBar.Maximum += subDirs.Count;
             });
             foreach (var subDir in subDirs)
             {
@@ -140,18 +57,18 @@ namespace Lego_Pak_Explorer.UI
                     var directories = subDir.GetDirectories();
                     if (directories.Length != 0)
                         GetDirectories(directories, aNode);
-                    _treeView1.Invoke((MethodInvoker)delegate
+                    trvMain.Invoke((MethodInvoker)delegate
                     {
                         nodeToAddTo.Nodes.Add(aNode);
-                        if (_toolStripProgressBar1.ProgressBar == null) return;
+                        if (pbMain.ProgressBar == null) return;
 
-                        ++_toolStripProgressBar1.ProgressBar.Value;
-                        var num = (int)(_toolStripProgressBar1.ProgressBar.Value /
-                            (double)_toolStripProgressBar1.ProgressBar.Maximum * 100.0);
-                        _toolStripProgressBar1.ProgressBar.CreateGraphics().DrawString($"{num}%",
+                        ++pbMain.ProgressBar.Value;
+                        var num = (int)(pbMain.ProgressBar.Value /
+                            (double)pbMain.ProgressBar.Maximum * 100.0);
+                        pbMain.ProgressBar.CreateGraphics().DrawString($"{num}%",
                             new Font("Arial", 8.25f, FontStyle.Regular), Brushes.Gray,
-                            new PointF(_toolStripProgressBar1.ProgressBar.Width / 2 - 10,
-                                _toolStripProgressBar1.ProgressBar.Height / 2 - 7));
+                            new PointF(pbMain.ProgressBar.Width / 2 - 10,
+                                pbMain.ProgressBar.Height / 2 - 7));
                     });
                 }
                 catch (UnauthorizedAccessException)
@@ -164,21 +81,21 @@ namespace Lego_Pak_Explorer.UI
             }
         }
 
-        private void Fill_Listview()
+        private void PopulateListView()
         {
-            _listView1.Invoke((MethodInvoker)delegate
+            lstMain.Invoke((MethodInvoker)delegate
             {
-                _listView1.Items.Clear();
-                _listView1.Enabled = false;
+                lstMain.Items.Clear();
+                lstMain.Enabled = false;
             });
             var nodeDirInfo = (DirectoryInfo)_newSelected.Tag;
             ListViewItem item;
-            _listView1.Invoke((MethodInvoker)delegate
+            lstMain.Invoke((MethodInvoker)delegate
             {
-                if (_toolStripProgressBar1.ProgressBar == null) return;
+                if (pbMain.ProgressBar == null) return;
 
-                _toolStripProgressBar1.ProgressBar.Maximum = nodeDirInfo.GetFiles().Length;
-                _toolStripProgressBar1.ProgressBar.Value = 0;
+                pbMain.ProgressBar.Maximum = nodeDirInfo.GetFiles().Length;
+                pbMain.ProgressBar.Value = 0;
             });
             foreach (var file in nodeDirInfo.GetFiles())
             {
@@ -212,38 +129,38 @@ namespace Lego_Pak_Explorer.UI
                 item = new ListViewItem(file.Name, imageIndex);
                 var items = new[]
                 {
-          new ListViewItem.ListViewSubItem(item, Get_LEGO_File_Type(file.Extension)),
-          new ListViewItem.ListViewSubItem(item, FormatSize(file.Length)),
+          new ListViewItem.ListViewSubItem(item, Common.GetLegoFileType(file.Extension)),
+          new ListViewItem.ListViewSubItem(item, Common.FormatSize(file.Length, true)),
           new ListViewItem.ListViewSubItem(item, file.LastAccessTime.ToShortDateString())
                 };
                 item.SubItems.AddRange(items);
-                _listView1.Invoke((MethodInvoker)delegate
+                lstMain.Invoke((MethodInvoker)delegate
                 {
-                    _listView1.Items.Add(item);
-                    if (_toolStripProgressBar1.ProgressBar == null) return;
+                    lstMain.Items.Add(item);
+                    if (pbMain.ProgressBar == null) return;
 
-                    ++_toolStripProgressBar1.ProgressBar.Value;
-                    var num = (int)(_toolStripProgressBar1.ProgressBar.Value /
-                        (double)_toolStripProgressBar1.ProgressBar.Maximum * 100.0);
-                    _toolStripProgressBar1.ProgressBar.CreateGraphics().DrawString($"{num}%",
+                    ++pbMain.ProgressBar.Value;
+                    var num = (int)(pbMain.ProgressBar.Value /
+                        (double)pbMain.ProgressBar.Maximum * 100.0);
+                    pbMain.ProgressBar.CreateGraphics().DrawString($"{num}%",
                         new Font("Arial", 8.25f, FontStyle.Regular), Brushes.Gray,
-                        new PointF(_toolStripProgressBar1.ProgressBar.Width / 2 - 10,
-                            _toolStripProgressBar1.ProgressBar.Height / 2 - 7));
+                        new PointF(pbMain.ProgressBar.Width / 2 - 10,
+                            pbMain.ProgressBar.Height / 2 - 7));
                 });
             }
-            _listView1.Invoke((MethodInvoker)delegate
+            lstMain.Invoke((MethodInvoker)delegate
             {
-                _listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
-                _listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
-                _listView1.Enabled = true;
+                lstMain.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+                lstMain.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+                lstMain.Enabled = true;
             });
         }
 
-        private void TreeView1_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
+        private void TrvMain_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
             _thReadDir?.Abort();
             _newSelected = e.Node;
-            _readDir = Fill_Listview;
+            _readDir = PopulateListView;
             _thReadDir = new Thread(_readDir)
             {
                 IsBackground = true
@@ -251,22 +168,22 @@ namespace Lego_Pak_Explorer.UI
             _thReadDir.Start();
         }
 
-        private static void QuitToolStripMenuItem_Click(object sender, EventArgs e) => Application.Exit();
+        private void ItmQuit_Click(object sender, EventArgs e) => Application.Exit();
 
-        private void ContextMenuStrip1_Opening(object sender, CancelEventArgs e)
+        private void CxtListView_Opening(object sender, CancelEventArgs e)
         {
-            if (_listView1.SelectedItems.Count <= 0)
+            if (lstMain.SelectedItems.Count <= 0)
             {
                 e.Cancel = true;
                 _listviewFileSelected = "";
             }
             else
             {
-                if (_listView1.SelectedItems.Count != 1)
+                if (lstMain.SelectedItems.Count != 1)
                     return;
                 _listviewFileSelected = _legoGameFolder.Substring(0,
                     _legoGameFolder.LastIndexOf("\\",
-                        StringComparison.Ordinal)) + "\\" + _treeView1.SelectedNode.FullPath + "\\" + _listView1.SelectedItems[0].SubItems[0].Text;
+                        StringComparison.Ordinal)) + "\\" + trvMain.SelectedNode.FullPath + "\\" + lstMain.SelectedItems[0].SubItems[0].Text;
                 if (new FileInfo(_listviewFileSelected).Length != 0L)
                     return;
                 e.Cancel = true;
@@ -274,48 +191,48 @@ namespace Lego_Pak_Explorer.UI
             }
         }
 
-        private void Open_LEGO_Game_Env()
+        private void OpenLegoGame()
         {
-            _listView1.Invoke((MethodInvoker)delegate
+            lstMain.Invoke((MethodInvoker)delegate
             {
                 Enabled = false;
-                _listView1.Items.Clear();
-                _treeView1.Nodes.Clear();
+                lstMain.Items.Clear();
+                trvMain.Nodes.Clear();
             });
             PopulateTreeView(_legoGameFolder);
-            _listView1.Invoke((MethodInvoker)delegate
+            lstMain.Invoke((MethodInvoker)delegate
             {
                 _toolStripStatusLabel1.Text = _legoGameFolder;
-                _treeView1.BackColor = SystemColors.Window;
-                _treeView1.Enabled = true;
-                _splitContainer1.Enabled = true;
-                _treeView1.SelectedNode = _treeView1.Nodes[0];
-                _treeView1.Nodes[0].Expand();
-                _treeView1.SelectedNode.EnsureVisible();
-                _newSelected = _treeView1.Nodes[0];
-                Fill_Listview();
+                trvMain.BackColor = SystemColors.Window;
+                trvMain.Enabled = true;
+                containerMain.Enabled = true;
+                trvMain.SelectedNode = trvMain.Nodes[0];
+                trvMain.Nodes[0].Expand();
+                trvMain.SelectedNode.EnsureVisible();
+                _newSelected = trvMain.Nodes[0];
+                PopulateListView();
                 Enabled = true;
-                _optionsToolStripMenuItem.Enabled = true;
-                _refreshToolStripMenuItem.Enabled = true;
+                itmOptions.Enabled = true;
+                itmRefresh.Enabled = true;
             });
         }
 
         private void Home_Load(object sender, EventArgs e) =>
-            _mruManager = new MruManager(_recentGameToolStripMenuItem, "LEGOPakExplorer", MyOwnRecentFileGotClicked_handler, MyOwnRecentFilesGotCleared_handler);
+            Common.MruManager = new MruManager(itmRecentGame, "LEGOPakExplorer", OnRecentFileClick, OnRecentFilesCleared);
 
-        private void MyOwnRecentFileGotClicked_handler(object obj, EventArgs evt)
+        private void OnRecentFileClick(object sender, EventArgs e)
         {
-            var text = (obj as ToolStripItem)?.Text;
+            var text = (sender as ToolStripItem)?.Text;
             if (!Directory.Exists(text))
             {
                 if (MessageBox.Show($@"{text} doesn't exist. Remove from recent workspaces?", @"File not found", MessageBoxButtons.YesNo) != DialogResult.Yes)
                     return;
-                _mruManager.RemoveRecentFile(text);
+                Common.MruManager.RemoveRecentFile(text);
             }
             else
             {
                 _legoGameFolder = text;
-                _readDir = Open_LEGO_Game_Env;
+                _readDir = OpenLegoGame;
                 _thReadDir = new Thread(_readDir)
                 {
                     IsBackground = true
@@ -324,27 +241,27 @@ namespace Lego_Pak_Explorer.UI
             }
         }
 
-        private static void MyOwnRecentFilesGotCleared_handler(object obj, EventArgs evt)
+        private static void OnRecentFilesCleared(object sender, EventArgs e)
         {
-            MessageBox.Show(@"You just cleared all recent files.");
+            MessageBox.Show(@"All recent files were successfully cleared");
         }
 
-        private void OpenToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ItmLoadGame_Click(object sender, EventArgs e)
         {
-            _folderBrowserDialog1.Description = @"Choose your LEGO Game folder";
-            _folderBrowserDialog1.SelectedPath = Path.GetDirectoryName(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles) + "\\");
-            if (_folderBrowserDialog1.ShowDialog() != DialogResult.OK)
+            fbdOpenGameFolder.Description = @"Choose your LEGO Game folder";
+            fbdOpenGameFolder.SelectedPath = Path.GetDirectoryName(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles) + "\\");
+            if (fbdOpenGameFolder.ShowDialog() != DialogResult.OK)
                 return;
-            _mruManager.AddRecentFile(_folderBrowserDialog1.SelectedPath);
-            _legoGameFolder = _folderBrowserDialog1.SelectedPath;
-            new Thread(Open_LEGO_Game_Env).Start();
+            Common.MruManager.AddRecentFile(fbdOpenGameFolder.SelectedPath);
+            _legoGameFolder = fbdOpenGameFolder.SelectedPath;
+            new Thread(OpenLegoGame).Start();
         }
 
-        private void DoGameModReadyToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ItmGameModReady_Click(object sender, EventArgs e)
         {
-            if (_openFileDialog1.ShowDialog() != DialogResult.OK)
+            if (ofdOpenExecutable.ShowDialog() != DialogResult.OK)
                 return;
-            MessageBox.Show(_openFileDialog1.FileName);
+            MessageBox.Show(ofdOpenExecutable.FileName);
         }
 
         private void Preview_File()
@@ -355,6 +272,8 @@ namespace Lego_Pak_Explorer.UI
                 case ".csv":
                 case ".sub":
                 case ".sf":
+                case ".scp":
+                case ".cfg":
                 case ".bms":
                     new CodePreview(_listviewFileSelected).ShowDialog();
                     break;
@@ -381,37 +300,35 @@ namespace Lego_Pak_Explorer.UI
                             format = "png";
                             break;
                     }
-                    if (format != "")
-                    {
+                    if (!string.IsNullOrEmpty(format))
                         new TexturePreview(_listviewFileSelected, format).ShowDialog();
-                        break;
-                    }
-                    MessageBox.Show(
-                        $@"{Path.GetFileName(_listviewFileSelected)} - Invalid file, probably not really a texture!");
+                    else
+                        MessageBox.Show(
+                            $@"{Path.GetFileName(_listviewFileSelected)} - Invalid texture file; probably an incorrect format.");
                     break;
 
                 default:
                     MessageBox.Show(
-                        $@"*{Path.GetExtension(_listviewFileSelected)?.ToLower()} files are not supported yet!");
+                        $@"*{Path.GetExtension(_listviewFileSelected)?.ToLower()} files are not currently supported");
                     break;
             }
         }
 
         private static uint ReverseBytes(uint value) => (uint)(((int)value & byte.MaxValue) << 24 | ((int)value & 65280) << 8) | (value & 16711680U) >> 8 | (value & 4278190080U) >> 24;
 
-        private void OpenToolStripMenuItem1_Click(object sender, EventArgs e)
+        private void ItmCxtOpen_Click(object sender, EventArgs e)
         {
-            if (!_openFileByRightClickMenuToolStripMenuItem.Checked)
+            if (!itmOptionRightClick.Checked)
                 return;
             Preview_File();
         }
 
-        private static void AboutToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ItmAbout_Click(object sender, EventArgs e)
         {
             new About().ShowDialog();
         }
 
-        private void SplitContainer1_MouseDown(object sender, MouseEventArgs e) => _focused = GetFocused(Controls);
+        private void ContainerMain_MouseDown(object sender, MouseEventArgs e) => _focused = GetFocused(Controls);
 
         private static Control GetFocused(IEnumerable controls)
         {
@@ -425,7 +342,7 @@ namespace Lego_Pak_Explorer.UI
             return null;
         }
 
-        private void SplitContainer1_MouseUp(object sender, MouseEventArgs e)
+        private void ContainerMain_MouseUp(object sender, MouseEventArgs e)
         {
             if (_focused == null)
                 return;
@@ -433,9 +350,9 @@ namespace Lego_Pak_Explorer.UI
             _focused = null;
         }
 
-        private void TreeView1_AfterExpand(object sender, TreeViewEventArgs e) => _treeView1.SelectedNode = e.Node;
+        private void TrvMain_AfterExpand(object sender, TreeViewEventArgs e) => trvMain.SelectedNode = e.Node;
 
-        private void RefreshToolStripMenuItem_Click(object sender, EventArgs e) => new Thread(Open_LEGO_Game_Env).Start();
+        private void ItmRefresh_Click(object sender, EventArgs e) => new Thread(OpenLegoGame).Start();
 
         private static uint ReadFourCc(string filepath)
         {
@@ -445,21 +362,21 @@ namespace Lego_Pak_Explorer.UI
             return ReverseBytes(num);
         }
 
-        private void ListView1_MouseDoubleClick(object sender, MouseEventArgs e)
+        private void LstMain_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            if (e.Button != MouseButtons.Left || !_openFileByDoubleClickToolStripMenuItem.Checked)
+            if (e.Button != MouseButtons.Left || !itmOptionDoubleClick.Checked)
                 return;
-            if (_listView1.SelectedItems.Count <= 0)
+            if (lstMain.SelectedItems.Count <= 0)
             {
                 _listviewFileSelected = "";
             }
             else
             {
-                if (_listView1.SelectedItems.Count != 1)
+                if (lstMain.SelectedItems.Count != 1)
                     return;
                 _listviewFileSelected =
                     _legoGameFolder.Substring(0, _legoGameFolder.LastIndexOf("\\", StringComparison.Ordinal)) + "\\" +
-                    _treeView1.SelectedNode.FullPath + "\\" + _listView1.SelectedItems[0].SubItems[0].Text;
+                    trvMain.SelectedNode.FullPath + "\\" + lstMain.SelectedItems[0].SubItems[0].Text;
                 if (new FileInfo(_listviewFileSelected).Length != 0L)
                     Preview_File();
                 else
