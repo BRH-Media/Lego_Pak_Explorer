@@ -1,14 +1,14 @@
-﻿using Lego_Pak_Explorer.ListViewSorter.Enums;
-using System;
+﻿using System;
 using System.Collections;
 using System.Diagnostics;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using TT_Games_Explorer.ListViewSorter.Enums;
 
 // ReSharper disable UnusedVariable
 
-namespace Lego_Pak_Explorer.ListViewSorter
+namespace TT_Games_Explorer.ListViewSorter
 {
     public class ListViewColumnSorter : IComparer
     {

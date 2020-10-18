@@ -1,4 +1,4 @@
-﻿namespace Lego_Pak_Explorer.Renderer
+﻿namespace TT_Games_Explorer.Renderer
 {
     public class DDS_PIXELFORMAT
     {

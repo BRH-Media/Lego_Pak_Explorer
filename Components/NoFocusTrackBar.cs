@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
-namespace Lego_Pak_Explorer.Components
+namespace TT_Games_Explorer.Components
 {
     internal class NoFocusTrackBar : TrackBar
     {

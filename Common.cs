@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Lego_Pak_Explorer
+namespace TT_Games_Explorer
 {
     /// <summary>
     /// Commonly accessed functions and values

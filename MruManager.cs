@@ -1,5 +1,4 @@
-﻿using Lego_Pak_Explorer.Properties;
-using Microsoft.Win32;
+﻿using Microsoft.Win32;
 using System;
 using System.Windows.Forms;
 using TT_Games_Explorer.Properties;
@@ -7,7 +6,7 @@ using TT_Games_Explorer.Properties;
 // ReSharper disable PossibleNullReferenceException
 // ReSharper disable LocalizableElement
 
-namespace Lego_Pak_Explorer
+namespace TT_Games_Explorer
 {
     public class MruManager
     {

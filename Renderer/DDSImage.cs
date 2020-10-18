@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Lego_Pak_Explorer.Renderer;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -10,7 +11,7 @@ using System.IO;
 
 #pragma warning disable 169
 
-namespace Lego_Pak_Explorer.Renderer
+namespace TT_Games_Explorer.Renderer
 {
     public class DDSImage
     {

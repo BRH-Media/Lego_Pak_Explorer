@@ -1,4 +1,4 @@
-﻿namespace Lego_Pak_Explorer.Renderer.Enums
+﻿namespace TT_Games_Explorer.Renderer.Enums
 {
     public enum D3D10_RESOURCE_DIMENSION
     {

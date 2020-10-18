@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Windows.Forms;
 
-namespace Lego_Pak_Explorer.UI
+namespace TT_Games_Explorer.UI
 {
     public partial class DatExtractor
     {

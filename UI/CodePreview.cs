@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 // ReSharper disable UnusedMember.Local
 
-namespace Lego_Pak_Explorer.UI
+namespace TT_Games_Explorer.UI
 {
     public partial class CodePreview : Form
     {

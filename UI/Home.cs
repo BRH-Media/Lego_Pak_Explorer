@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 // ReSharper disable AccessToModifiedClosure
 
-namespace Lego_Pak_Explorer.UI
+namespace TT_Games_Explorer.UI
 {
     public partial class Home : Form
     {

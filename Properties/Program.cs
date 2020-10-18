@@ -1,8 +1,8 @@
-﻿using Lego_Pak_Explorer.UI;
-using System;
+﻿using System;
 using System.Windows.Forms;
+using TT_Games_Explorer.UI;
 
-namespace Lego_Pak_Explorer.Properties
+namespace TT_Games_Explorer.Properties
 {
     internal static class Program
     {

@@ -1,4 +1,4 @@
-﻿namespace Lego_Pak_Explorer.Structs
+﻿namespace TT_Games_Explorer.Structs
 {
     public struct PkgInfo
     {

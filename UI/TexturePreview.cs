@@ -1,14 +1,14 @@
-﻿using Lego_Pak_Explorer.Renderer;
-using System;
+﻿using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Windows.Forms;
+using TT_Games_Explorer.Renderer;
 
 // ReSharper disable LocalizableElement
 
-namespace Lego_Pak_Explorer.UI
+namespace TT_Games_Explorer.UI
 {
     public partial class TexturePreview : Form
     {

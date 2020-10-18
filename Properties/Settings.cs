@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 
 // ReSharper disable UnusedMember.Global
 
-namespace Lego_Pak_Explorer.Properties
+namespace TT_Games_Explorer.Properties
 {
     [GeneratedCode("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "10.0.0.0")]
     [CompilerGenerated]

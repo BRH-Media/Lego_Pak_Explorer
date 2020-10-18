@@ -1,10 +1,8 @@
 ﻿using System.ComponentModel;
-using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
-using Lego_Pak_Explorer.Properties;
 
-namespace Lego_Pak_Explorer.UI
+namespace TT_Games_Explorer.UI
 {
     public partial class Home
     {

@@ -1,4 +1,4 @@
-﻿namespace Lego_Pak_Explorer.ListViewSorter.Enums
+﻿namespace TT_Games_Explorer.ListViewSorter.Enums
 {
     public enum SortTypes
     {

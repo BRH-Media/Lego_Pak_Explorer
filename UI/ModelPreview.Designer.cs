@@ -1,4 +1,4 @@
-﻿namespace Lego_Pak_Explorer.UI
+﻿namespace TT_Games_Explorer.UI
 {
     partial class ModelPreview
     {

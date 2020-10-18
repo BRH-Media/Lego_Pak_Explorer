@@ -1,6 +1,6 @@
 ﻿// ReSharper disable All
 
-using Lego_Pak_Explorer.Renderer.Enums;
+using TT_Games_Explorer.Renderer.Enums;
 
 namespace Lego_Pak_Explorer.Renderer
 {

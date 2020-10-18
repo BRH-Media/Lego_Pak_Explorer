@@ -1,11 +1,8 @@
-﻿using System;
-using System.ComponentModel;
-using System.Drawing;
+﻿using System.ComponentModel;
 using System.Windows.Forms;
-using Lego_Pak_Explorer.Components;
-using Lego_Pak_Explorer.Properties;
+using TT_Games_Explorer.Components;
 
-namespace Lego_Pak_Explorer.UI
+namespace TT_Games_Explorer.UI
 {
     public partial class TexturePreview
     {

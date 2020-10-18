@@ -1,6 +1,4 @@
-﻿using Lego_Pak_Explorer.ListViewSorter;
-using Lego_Pak_Explorer.Structs;
-using System;
+﻿using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Drawing;
@@ -10,6 +8,8 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
+using TT_Games_Explorer.ListViewSorter;
+using TT_Games_Explorer.Structs;
 
 // ReSharper disable LocalizableElement
 
@@ -19,7 +19,7 @@ using System.Windows.Forms;
 // ReSharper disable NotAccessedField.Local
 // ReSharper disable UnusedVariable
 
-namespace Lego_Pak_Explorer.UI
+namespace TT_Games_Explorer.UI
 {
     public partial class DatExtractor : Form
     {
