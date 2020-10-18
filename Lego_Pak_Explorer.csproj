@@ -33,7 +33,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>Lego_Pak_Explorer.Properties.Program</StartupObject>
+    <StartupObject>TT_Games_Explorer.Properties.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
