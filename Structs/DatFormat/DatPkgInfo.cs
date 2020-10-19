@@ -1,6 +1,6 @@
-﻿namespace TT_Games_Explorer.Structs
+﻿namespace TT_Games_Explorer.Structs.DatFormat
 {
-    public struct PkgInfo
+    public struct DatPkgInfo
     {
         public int Version;
         public string FilePath;

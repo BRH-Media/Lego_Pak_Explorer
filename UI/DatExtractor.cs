@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NAudio.Wave;
+using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Drawing;
@@ -9,7 +10,7 @@ using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 using TT_Games_Explorer.ListViewSorter;
-using TT_Games_Explorer.Structs;
+using TT_Games_Explorer.Structs.DatFormat;
 
 // ReSharper disable LocalizableElement
 
@@ -23,12 +24,12 @@ namespace TT_Games_Explorer.UI
 {
     public partial class DatExtractor : Form
     {
-        private readonly FileStream _hFs;
+        private FileStream _hFs;
         private BinaryReader _extractInReader;
         private BinaryWriter _extractOutWriter;
         private DatFileEntry[] _filesArray = new DatFileEntry[0];
-        private readonly PkgInfo _pkgInfo;
-        private readonly int[] _crcArray = new int[0];
+        private DatPkgInfo _pkgInfo;
+        private int[] _crcArray = new int[0];
         private ListViewColumnSorter _lvs;
 
         [DllImport("TTGames.UnComp.dll", CallingConvention = CallingConvention.Cdecl)]
@@ -39,12 +40,23 @@ namespace TT_Games_Explorer.UI
 
         public DatExtractor(string filePath)
         {
+            //designer specific stuff
             InitializeComponent();
+
+            //assign file name
+            _pkgInfo.FilePath = filePath;
+        }
+
+        private void SystemSetup()
+        {
+            //UI setup
             lstMain.Items.Clear();
             trvMain.Nodes.Clear();
             trvMain.Sort();
             itmExtractAll.Enabled = false;
-            var path = _pkgInfo.FilePath = filePath;
+
+            //parsing
+            var path = _pkgInfo.FilePath;
             if (File.Exists(Path.GetDirectoryName(path) + "\\" + Path.GetFileNameWithoutExtension(path) + ".HDR"))
             {
                 path = Path.GetDirectoryName(path) + "\\" + Path.GetFileNameWithoutExtension(path) + ".HDR";
@@ -52,6 +64,8 @@ namespace TT_Games_Explorer.UI
             }
             else
                 _pkgInfo.Version = 1;
+
+            //attempt file read
             try
             {
                 _hFs = new FileStream(path, FileMode.Open, FileAccess.ReadWrite);
@@ -88,7 +102,7 @@ namespace TT_Games_Explorer.UI
                 }
                 _pkgInfo.DirNumber = _pkgInfo.NamesNumber - _pkgInfo.FilesNumber;
                 _toolStripStatusLabel1.Text =
-                    $@"{Path.GetFileName(filePath)} | {_pkgInfo.DirNumber} dir(s) | {_pkgInfo.FilesNumber} file(s)";
+                    $@"{Path.GetFileName(path)} | {_pkgInfo.DirNumber} dir(s) | {_pkgInfo.FilesNumber} file(s)";
                 txtFileInfo.Text = $@"0x{_pkgInfo.InfoFilesOffset:X4}";
                 txtNameInfo.Text = $@"0x{(_pkgInfo.NamesNumberOffset + 4U):X4}";
                 txtNameCrc.Text = $@"0x{_pkgInfo.NamesCrcOffset:X4}";
@@ -407,13 +421,13 @@ namespace TT_Games_Explorer.UI
 
         private void ExtractToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            _folderBrowserDialog1.SelectedPath = Path.GetDirectoryName(_pkgInfo.FilePath);
-            if (_folderBrowserDialog1.ShowDialog() != DialogResult.OK)
+            fbdExtractFolder.SelectedPath = Path.GetDirectoryName(_pkgInfo.FilePath);
+            if (fbdExtractFolder.ShowDialog() != DialogResult.OK)
                 return;
             foreach (ListViewItem selectedItem in lstMain.SelectedItems)
             {
                 MessageBox.Show(
-                    ExtractFile(int.Parse(selectedItem.SubItems[0].Text), _folderBrowserDialog1.SelectedPath + "\\")
+                    ExtractFile(int.Parse(selectedItem.SubItems[0].Text), fbdExtractFolder.SelectedPath + "\\")
                         ? $@"{selectedItem.SubItems[1].Text} extracted!"
                         : @"Error during file extracting!");
             }
@@ -428,8 +442,8 @@ namespace TT_Games_Explorer.UI
 
         private void ExtractAllMenuItem_Click(object sender, EventArgs e)
         {
-            _folderBrowserDialog1.SelectedPath = Path.GetDirectoryName(_pkgInfo.FilePath);
-            if (_folderBrowserDialog1.ShowDialog() != DialogResult.OK)
+            fbdExtractFolder.SelectedPath = Path.GetDirectoryName(_pkgInfo.FilePath);
+            if (fbdExtractFolder.ShowDialog() != DialogResult.OK)
                 return;
             for (var fileId = 0; fileId < (int)_pkgInfo.FilesNumber; ++fileId)
             {
@@ -439,32 +453,73 @@ namespace TT_Games_Explorer.UI
                     foreach (var str2 in strArray)
                     {
                         str1 = str1 + str2 + "\\";
-                        if (!Directory.Exists(_folderBrowserDialog1.SelectedPath + "\\" + str1))
-                            Directory.CreateDirectory(_folderBrowserDialog1.SelectedPath + "\\" + str1);
+                        if (!Directory.Exists(fbdExtractFolder.SelectedPath + "\\" + str1))
+                            Directory.CreateDirectory(fbdExtractFolder.SelectedPath + "\\" + str1);
                     }
 
-                ExtractFile(fileId, _folderBrowserDialog1.SelectedPath + "\\" + _filesArray[fileId].Parent);
+                ExtractFile(fileId, fbdExtractFolder.SelectedPath + "\\" + _filesArray[fileId].Parent);
             }
             MessageBox.Show(@"Extract Finish!");
         }
 
-        private void ItmPlaySound_Click(object sender, EventArgs e)
+        private void SoundPlay()
         {
             try
             {
-                var fileStream = new FileStream(_pkgInfo.FilePath, FileMode.Open, FileAccess.ReadWrite);
-                _extractInReader = new BinaryReader(fileStream);
-                var int32 = Convert.ToInt32(lstMain.SelectedItems[0].SubItems[0].Text);
-                fileStream.Seek(_filesArray[int32].Offset, SeekOrigin.Begin);
-                var buffer = new byte[_filesArray[int32].Size];
-                _extractInReader.Read(buffer, 0, (int)_filesArray[int32].Size);
-                fileStream.Close();
-                new SoundPlayer(new MemoryStream(buffer, true)).Play();
+                if (lstMain.SelectedItems.Count > 0)
+                {
+                    //parse out file extension from list view
+                    var fileName = lstMain.SelectedItems[0].SubItems[1].Text;
+                    var ext = Path.GetExtension(fileName);
+
+                    //read raw sound bytes from DAT
+                    var fileStream = new FileStream(_pkgInfo.FilePath, FileMode.Open, FileAccess.ReadWrite);
+                    _extractInReader = new BinaryReader(fileStream);
+                    var int32 = Convert.ToInt32(lstMain.SelectedItems[0].SubItems[0].Text);
+                    fileStream.Seek(_filesArray[int32].Offset, SeekOrigin.Begin);
+                    var buffer = new byte[_filesArray[int32].Size];
+                    _extractInReader.Read(buffer, 0, (int)_filesArray[int32].Size);
+                    fileStream.Close();
+
+                    //stores sound bytes for playback
+                    var memStream = new MemoryStream(buffer, true);
+
+                    switch (ext)
+                    {
+                        case @".wav":
+
+                            new SoundPlayer(memStream).Play();
+                            break;
+
+                        case @".ogg":
+                            using (var vorbisStream = new NAudio.Vorbis.VorbisWaveReader(memStream))
+                            using (var waveOut = new NAudio.Wave.WaveOutEvent())
+                            {
+                                waveOut.Init(vorbisStream);
+                                waveOut.Play();
+
+                                while (waveOut.PlaybackState == PlaybackState.Playing)
+                                {
+                                    //wait
+                                }
+                            }
+                            break;
+                    }
+
+                    memStream.Close();
+                }
+                else
+                    MessageBox.Show(@"Nothing selected!");
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Error whilst trying to load sound content\n\n{ex}");
             }
+        }
+
+        private void ItmPlaySound_Click(object sender, EventArgs e)
+        {
+            SoundPlay();
         }
 
         private void QuitToolStripMenuItem_Click(object sender, EventArgs e) => Close();
@@ -483,6 +538,8 @@ namespace TT_Games_Explorer.UI
 
         private void DatExtractor_Load(object sender, EventArgs e)
         {
+            //setup read operations
+            SystemSetup();
         }
     }
 }

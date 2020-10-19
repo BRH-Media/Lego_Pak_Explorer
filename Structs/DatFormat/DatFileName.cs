@@ -1,4 +1,4 @@
-﻿namespace TT_Games_Explorer.Structs
+﻿namespace TT_Games_Explorer.Structs.DatFormat
 {
     public struct DatFileName
     {

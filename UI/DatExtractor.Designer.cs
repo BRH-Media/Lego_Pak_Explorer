@@ -29,15 +29,15 @@ namespace TT_Games_Explorer.UI
             this.itmOperation = new System.Windows.Forms.ToolStripMenuItem();
             this.itmPlaySound = new System.Windows.Forms.ToolStripMenuItem();
             this.itmViewTexture = new System.Windows.Forms.ToolStripMenuItem();
-            this._openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this._contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.ofdOpenDatFile = new System.Windows.Forms.OpenFileDialog();
+            this.cxtLstExtract = new System.Windows.Forms.ContextMenuStrip(this.components);
             this._extractToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusMain = new System.Windows.Forms.StatusStrip();
             this._toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.pbMain = new System.Windows.Forms.ToolStripProgressBar();
-            this._imageList1 = new System.Windows.Forms.ImageList(this.components);
-            this._folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
+            this.imgMain = new System.Windows.Forms.ImageList(this.components);
+            this.fbdExtractFolder = new System.Windows.Forms.FolderBrowserDialog();
             this.containerMain = new System.Windows.Forms.SplitContainer();
             this._splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.lblArchiveOffset = new System.Windows.Forms.Label();
@@ -58,9 +58,9 @@ namespace TT_Games_Explorer.UI
             this._columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this._columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this._columnHeader7 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this._saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+            this.sfdExtractFile = new System.Windows.Forms.SaveFileDialog();
             this.menuMain.SuspendLayout();
-            this._contextMenuStrip1.SuspendLayout();
+            this.cxtLstExtract.SuspendLayout();
             this.statusMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.containerMain)).BeginInit();
             this.containerMain.Panel1.SuspendLayout();
@@ -80,7 +80,7 @@ namespace TT_Games_Explorer.UI
             this.itmOperation});
             this.menuMain.Location = new System.Drawing.Point(0, 0);
             this.menuMain.Name = "menuMain";
-            this.menuMain.Size = new System.Drawing.Size(812, 24);
+            this.menuMain.Size = new System.Drawing.Size(814, 24);
             this.menuMain.TabIndex = 0;
             this.menuMain.Text = "menuStrip1";
             // 
@@ -139,16 +139,16 @@ namespace TT_Games_Explorer.UI
             this.itmViewTexture.Size = new System.Drawing.Size(140, 22);
             this.itmViewTexture.Text = "View Texture";
             // 
-            // _openFileDialog1
+            // ofdOpenDatFile
             // 
-            this._openFileDialog1.Filter = "Lego Pak Files|*.dat|All Files|*.*";
+            this.ofdOpenDatFile.Filter = "Lego Dat Files|*.dat|All Files|*.*";
             // 
-            // _contextMenuStrip1
+            // cxtLstExtract
             // 
-            this._contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.cxtLstExtract.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this._extractToolStripMenuItem});
-            this._contextMenuStrip1.Name = "_contextMenuStrip1";
-            this._contextMenuStrip1.Size = new System.Drawing.Size(111, 26);
+            this.cxtLstExtract.Name = "_contextMenuStrip1";
+            this.cxtLstExtract.Size = new System.Drawing.Size(111, 26);
             // 
             // _extractToolStripMenuItem
             // 
@@ -164,9 +164,9 @@ namespace TT_Games_Explorer.UI
             this._toolStripStatusLabel1,
             this.lblStatus,
             this.pbMain});
-            this.statusMain.Location = new System.Drawing.Point(0, 428);
+            this.statusMain.Location = new System.Drawing.Point(0, 429);
             this.statusMain.Name = "statusMain";
-            this.statusMain.Size = new System.Drawing.Size(812, 22);
+            this.statusMain.Size = new System.Drawing.Size(814, 22);
             this.statusMain.TabIndex = 2;
             this.statusMain.Text = "statusStrip1";
             // 
@@ -178,7 +178,7 @@ namespace TT_Games_Explorer.UI
             // lblStatus
             // 
             this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(695, 17);
+            this.lblStatus.Size = new System.Drawing.Size(697, 17);
             this.lblStatus.Spring = true;
             // 
             // pbMain
@@ -186,16 +186,16 @@ namespace TT_Games_Explorer.UI
             this.pbMain.Name = "pbMain";
             this.pbMain.Size = new System.Drawing.Size(100, 16);
             // 
-            // _imageList1
+            // imgMain
             // 
-            this._imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("_imageList1.ImageStream")));
-            this._imageList1.TransparentColor = System.Drawing.Color.Transparent;
-            this._imageList1.Images.SetKeyName(0, "folder.png");
+            this.imgMain.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imgMain.ImageStream")));
+            this.imgMain.TransparentColor = System.Drawing.Color.Transparent;
+            this.imgMain.Images.SetKeyName(0, "folder.png");
             // 
-            // _folderBrowserDialog1
+            // fbdExtractFolder
             // 
-            this._folderBrowserDialog1.Description = "Choose Extract Folder";
-            this._folderBrowserDialog1.RootFolder = System.Environment.SpecialFolder.MyComputer;
+            this.fbdExtractFolder.Description = "Choose Extract Folder";
+            this.fbdExtractFolder.RootFolder = System.Environment.SpecialFolder.MyComputer;
             // 
             // containerMain
             // 
@@ -211,7 +211,7 @@ namespace TT_Games_Explorer.UI
             // containerMain.Panel2
             // 
             this.containerMain.Panel2.Controls.Add(this.lstMain);
-            this.containerMain.Size = new System.Drawing.Size(812, 404);
+            this.containerMain.Size = new System.Drawing.Size(814, 405);
             this.containerMain.SplitterDistance = 206;
             this.containerMain.TabIndex = 3;
             // 
@@ -239,7 +239,7 @@ namespace TT_Games_Explorer.UI
             // _splitContainer2.Panel2
             // 
             this._splitContainer2.Panel2.Controls.Add(this.trvMain);
-            this._splitContainer2.Size = new System.Drawing.Size(206, 404);
+            this._splitContainer2.Size = new System.Drawing.Size(206, 405);
             this._splitContainer2.SplitterDistance = 139;
             this._splitContainer2.TabIndex = 0;
             // 
@@ -326,11 +326,11 @@ namespace TT_Games_Explorer.UI
             this.trvMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.trvMain.Enabled = false;
             this.trvMain.ImageIndex = 0;
-            this.trvMain.ImageList = this._imageList1;
+            this.trvMain.ImageList = this.imgMain;
             this.trvMain.Location = new System.Drawing.Point(0, 0);
             this.trvMain.Name = "trvMain";
             this.trvMain.SelectedImageIndex = 0;
-            this.trvMain.Size = new System.Drawing.Size(206, 261);
+            this.trvMain.Size = new System.Drawing.Size(206, 262);
             this.trvMain.TabIndex = 14;
             this.trvMain.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.TrvMain_AfterSelect);
             // 
@@ -344,7 +344,7 @@ namespace TT_Games_Explorer.UI
             this._columnHeader5,
             this._columnHeader6,
             this._columnHeader7});
-            this.lstMain.ContextMenuStrip = this._contextMenuStrip1;
+            this.lstMain.ContextMenuStrip = this.cxtLstExtract;
             this.lstMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lstMain.Enabled = false;
             this.lstMain.FullRowSelect = true;
@@ -352,7 +352,7 @@ namespace TT_Games_Explorer.UI
             this.lstMain.HideSelection = false;
             this.lstMain.Location = new System.Drawing.Point(0, 0);
             this.lstMain.Name = "lstMain";
-            this.lstMain.Size = new System.Drawing.Size(602, 404);
+            this.lstMain.Size = new System.Drawing.Size(604, 405);
             this.lstMain.TabIndex = 13;
             this.lstMain.UseCompatibleStateImageBehavior = false;
             this.lstMain.View = System.Windows.Forms.View.Details;
@@ -387,15 +387,15 @@ namespace TT_Games_Explorer.UI
             // 
             this._columnHeader7.Text = "Pack";
             // 
-            // _saveFileDialog1
+            // sfdExtractFile
             // 
-            this._saveFileDialog1.Filter = "All Files|*.*";
+            this.sfdExtractFile.Filter = "All Files|*.*";
             // 
             // DatExtractor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(812, 450);
+            this.ClientSize = new System.Drawing.Size(814, 451);
             this.Controls.Add(this.containerMain);
             this.Controls.Add(this.statusMain);
             this.Controls.Add(this.menuMain);
@@ -409,7 +409,7 @@ namespace TT_Games_Explorer.UI
             this.Load += new System.EventHandler(this.DatExtractor_Load);
             this.menuMain.ResumeLayout(false);
             this.menuMain.PerformLayout();
-            this._contextMenuStrip1.ResumeLayout(false);
+            this.cxtLstExtract.ResumeLayout(false);
             this.statusMain.ResumeLayout(false);
             this.statusMain.PerformLayout();
             this.containerMain.Panel1.ResumeLayout(false);
@@ -427,14 +427,14 @@ namespace TT_Games_Explorer.UI
         }
 
         private MenuStrip menuMain;
-        private OpenFileDialog _openFileDialog1;
+        private OpenFileDialog ofdOpenDatFile;
         private StatusStrip statusMain;
         private ToolStripStatusLabel _toolStripStatusLabel1;
-        private ImageList _imageList1;
-        private ContextMenuStrip _contextMenuStrip1;
+        private ImageList imgMain;
+        private ContextMenuStrip cxtLstExtract;
         private ToolStripMenuItem _extractToolStripMenuItem;
         private ToolStripStatusLabel lblStatus;
-        private FolderBrowserDialog _folderBrowserDialog1;
+        private FolderBrowserDialog fbdExtractFolder;
         private ToolStripMenuItem itmFile;
         private ToolStripMenuItem itmExtractAll;
         private ToolStripSeparator _toolStripSeparator1;
@@ -460,7 +460,7 @@ namespace TT_Games_Explorer.UI
         private ColumnHeader _columnHeader6;
         private ColumnHeader _columnHeader7;
         private ToolStripProgressBar pbMain;
-        private SaveFileDialog _saveFileDialog1;
+        private SaveFileDialog sfdExtractFile;
         private ToolStripMenuItem itmOperation;
         private ToolStripMenuItem itmPlaySound;
         private ToolStripMenuItem itmViewTexture;
