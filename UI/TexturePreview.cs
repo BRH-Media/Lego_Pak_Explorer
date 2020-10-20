@@ -4,7 +4,7 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Windows.Forms;
-using TT_Games_Explorer.Renderer;
+using TT_Games_Explorer.Renderer.Textures;
 
 // ReSharper disable LocalizableElement
 
@@ -12,53 +12,35 @@ namespace TT_Games_Explorer.UI
 {
     public partial class TexturePreview : Form
     {
-        private readonly string _filepath;
+        private TexTrend TextureHandler { get; }
         private Image _previewImage;
         private int _previewWidth;
         private int _previewHeight;
-        private readonly Bitmap[] _mipmaps;
         private int _zoomVal = 100;
 
-        public TexturePreview(string fullPath, string format)
+        public TexturePreview(TexTrend handler)
         {
+            //verify texture integrity
+            if (handler.Images == null)
+            {
+                MessageBox.Show(@"Invalid texture; no images were defined whilst parsing.");
+                Close();
+                return;
+            }
+
+            //assign global
+            TextureHandler = handler;
+
             //designer stuff
             InitializeComponent();
-
-            //set global
-            _filepath = fullPath;
 
             //double-buffering disabled
             SetStyle(ControlStyles.OptimizedDoubleBuffer, false);
 
-            //find format
-            switch (format)
-            {
-                //directX texturing format
-                case "dds":
-                    {
-                        //read all bytes to a stream
-                        var fileStream = File.OpenRead(fullPath);
-                        var numArray = new byte[fileStream.Length];
+            //UI configuration
+            SetupUi(handler.Images[0], handler.FilePath);
 
-                        //read the entire image byte array into memory
-                        fileStream.Read(numArray, 0, Convert.ToInt32(fileStream.Length));
-
-                        //construct texture
-                        var ddsImage = new DDSImage(numArray);
-
-                        //apply global mipmaps
-                        _mipmaps = ddsImage.images;
-
-                        //setup the interface with the first mipmap as the default
-                        SetupUi(_mipmaps[0], fullPath);
-                        break;
-                    }
-                //normal image
-                case "png":
-                    SetupUi(Image.FromFile(fullPath), fullPath);
-                    break;
-            }
-
+            //trackbar assignation
             statusMain.Items.Add(new ToolStripControlHost(_trackBar1));
         }
 
@@ -107,9 +89,9 @@ namespace TT_Games_Explorer.UI
                 itmMipmap.DropDownItems.Clear();
 
                 //load all from mipmap array
-                if (_mipmaps != null)
-                    if (_mipmaps.Length > 0)
-                        for (var index = 0; index < _mipmaps.Length; index++)
+                if (TextureHandler.Images != null)
+                    if (TextureHandler.Images.Length > 0)
+                        for (var index = 0; index < TextureHandler.Images.Length; index++)
                         {
                             //construct new menu item
                             var newItem = new ToolStripMenuItem()
@@ -154,10 +136,10 @@ namespace TT_Games_Explorer.UI
                 if (index > -1)
                 {
                     //menu item indexes correlate with the mipmap indexes
-                    var selectedMipmap = _mipmaps[index];
+                    var selectedMipmap = TextureHandler.Images[index];
 
                     //reset UI
-                    SetupUi(selectedMipmap, _filepath);
+                    SetupUi(selectedMipmap, TextureHandler.FilePath);
                 }
             }
         }
@@ -181,7 +163,7 @@ namespace TT_Games_Explorer.UI
 
         private void ItmExport_Click(object sender, EventArgs e)
         {
-            sfdExport.FileName = $"{Path.GetFileNameWithoutExtension(_filepath)}.png";
+            sfdExport.FileName = $"{TextureHandler.BareFileName}.png";
             if (sfdExport.ShowDialog() != DialogResult.OK)
                 return;
             picMain.Image.Save(sfdExport.FileName, ImageFormat.Png);

@@ -6,6 +6,8 @@ using System.Drawing;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
+using TT_Games_Explorer.Common;
+using TT_Games_Explorer.Renderer.Textures;
 
 // ReSharper disable AccessToModifiedClosure
 
@@ -129,8 +131,8 @@ namespace TT_Games_Explorer.UI
                 item = new ListViewItem(file.Name, imageIndex);
                 var items = new[]
                 {
-          new ListViewItem.ListViewSubItem(item, Common.GetLegoFileType(file.Extension)),
-          new ListViewItem.ListViewSubItem(item, Common.FormatSize(file.Length, true)),
+          new ListViewItem.ListViewSubItem(item, Methods.GetLegoFileType(file.Extension)),
+          new ListViewItem.ListViewSubItem(item, Methods.FormatSize(file.Length, true)),
           new ListViewItem.ListViewSubItem(item, file.LastAccessTime.ToShortDateString())
                 };
                 item.SubItems.AddRange(items);
@@ -218,7 +220,7 @@ namespace TT_Games_Explorer.UI
         }
 
         private void Home_Load(object sender, EventArgs e) =>
-            Common.MruManager = new MruManager(itmRecentGame, "LEGOPakExplorer", OnRecentFileClick, OnRecentFilesCleared);
+            Common.Globals.MruManager = new MruManager(itmRecentGame, "LEGOPakExplorer", OnRecentFileClick, OnRecentFilesCleared);
 
         private void OnRecentFileClick(object sender, EventArgs e)
         {
@@ -227,7 +229,7 @@ namespace TT_Games_Explorer.UI
             {
                 if (MessageBox.Show($@"{text} doesn't exist. Remove from recent workspaces?", @"File not found", MessageBoxButtons.YesNo) != DialogResult.Yes)
                     return;
-                Common.MruManager.RemoveRecentFile(text);
+                Common.Globals.MruManager.RemoveRecentFile(text);
             }
             else
             {
@@ -252,7 +254,7 @@ namespace TT_Games_Explorer.UI
             fbdOpenGameFolder.SelectedPath = Path.GetDirectoryName(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles) + "\\");
             if (fbdOpenGameFolder.ShowDialog() != DialogResult.OK)
                 return;
-            Common.MruManager.AddRecentFile(fbdOpenGameFolder.SelectedPath);
+            Globals.MruManager.AddRecentFile(fbdOpenGameFolder.SelectedPath);
             _legoGameFolder = fbdOpenGameFolder.SelectedPath;
             new Thread(OpenLegoGame).Start();
         }
@@ -289,22 +291,11 @@ namespace TT_Games_Explorer.UI
                 case ".tex":
                 case ".dds":
                 case ".png":
-                    var format = "";
-                    switch (ReadFourCc(_listviewFileSelected))
-                    {
-                        case 1145328416:
-                            format = "dds";
-                            break;
+                    //new texture handler
+                    var texHandler = new TexTrend(_listviewFileSelected);
 
-                        case 2303741511:
-                            format = "png";
-                            break;
-                    }
-                    if (!string.IsNullOrEmpty(format))
-                        new TexturePreview(_listviewFileSelected, format).ShowDialog();
-                    else
-                        MessageBox.Show(
-                            $@"{Path.GetFileName(_listviewFileSelected)} - Invalid texture file; probably an incorrect format.");
+                    //run preview window
+                    new TexturePreview(texHandler).ShowDialog();
                     break;
 
                 default:
@@ -313,8 +304,6 @@ namespace TT_Games_Explorer.UI
                     break;
             }
         }
-
-        private static uint ReverseBytes(uint value) => (uint)(((int)value & byte.MaxValue) << 24 | ((int)value & 65280) << 8) | (value & 16711680U) >> 8 | (value & 4278190080U) >> 24;
 
         private void ItmCxtOpen_Click(object sender, EventArgs e)
         {
@@ -353,14 +342,6 @@ namespace TT_Games_Explorer.UI
         private void TrvMain_AfterExpand(object sender, TreeViewEventArgs e) => trvMain.SelectedNode = e.Node;
 
         private void ItmRefresh_Click(object sender, EventArgs e) => new Thread(OpenLegoGame).Start();
-
-        private static uint ReadFourCc(string filepath)
-        {
-            var fileStream = new FileStream(filepath, FileMode.Open, FileAccess.Read);
-            var num = new BinaryReader(fileStream).ReadUInt32();
-            fileStream.Close();
-            return ReverseBytes(num);
-        }
 
         private void LstMain_MouseDoubleClick(object sender, MouseEventArgs e)
         {

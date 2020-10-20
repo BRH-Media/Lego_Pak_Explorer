@@ -1,4 +1,5 @@
-﻿using NAudio.Wave;
+﻿using NAudio.Vorbis;
+using NAudio.Wave;
 using System;
 using System.Collections;
 using System.ComponentModel;
@@ -9,7 +10,9 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
+using TT_Games_Explorer.Common;
 using TT_Games_Explorer.ListViewSorter;
+using TT_Games_Explorer.Renderer.Textures;
 using TT_Games_Explorer.Structs.DatFormat;
 
 // ReSharper disable LocalizableElement
@@ -73,7 +76,7 @@ namespace TT_Games_Explorer.UI
                 if (_pkgInfo.Version == 2)
                 {
                     _pkgInfo.InfoFilesOffset = 0U;
-                    _pkgInfo.InfoFilesSize = ReverseBytes(_extractInReader.ReadUInt32());
+                    _pkgInfo.InfoFilesSize = Methods.ReverseBytes(_extractInReader.ReadUInt32());
                 }
                 else
                 {
@@ -98,7 +101,7 @@ namespace TT_Games_Explorer.UI
                 for (var index = 0; index < (int)_pkgInfo.FilesNumber; ++index)
                 {
                     _hFs.Seek(_pkgInfo.NamesCrcOffset + index * 4, SeekOrigin.Begin);
-                    _crcArray[index] = IntReverseBytes(_extractInReader.ReadInt32());
+                    _crcArray[index] = Methods.IntReverseBytes(_extractInReader.ReadInt32());
                 }
                 _pkgInfo.DirNumber = _pkgInfo.NamesNumber - _pkgInfo.FilesNumber;
                 _toolStripStatusLabel1.Text =
@@ -228,7 +231,7 @@ namespace TT_Games_Explorer.UI
                     num3 = (num3 ^ num2) * 1677619;
                 }
                 var val = num3 & -1;
-                _filesArray[i].Crc = IntReverseBytes(val);
+                _filesArray[i].Crc = Methods.IntReverseBytes(val);
                 _hFs.Seek(_pkgInfo.InfoFilesOffset + Array.IndexOf(_crcArray, _filesArray[i].Crc) * 16, SeekOrigin.Begin);
                 _filesArray[i].Offset = _extractInReader.ReadUInt32();
                 _filesArray[i].Offset <<= 8;
@@ -268,69 +271,119 @@ namespace TT_Games_Explorer.UI
         {
             try
             {
+                //open the .DAT file up as a stream
                 var inFileStream = new FileStream(_pkgInfo.FilePath, FileMode.Open, FileAccess.Read);
+
+                //create a binary reader from the .DAT file stream
                 _extractInReader = new BinaryReader(inFileStream);
+
+                //seek to the file's offset that we're trying to extract
                 inFileStream.Seek(_filesArray[fileId].Offset, SeekOrigin.Begin);
 
+                //assign a new memory space for the file
                 var rawFileBytes = new byte[_filesArray[fileId].Size];
+
+                //use the binary reader from above to read in the entire compressed file's size
+                //NOTE: the file stream has already offset itself to the correct location, so this reads on from there.
                 _extractInReader.Read(rawFileBytes, 0, (int)_filesArray[fileId].Size);
 
                 //first 4 bytes of the raw file dictates its compression function
-                var str = Encoding.UTF8.GetString(rawFileBytes, 0, 4);
+                var algorithm = Encoding.UTF8.GetString(rawFileBytes, 0, 4);
 
-                //test whether a valid function has been applied
-                if (str == @"DFLT" || str == @"LZ2K")
+                //test whether a valid compression function has been applied
+                if (algorithm == @"DFLT" || algorithm == @"LZ2K")
                 {
+                    //the bytes of the unprocessed file above are loaded into a memory stream
                     var memoryStream = new MemoryStream(rawFileBytes);
+
+                    //then, they're put into a binary reader for seeking
                     var binaryReader = new BinaryReader(memoryStream);
+
+                    //seek past the string id (we already checked for that above; "DFLT" and "LZ2K")
                     var seekTo = 4;
+
+                    //we're at index 0 of the file byte array to start off with
                     var fileOffset = 0;
+
+                    //assign a new buffer for the uncompressed file
                     var buffer = new byte[_filesArray[fileId].SizeUnComp];
+
+                    //counter; counts until all bytes in the compressed file have been accounted for
                     var totalProcessed = 0;
+
+                    //let's go!
                     while (totalProcessed < (int)_filesArray[fileId].Size)
                     {
                         memoryStream.Seek(seekTo, SeekOrigin.Begin);
-                        var totalSize = binaryReader.ReadUInt32();
-                        var finalBuffer = new byte[totalSize];
-                        var sourceBuffer = new byte[totalSize];
-                        binaryReader.Read(finalBuffer, 0, (int)totalSize);
+
+                        //for some weird reason, the algorithm will only accept two different variables of the same value
+                        var outSize = binaryReader.ReadUInt32();
+                        var inSize = binaryReader.ReadUInt32();
+
+                        //the two process buffers
+                        var finalBuffer = new byte[inSize];
+                        var sourceBuffer = new byte[outSize];
+
+                        //fill the output array
+                        binaryReader.Read(finalBuffer, 0, (int)inSize);
+
+                        //the pointer that will allocate an unmanaged memory space for the initial process buffer
                         var inBytes = Marshal.AllocHGlobal(Marshal.SizeOf(finalBuffer[0]) * finalBuffer.Length);
+
+                        //allocate the finalBuffer bytes to the new pointer above
                         Marshal.Copy(finalBuffer, 0, inBytes, finalBuffer.Length);
+
+                        //the pointer that will allocate an unmanaged memory space for the final process buffer
                         var outBytes = Marshal.AllocHGlobal(Marshal.SizeOf(sourceBuffer[0]) * sourceBuffer.Length);
+
+                        //allocate the sourceBuffer bytes to the new pointer above
                         Marshal.Copy(sourceBuffer, 0, outBytes, sourceBuffer.Length);
 
                         //detect proper decompression function
-                        switch (str)
+                        switch (algorithm)
                         {
+                            //Deflate algorithm
                             case @"DFLT":
-                                Un_DFLT(inBytes, outBytes, (int)totalSize, (int)totalSize);
+                                Un_DFLT(inBytes, outBytes, (int)inSize, (int)outSize);
                                 break;
 
+                            //TT Games weird algorithm
                             case @"LZ2K":
-                                Un_LZ2K(inBytes, outBytes, (int)totalSize, (int)totalSize);
+                                Un_LZ2K(inBytes, outBytes, (int)inSize, (int)outSize);
                                 break;
                         }
 
-                        var destination = new byte[totalSize];
-                        Marshal.Copy(outBytes, destination, 0, (int)totalSize);
-                        Array.Copy(destination, 0L, buffer, fileOffset, totalSize);
-                        fileOffset += (int)totalSize;
-                        seekTo += (int)totalSize + 12;
-                        totalProcessed = totalProcessed + 12 + (int)totalSize;
+                        //allocate a new array for the processed result
+                        var destination = new byte[(int)outSize];
+
+                        //copy the buffer from the unmanaged code to the new array above
+                        Marshal.Copy(outBytes, destination, 0, (int)outSize);
+
+                        //apply it to the processed buffer
+                        Array.Copy(destination, 0L, buffer, fileOffset, outSize);
+
+                        //move the file offsets along so as to process the next entry
+                        fileOffset += (int)outSize;
+                        seekTo += (int)inSize + 12;
+                        totalProcessed += +12 + (int)inSize;
+
+                        //free up the global pointers allocated earlier to the unmanaged code
                         Marshal.FreeHGlobal(inBytes);
                         Marshal.FreeHGlobal(outBytes);
                     }
 
-                    inFileStream.Close();
                     return buffer;
                 }
+
+                //release the existing streams
+                inFileStream.Close();
 
                 //default to here for no compression algorithm (return as-is)
                 return rawFileBytes;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                //ignore
+                MessageBox.Show($"File extraction error:\n\n{ex}");
             }
 
             //default to here if an error occurs (errors will skip 'return rawFileBytes')
@@ -367,15 +420,6 @@ namespace TT_Games_Explorer.UI
 
             //default
             return false;
-        }
-
-        private static uint ReverseBytes(uint value) => (uint)(((int)value & byte.MaxValue) << 24 | ((int)value & 65280) << 8) | (value & 16711680U) >> 8 | (value & 4278190080U) >> 24;
-
-        private static int IntReverseBytes(int val)
-        {
-            var bytes = BitConverter.GetBytes(val);
-            Array.Reverse(bytes);
-            return BitConverter.ToInt32(bytes, 0);
         }
 
         private void TrvMain_AfterSelect(object sender, TreeViewEventArgs e)
@@ -436,8 +480,31 @@ namespace TT_Games_Explorer.UI
         private void ContextMenuStrip1_Opening(object sender, CancelEventArgs e)
         {
             if (lstMain.SelectedItems.Count > 0)
-                return;
-            e.Cancel = true;
+            {
+                //grab file name and file extension for verification
+                var fileName = lstMain.SelectedItems[0].SubItems[1].Text;
+                var ext = Path.GetExtension(fileName).ToLower();
+
+                //is it an image?
+                if (ext == @".png" ||
+                    ext == @".tex" ||
+                    ext == @".dds" ||
+                    ext == @".jpg" ||
+                    ext == @".jpeg" ||
+                    ext == @".bmp" ||
+                    ext == @".gif")
+                {
+                    //yes, enable the view option in the context menu
+                    if (!cxtLstExtract.Items.Contains(itmCxtPreviewTexture))
+                        cxtLstExtract.Items.Add(itmCxtPreviewTexture);
+                }
+                else
+                    //no, disable the view option in the context menu
+                    if (cxtLstExtract.Items.Contains(itmCxtPreviewTexture))
+                    cxtLstExtract.Items.Remove(itmCxtPreviewTexture);
+            }
+            else
+                e.Cancel = true;
         }
 
         private void ExtractAllMenuItem_Click(object sender, EventArgs e)
@@ -470,16 +537,11 @@ namespace TT_Games_Explorer.UI
                 {
                     //parse out file extension from list view
                     var fileName = lstMain.SelectedItems[0].SubItems[1].Text;
+                    var fileId = Convert.ToInt32(lstMain.SelectedItems[0].SubItems[0].Text);
                     var ext = Path.GetExtension(fileName);
 
                     //read raw sound bytes from DAT
-                    var fileStream = new FileStream(_pkgInfo.FilePath, FileMode.Open, FileAccess.ReadWrite);
-                    _extractInReader = new BinaryReader(fileStream);
-                    var int32 = Convert.ToInt32(lstMain.SelectedItems[0].SubItems[0].Text);
-                    fileStream.Seek(_filesArray[int32].Offset, SeekOrigin.Begin);
-                    var buffer = new byte[_filesArray[int32].Size];
-                    _extractInReader.Read(buffer, 0, (int)_filesArray[int32].Size);
-                    fileStream.Close();
+                    var buffer = ExtractFile(fileId);
 
                     //stores sound bytes for playback
                     var memStream = new MemoryStream(buffer, true);
@@ -492,8 +554,8 @@ namespace TT_Games_Explorer.UI
                             break;
 
                         case @".ogg":
-                            using (var vorbisStream = new NAudio.Vorbis.VorbisWaveReader(memStream))
-                            using (var waveOut = new NAudio.Wave.WaveOutEvent())
+                            using (var vorbisStream = new VorbisWaveReader(memStream))
+                            using (var waveOut = new WaveOutEvent())
                             {
                                 waveOut.Init(vorbisStream);
                                 waveOut.Play();
@@ -540,6 +602,50 @@ namespace TT_Games_Explorer.UI
         {
             //setup read operations
             SystemSetup();
+        }
+
+        private void TextureOpen()
+        {
+            try
+            {
+                if (lstMain.SelectedItems.Count > 0)
+                {
+                    //grab file name
+                    var fileName = lstMain.SelectedItems[0].SubItems[1].Text;
+                    var fileId = Convert.ToInt32(lstMain.SelectedItems[0].SubItems[0].Text);
+
+                    //grab raw file bytes
+                    var buffer = ExtractFile(fileId);
+
+                    //verify extracted bytes
+                    if (buffer != null)
+                    {
+                        //texture handler
+                        var handler = new TexTrend(buffer, fileName);
+
+                        //display texture previewer
+                        var frm = new TexturePreview(handler);
+                        if (!frm.IsDisposed)
+                            frm.ShowDialog();
+                    }
+                    else
+                        MessageBox.Show(@"Extracted bytes were null; texture previewer cannot be opened.");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error whilst loading in-memory texture:\n\n{ex}");
+            }
+        }
+
+        private void ItmViewTexture_Click(object sender, EventArgs e)
+        {
+            TextureOpen();
+        }
+
+        private void ItmCxtPreviewTexture_Click(object sender, EventArgs e)
+        {
+            TextureOpen();
         }
     }
 }

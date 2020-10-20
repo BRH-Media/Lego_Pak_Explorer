@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace TT_Games_Explorer
+namespace TT_Games_Explorer.Common
 {
     /// <summary>
     /// Commonly accessed functions and values
     /// </summary>
-    public static class Common
+    public static class Globals
     {
         /// <summary>
         /// Stores contributors in a 2D array
@@ -36,51 +35,9 @@ namespace TT_Games_Explorer
         };
 
         /// <summary>
-        /// Converts a byte count into a human-readable string
-        /// </summary>
-        /// <param name="bytes"></param>
-        /// <param name="includeSpace"></param>
-        /// <returns></returns>
-        public static string FormatSize(long bytes, bool includeSpace = false)
-        {
-            string[] suffix =
-            {
-                "B", "KB", "MB", "GB", "TB"
-            };
-
-            int i;
-            double dblSByte = bytes;
-
-            for (i = 0; i < suffix.Length && bytes >= 1024; i++, bytes /= 1024)
-                dblSByte = bytes / 1024.0;
-
-            return includeSpace
-                ? $"{dblSByte:0.##} {suffix[i]}"
-                : $"{dblSByte:0.##}{suffix[i]}";
-        }
-
-        /// <summary>
         /// Manages recent game listings
         /// </summary>
         public static MruManager MruManager;
-
-        /// <summary>
-        /// Maps extensions to their ListView description
-        /// </summary>
-        public static string GetLegoFileType(string ext)
-        {
-            try
-            {
-                return LegoFileType[ext.ToLower()];
-            }
-            catch (Exception)
-            {
-                //ignore
-            }
-
-            //default
-            return @"Unknown File";
-        }
 
         /// <summary>
         /// Stores extensions and their description mappings

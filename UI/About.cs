@@ -29,10 +29,10 @@ namespace TT_Games_Explorer.UI
         {
             get
             {
-                var credits = new string[Common.Credits.Length];
-                for (var i = 0; i < Common.Credits.Length; i++)
+                var credits = new string[Common.Globals.Credits.Length];
+                for (var i = 0; i < Common.Globals.Credits.Length; i++)
                 {
-                    var c = Common.Credits[i];
+                    var c = Common.Globals.Credits[i];
                     credits[i] = $"{c[0]} {c[1]}";
                 }
 

@@ -10,7 +10,6 @@ namespace TT_Games_Explorer.UI
         /// Required designer variable.
         /// </summary>
         private IContainer components = null;
-        private ComponentResourceManager resources = null;
 
         protected override void Dispose(bool disposing)
         {

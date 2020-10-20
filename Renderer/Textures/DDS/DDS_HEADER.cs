@@ -1,4 +1,6 @@
-﻿namespace TT_Games_Explorer.Renderer
+﻿// ReSharper disable All
+
+namespace TT_Games_Explorer.Renderer.Textures
 {
     public class DDS_HEADER
     {

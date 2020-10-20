@@ -1,8 +1,8 @@
-﻿using Lego_Pak_Explorer.Renderer;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using Lego_Pak_Explorer.Renderer;
 
 // ReSharper disable UnusedMember.Local
 // ReSharper disable FieldCanBeMadeReadOnly.Local
@@ -11,9 +11,9 @@ using System.IO;
 
 #pragma warning disable 169
 
-namespace TT_Games_Explorer.Renderer
+namespace TT_Games_Explorer.Renderer.Textures
 {
-    public class DDSImage
+    public class DDS_IMAGE
     {
         private const int DDPF_ALPHAPIXELS = 1;
         private const int DDPF_ALPHA = 2;
@@ -30,9 +30,9 @@ namespace TT_Games_Explorer.Renderer
         private DDS_HEADER_DXT10 header10;
         public byte[] bdata;
         public byte[] bdata2;
-        public Bitmap[] images;
+        public Image[] images;
 
-        public DDSImage(byte[] rawdata)
+        public DDS_IMAGE(byte[] rawdata)
         {
             using (var memoryStream = new MemoryStream(rawdata))
             {
