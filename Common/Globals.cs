@@ -20,6 +20,11 @@ namespace TT_Games_Explorer.Common
                 @"Decompression routines written by",
                 @"Luigi Auriemma"
             },
+            new[]
+            {
+                @"TargaImage Bitmap parser by",
+                @"David Polomis"
+            },
             new[] {
                 @"Syntax highlighting written by",
                 @"Pavel Torgashov"
@@ -89,8 +94,40 @@ namespace TT_Games_Explorer.Common
                 "Portable Network Graphics File"
             },
             {
+                ".tga",
+                "Targa Image File"
+            },
+            {
+                ".ini",
+                "Configuration File"
+            },
+            {
+                ".inf",
+                "Setup Information File"
+            },
+            {
+                ".jpg",
+                "JPEG Image File"
+            },
+            {
+                ".ico",
+                "Windows Icon File"
+            },
+            {
+                ".jpeg",
+                "JPEG Image File"
+            },
+            {
                 ".sf",
                 "Script File"
+            },
+            {
+                ".scp",
+                "Script File"
+            },
+            {
+                ".an3",
+                "Animation Config File"
             },
             {
                 ".tex",
@@ -135,6 +172,10 @@ namespace TT_Games_Explorer.Common
             {
                 ".cbx",
                 "LEGO Audio File"
+            },
+            {
+                ".vdf",
+                "Valve Script File"
             }
         };
     }

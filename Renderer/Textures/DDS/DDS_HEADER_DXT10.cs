@@ -1,6 +1,7 @@
 ﻿// ReSharper disable All
 
 using TT_Games_Explorer.Renderer.Enums;
+using TT_Games_Explorer.Renderer.Textures.DDS.Enums;
 
 namespace Lego_Pak_Explorer.Renderer
 {

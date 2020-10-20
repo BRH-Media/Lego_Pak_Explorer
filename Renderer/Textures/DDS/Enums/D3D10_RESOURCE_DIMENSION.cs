@@ -1,4 +1,6 @@
-﻿namespace TT_Games_Explorer.Renderer.Enums
+﻿// ReSharper disable All
+
+namespace TT_Games_Explorer.Renderer.Enums
 {
     public enum D3D10_RESOURCE_DIMENSION
     {

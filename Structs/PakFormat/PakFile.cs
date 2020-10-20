@@ -6,7 +6,6 @@
         {
             var magicHeader = new byte[4];
 
-
             PakFileInfo = pakFileInfo;
         }
 

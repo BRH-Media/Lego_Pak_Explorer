@@ -1,6 +1,6 @@
 ﻿// ReSharper disable UnusedMember.Global
 // ReSharper disable InconsistentNaming
-namespace TT_Games_Explorer.Renderer.Enums
+namespace TT_Games_Explorer.Renderer.Textures.DDS.Enums
 {
     public enum DXGI_FORMAT : uint
     {

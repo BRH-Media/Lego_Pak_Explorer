@@ -477,7 +477,7 @@ namespace TT_Games_Explorer.UI
             }
         }
 
-        private void ContextMenuStrip1_Opening(object sender, CancelEventArgs e)
+        private void CxtLstExtract_Opening(object sender, CancelEventArgs e)
         {
             if (lstMain.SelectedItems.Count > 0)
             {

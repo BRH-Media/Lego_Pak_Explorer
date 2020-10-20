@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Lego_Pak_Explorer.Renderer;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using Lego_Pak_Explorer.Renderer;
 
 // ReSharper disable UnusedMember.Local
 // ReSharper disable FieldCanBeMadeReadOnly.Local
@@ -11,7 +11,7 @@ using Lego_Pak_Explorer.Renderer;
 
 #pragma warning disable 169
 
-namespace TT_Games_Explorer.Renderer.Textures
+namespace TT_Games_Explorer.Renderer.Textures.DDS
 {
     public class DDS_IMAGE
     {

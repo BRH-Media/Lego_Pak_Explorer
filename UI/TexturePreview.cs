@@ -41,15 +41,15 @@ namespace TT_Games_Explorer.UI
             SetupUi(handler.Images[0], handler.FilePath);
 
             //trackbar assignation
-            statusMain.Items.Add(new ToolStripControlHost(_trackBar1));
+            statusMain.Items.Add(new ToolStripControlHost(trkZoomTexture));
         }
 
         private void TrackBar1_Scroll(object sender, EventArgs e)
         {
-            if (_trackBar1.Value <= 0)
+            if (trkZoomTexture.Value <= 0)
                 return;
-            _zoomVal = _trackBar1.Value;
-            _toolStripStatusLabel3.Text = $@"{_zoomVal}%";
+            _zoomVal = trkZoomTexture.Value;
+            lblZoomPercentage.Text = $@"{_zoomVal}%";
             picMain.Image = PictureBoxZoom(_previewImage, new Size(_previewHeight * _zoomVal / 100, _previewWidth * _zoomVal / 100));
         }
 
@@ -59,7 +59,7 @@ namespace TT_Games_Explorer.UI
             _zoomVal = 100;
 
             //apply UI
-            _toolStripStatusLabel1.Text =
+            lblFileDimensions.Text =
                 $@"{Path.GetFileName(fullPath)} | H: {image.Height}px | W: {image.Width}px";
             _previewImage = image;
             _previewWidth = image.Width;
@@ -69,13 +69,13 @@ namespace TT_Games_Explorer.UI
             picMain.Image = image;
 
             //setup trackbar for zoom
-            _toolStripStatusLabel3.Text = $@"{_zoomVal}%";
-            _trackBar1.TickFrequency = 10;
-            _trackBar1.Maximum = 200;
-            _trackBar1.Size = new Size(137, 40);
-            _trackBar1.Value = 100;
-            _trackBar1.TickStyle = TickStyle.Both;
-            _trackBar1.Scroll += TrackBar1_Scroll;
+            lblZoomPercentage.Text = $@"{_zoomVal}%";
+            trkZoomTexture.TickFrequency = 10;
+            trkZoomTexture.Maximum = 200;
+            trkZoomTexture.Size = new Size(137, 40);
+            trkZoomTexture.Value = 100;
+            trkZoomTexture.TickStyle = TickStyle.Both;
+            trkZoomTexture.Scroll += TrackBar1_Scroll;
 
             //setup mipmap menu
             MipmapMenuFill();

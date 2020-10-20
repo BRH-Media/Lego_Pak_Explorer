@@ -27,9 +27,9 @@ namespace TT_Games_Explorer.UI
             this.itmModify = new System.Windows.Forms.ToolStripMenuItem();
             this.sfdExport = new System.Windows.Forms.SaveFileDialog();
             this.statusMain = new System.Windows.Forms.StatusStrip();
-            this._toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.lblFileDimensions = new System.Windows.Forms.ToolStripStatusLabel();
             this.lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
-            this._toolStripStatusLabel3 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.lblZoomPercentage = new System.Windows.Forms.ToolStripStatusLabel();
             this.pnlMain = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.picMain)).BeginInit();
             this.menuMain.SuspendLayout();
@@ -90,19 +90,19 @@ namespace TT_Games_Explorer.UI
             // statusMain
             // 
             this.statusMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this._toolStripStatusLabel1,
+            this.lblFileDimensions,
             this.lblStatus,
-            this._toolStripStatusLabel3});
+            this.lblZoomPercentage});
             this.statusMain.Location = new System.Drawing.Point(0, 344);
             this.statusMain.Name = "statusMain";
             this.statusMain.Size = new System.Drawing.Size(537, 22);
             this.statusMain.TabIndex = 2;
-            this.statusMain.Text = "statusStrip1";
+            this.statusMain.Text = "statusMain";
             // 
-            // _toolStripStatusLabel1
+            // lblFileDimensions
             // 
-            this._toolStripStatusLabel1.Name = "_toolStripStatusLabel1";
-            this._toolStripStatusLabel1.Size = new System.Drawing.Size(0, 17);
+            this.lblFileDimensions.Name = "lblFileDimensions";
+            this.lblFileDimensions.Size = new System.Drawing.Size(0, 17);
             // 
             // lblStatus
             // 
@@ -110,10 +110,10 @@ namespace TT_Games_Explorer.UI
             this.lblStatus.Size = new System.Drawing.Size(522, 17);
             this.lblStatus.Spring = true;
             // 
-            // _toolStripStatusLabel3
+            // lblZoomPercentage
             // 
-            this._toolStripStatusLabel3.Name = "_toolStripStatusLabel3";
-            this._toolStripStatusLabel3.Size = new System.Drawing.Size(0, 17);
+            this.lblZoomPercentage.Name = "lblZoomPercentage";
+            this.lblZoomPercentage.Size = new System.Drawing.Size(0, 17);
             // 
             // pnlMain
             // 
@@ -160,12 +160,12 @@ namespace TT_Games_Explorer.UI
         private ToolStripMenuItem itmExport;
         private SaveFileDialog sfdExport;
         private StatusStrip statusMain;
-        private ToolStripStatusLabel _toolStripStatusLabel1;
+        private ToolStripStatusLabel lblFileDimensions;
         private Panel pnlMain;
         private ToolStripStatusLabel lblStatus;
-        private ToolStripStatusLabel _toolStripStatusLabel3;
+        private ToolStripStatusLabel lblZoomPercentage;
         private ToolStripMenuItem itmModify;
-        private readonly NoFocusTrackBar _trackBar1 = new NoFocusTrackBar();
+        private readonly NoFocusTrackBar trkZoomTexture = new NoFocusTrackBar();
         private ToolStripMenuItem itmMipmap;
     }
 }

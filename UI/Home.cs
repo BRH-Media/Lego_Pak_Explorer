@@ -109,6 +109,8 @@ namespace TT_Games_Explorer.UI
                     case ".sub":
                     case ".bms":
                     case ".sf":
+                    case ".scp":
+                    case ".cfg":
                         imageIndex = 2;
                         break;
 
@@ -120,11 +122,25 @@ namespace TT_Games_Explorer.UI
                     case ".tex":
                     case ".dds":
                     case ".png":
+                    case ".bmp":
+                    case ".raw":
+                    case ".tga":
+                    case ".jpg":
+                    case ".jpeg":
+                    case ".gif":
+                    case ".giff":
+                    case ".tif":
+                    case ".tiff":
                         imageIndex = 4;
                         break;
 
                     case ".exe":
                     case ".dll":
+                    case ".bat":
+                    case ".com":
+                    case ".cmd":
+                    case ".sh":
+                    case ".so":
                         imageIndex = 5;
                         break;
                 }
@@ -273,10 +289,10 @@ namespace TT_Games_Explorer.UI
                 case ".txt":
                 case ".csv":
                 case ".sub":
+                case ".bms":
                 case ".sf":
                 case ".scp":
                 case ".cfg":
-                case ".bms":
                     new CodePreview(_listviewFileSelected).ShowDialog();
                     break;
 
@@ -285,12 +301,21 @@ namespace TT_Games_Explorer.UI
                     break;
 
                 case ".hdr":
-                    MessageBox.Show(@"Please, Open the *.DAT instead of the *.HDR");
+                    MessageBox.Show(@"Please open the *.DAT instead of the *.HDR");
                     break;
 
                 case ".tex":
                 case ".dds":
                 case ".png":
+                case ".bmp":
+                case ".raw":
+                case ".tga":
+                case ".jpg":
+                case ".jpeg":
+                case ".gif":
+                case ".giff":
+                case ".tif":
+                case ".tiff":
                     //new texture handler
                     var texHandler = new TexTrend(_listviewFileSelected);
 

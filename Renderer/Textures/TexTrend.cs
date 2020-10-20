@@ -5,6 +5,8 @@ using System.IO;
 using System.Windows.Forms;
 using TT_Games_Explorer.Common;
 using TT_Games_Explorer.Renderer.Enums;
+using TT_Games_Explorer.Renderer.Textures.DDS;
+using TT_Games_Explorer.Renderer.Textures.TGA;
 
 namespace TT_Games_Explorer.Renderer.Textures
 {
@@ -121,6 +123,15 @@ namespace TT_Games_Explorer.Renderer.Textures
 
                         //Targa (TruVision) images get handled by a library
                         case @".tga":
+                            //load image directly from a memory stream (don't load the bytes from the file again!)
+                            var tga = new TargaImage(new MemoryStream(textureData));
+                            var tgaImage = tga.Image;
+
+                            //append the new image to the image collection (if valid)
+                            if (tgaImage != null)
+                                if (tgaImage.Height > 0 && tgaImage.Width > 0)
+                                    imageArray.Add(tgaImage);
+
                             break;
 
                         //Anything else isn't supported and can't be processed
