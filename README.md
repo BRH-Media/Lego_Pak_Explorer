@@ -1,4 +1,5 @@
-# Lego_Pak_Explorer
+# TT Games Explorer
+#### *Previously named Lego Pak Explorer*
 Originally programmed by Ac_K (pakexplorer@gmail.com), reversed and refactored by BRH Media.
 
 ### A Foreword
