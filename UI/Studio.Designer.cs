@@ -1,11 +1,13 @@
-﻿namespace TT_Games_Explorer.UI
+﻿using System.ComponentModel;
+
+namespace TT_Games_Explorer.UI
 {
     partial class Studio
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.

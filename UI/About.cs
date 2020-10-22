@@ -1,6 +1,8 @@
 ﻿using System;
+using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
+using TT_Games_Explorer.Common;
 
 // ReSharper disable LocalizableElement
 
@@ -29,10 +31,10 @@ namespace TT_Games_Explorer.UI
         {
             get
             {
-                var credits = new string[Common.Globals.Credits.Length];
-                for (var i = 0; i < Common.Globals.Credits.Length; i++)
+                var credits = new string[Globals.Credits.Length];
+                for (var i = 0; i < Globals.Credits.Length; i++)
                 {
-                    var c = Common.Globals.Credits[i];
+                    var c = Globals.Credits[i];
                     credits[i] = $"{c[0]} {c[1]}";
                 }
 
@@ -46,11 +48,11 @@ namespace TT_Games_Explorer.UI
             {
                 var attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyTitleAttribute), false);
                 if (attributes.Length <= 0)
-                    return System.IO.Path.GetFileNameWithoutExtension(Assembly.GetExecutingAssembly().CodeBase);
+                    return Path.GetFileNameWithoutExtension(Assembly.GetExecutingAssembly().CodeBase);
                 var titleAttribute = (AssemblyTitleAttribute)attributes[0];
                 return titleAttribute.Title != ""
                     ? titleAttribute.Title
-                    : System.IO.Path.GetFileNameWithoutExtension(Assembly.GetExecutingAssembly().CodeBase);
+                    : Path.GetFileNameWithoutExtension(Assembly.GetExecutingAssembly().CodeBase);
             }
         }
 

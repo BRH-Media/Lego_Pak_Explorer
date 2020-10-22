@@ -1,11 +1,14 @@
-﻿namespace TT_Games_Explorer.UI
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace TT_Games_Explorer.UI
 {
     partial class PakExtractor
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -413,42 +416,42 @@
 
         #endregion
 
-        private System.Windows.Forms.Label lblArchiveOffset;
-        private System.Windows.Forms.Label lblFileInfo;
-        private System.Windows.Forms.TextBox txtNameCrc;
-        private System.Windows.Forms.TextBox txtFileInfo;
-        private System.Windows.Forms.Label lblName;
-        private System.Windows.Forms.Label lblNameInfo;
-        private System.Windows.Forms.TextBox txtName;
-        private System.Windows.Forms.Label lblNameCRC;
-        private System.Windows.Forms.ImageList imgMain;
-        private System.Windows.Forms.ListView lstMain;
-        private System.Windows.Forms.ColumnHeader _columnHeader1;
-        private System.Windows.Forms.ColumnHeader _columnHeader3;
-        private System.Windows.Forms.ColumnHeader _columnHeader2;
-        private System.Windows.Forms.ColumnHeader _columnHeader4;
-        private System.Windows.Forms.ColumnHeader _columnHeader5;
-        private System.Windows.Forms.ColumnHeader _columnHeader6;
-        private System.Windows.Forms.ColumnHeader _columnHeader7;
-        private System.Windows.Forms.ContextMenuStrip cxtLstExtract;
-        private System.Windows.Forms.ToolStripMenuItem _extractToolStripMenuItem;
-        private System.Windows.Forms.TextBox txtNameInfo;
-        private System.Windows.Forms.SaveFileDialog sfdExtractFile;
-        private System.Windows.Forms.SplitContainer containerOffset;
-        private System.Windows.Forms.MenuStrip menuMain;
-        private System.Windows.Forms.ToolStripMenuItem itmFile;
-        private System.Windows.Forms.ToolStripMenuItem itmExtractAll;
-        private System.Windows.Forms.ToolStripSeparator _toolStripSeparator1;
-        private System.Windows.Forms.ToolStripMenuItem itmQuit;
-        private System.Windows.Forms.ToolStripMenuItem itmOperation;
-        private System.Windows.Forms.ToolStripMenuItem itmPlaySound;
-        private System.Windows.Forms.ToolStripMenuItem itmViewTexture;
-        private System.Windows.Forms.OpenFileDialog ofdOpenPakFile;
-        private System.Windows.Forms.StatusStrip statusMain;
-        private System.Windows.Forms.ToolStripStatusLabel _toolStripStatusLabel1;
-        private System.Windows.Forms.ToolStripStatusLabel lblStatus;
-        private System.Windows.Forms.ToolStripProgressBar pbMain;
-        private System.Windows.Forms.FolderBrowserDialog fbdExtractFolder;
-        private System.Windows.Forms.SplitContainer containerMain;
+        private Label lblArchiveOffset;
+        private Label lblFileInfo;
+        private TextBox txtNameCrc;
+        private TextBox txtFileInfo;
+        private Label lblName;
+        private Label lblNameInfo;
+        private TextBox txtName;
+        private Label lblNameCRC;
+        private ImageList imgMain;
+        private ListView lstMain;
+        private ColumnHeader _columnHeader1;
+        private ColumnHeader _columnHeader3;
+        private ColumnHeader _columnHeader2;
+        private ColumnHeader _columnHeader4;
+        private ColumnHeader _columnHeader5;
+        private ColumnHeader _columnHeader6;
+        private ColumnHeader _columnHeader7;
+        private ContextMenuStrip cxtLstExtract;
+        private ToolStripMenuItem _extractToolStripMenuItem;
+        private TextBox txtNameInfo;
+        private SaveFileDialog sfdExtractFile;
+        private SplitContainer containerOffset;
+        private MenuStrip menuMain;
+        private ToolStripMenuItem itmFile;
+        private ToolStripMenuItem itmExtractAll;
+        private ToolStripSeparator _toolStripSeparator1;
+        private ToolStripMenuItem itmQuit;
+        private ToolStripMenuItem itmOperation;
+        private ToolStripMenuItem itmPlaySound;
+        private ToolStripMenuItem itmViewTexture;
+        private OpenFileDialog ofdOpenPakFile;
+        private StatusStrip statusMain;
+        private ToolStripStatusLabel _toolStripStatusLabel1;
+        private ToolStripStatusLabel lblStatus;
+        private ToolStripProgressBar pbMain;
+        private FolderBrowserDialog fbdExtractFolder;
+        private SplitContainer containerMain;
     }
 }

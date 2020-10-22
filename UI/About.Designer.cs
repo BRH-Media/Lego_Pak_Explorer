@@ -1,11 +1,14 @@
-﻿namespace TT_Games_Explorer.UI
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace TT_Games_Explorer.UI
 {
     partial class About
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -179,13 +182,13 @@
 
         #endregion
 
-        private System.Windows.Forms.TableLayoutPanel tlpMain;
-        private System.Windows.Forms.PictureBox picLogo;
-        private System.Windows.Forms.Label lblProductName;
-        private System.Windows.Forms.Label lblVersion;
-        private System.Windows.Forms.Label lblCopyright;
-        private System.Windows.Forms.Label lblCompanyName;
-        private System.Windows.Forms.Button btnOK;
-        public System.Windows.Forms.TextBox txtDescription;
+        private TableLayoutPanel tlpMain;
+        private PictureBox picLogo;
+        private Label lblProductName;
+        private Label lblVersion;
+        private Label lblCopyright;
+        private Label lblCompanyName;
+        private Button btnOK;
+        public TextBox txtDescription;
     }
 }

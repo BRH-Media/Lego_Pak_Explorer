@@ -236,7 +236,7 @@ namespace TT_Games_Explorer.UI
         }
 
         private void Home_Load(object sender, EventArgs e) =>
-            Common.Globals.MruManager = new MruManager(itmRecentGame, "LEGOPakExplorer", OnRecentFileClick, OnRecentFilesCleared);
+            Globals.MruManager = new MruManager(itmRecentGame, "LEGOPakExplorer", OnRecentFileClick, OnRecentFilesCleared);
 
         private void OnRecentFileClick(object sender, EventArgs e)
         {
@@ -245,7 +245,7 @@ namespace TT_Games_Explorer.UI
             {
                 if (MessageBox.Show($@"{text} doesn't exist. Remove from recent workspaces?", @"File not found", MessageBoxButtons.YesNo) != DialogResult.Yes)
                     return;
-                Common.Globals.MruManager.RemoveRecentFile(text);
+                Globals.MruManager.RemoveRecentFile(text);
             }
             else
             {

@@ -1,8 +1,8 @@
-﻿using Lego_Pak_Explorer.Renderer;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using Lego_Pak_Explorer.Renderer;
 
 // ReSharper disable UnusedMember.Local
 // ReSharper disable FieldCanBeMadeReadOnly.Local

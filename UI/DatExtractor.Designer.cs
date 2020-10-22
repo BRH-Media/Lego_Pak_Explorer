@@ -1,5 +1,8 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
+using System.Drawing;
 using System.Windows.Forms;
+using TT_Games_Explorer.Properties;
 
 namespace TT_Games_Explorer.UI
 {
@@ -60,6 +63,7 @@ namespace TT_Games_Explorer.UI
             this._columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this._columnHeader7 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.sfdExtractFile = new System.Windows.Forms.SaveFileDialog();
+            this.itmViewModel = new System.Windows.Forms.ToolStripMenuItem();
             this.menuMain.SuspendLayout();
             this.cxtLstExtract.SuspendLayout();
             this.statusMain.SuspendLayout();
@@ -122,7 +126,8 @@ namespace TT_Games_Explorer.UI
             // 
             this.itmOperation.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.itmPlaySound,
-            this.itmViewTexture});
+            this.itmViewTexture,
+            this.itmViewModel});
             this.itmOperation.Name = "itmOperation";
             this.itmOperation.Size = new System.Drawing.Size(72, 20);
             this.itmOperation.Text = "Operation";
@@ -130,14 +135,14 @@ namespace TT_Games_Explorer.UI
             // itmPlaySound
             // 
             this.itmPlaySound.Name = "itmPlaySound";
-            this.itmPlaySound.Size = new System.Drawing.Size(140, 22);
+            this.itmPlaySound.Size = new System.Drawing.Size(180, 22);
             this.itmPlaySound.Text = "Play Sound";
             this.itmPlaySound.Click += new System.EventHandler(this.ItmPlaySound_Click);
             // 
             // itmViewTexture
             // 
             this.itmViewTexture.Name = "itmViewTexture";
-            this.itmViewTexture.Size = new System.Drawing.Size(140, 22);
+            this.itmViewTexture.Size = new System.Drawing.Size(180, 22);
             this.itmViewTexture.Text = "View Texture";
             this.itmViewTexture.Click += new System.EventHandler(this.ItmViewTexture_Click);
             // 
@@ -151,21 +156,21 @@ namespace TT_Games_Explorer.UI
             this._extractToolStripMenuItem,
             this.itmCxtPreviewTexture});
             this.cxtLstExtract.Name = "_contextMenuStrip1";
-            this.cxtLstExtract.Size = new System.Drawing.Size(181, 70);
+            this.cxtLstExtract.Size = new System.Drawing.Size(157, 48);
             this.cxtLstExtract.Opening += new System.ComponentModel.CancelEventHandler(this.CxtLstExtract_Opening);
             // 
             // _extractToolStripMenuItem
             // 
             this._extractToolStripMenuItem.Image = global::TT_Games_Explorer.Properties.Resources.disk;
             this._extractToolStripMenuItem.Name = "_extractToolStripMenuItem";
-            this._extractToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this._extractToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
             this._extractToolStripMenuItem.Text = "Extract";
             this._extractToolStripMenuItem.Click += new System.EventHandler(this.ExtractToolStripMenuItem_Click);
             // 
             // itmCxtPreviewTexture
             // 
             this.itmCxtPreviewTexture.Name = "itmCxtPreviewTexture";
-            this.itmCxtPreviewTexture.Size = new System.Drawing.Size(180, 22);
+            this.itmCxtPreviewTexture.Size = new System.Drawing.Size(156, 22);
             this.itmCxtPreviewTexture.Text = "Preview Texture";
             this.itmCxtPreviewTexture.Click += new System.EventHandler(this.ItmCxtPreviewTexture_Click);
             // 
@@ -402,6 +407,13 @@ namespace TT_Games_Explorer.UI
             // 
             this.sfdExtractFile.Filter = "All Files|*.*";
             // 
+            // itmViewModel
+            // 
+            this.itmViewModel.Name = "itmViewModel";
+            this.itmViewModel.Size = new System.Drawing.Size(180, 22);
+            this.itmViewModel.Text = "View Model";
+            this.itmViewModel.Click += new System.EventHandler(this.ItmViewModel_Click);
+            // 
             // DatExtractor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -476,5 +488,6 @@ namespace TT_Games_Explorer.UI
         private ToolStripMenuItem itmPlaySound;
         private ToolStripMenuItem itmViewTexture;
         private ToolStripMenuItem itmCxtPreviewTexture;
+        private ToolStripMenuItem itmViewModel;
     }
 }

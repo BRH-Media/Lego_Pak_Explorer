@@ -67,6 +67,7 @@
     <LangVersion>7.3</LangVersion>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <OutputPath>bin\x86\Release\</OutputPath>
@@ -116,6 +117,54 @@
   <ItemGroup>
     <Compile Include="Common\Globals.cs" />
     <Compile Include="Common\Methods.cs" />
+    <Compile Include="Formats\FormatHelpers\DISP\DISP15.cs" />
+    <Compile Include="Formats\FormatHelpers\DISP\DISP17.cs" />
+    <Compile Include="Formats\FormatHelpers\DISP\DISP21.cs" />
+    <Compile Include="Formats\ExtractHelper\ColoredConsole.cs" />
+    <Compile Include="Formats\ExtractHelper\BigEndianBitConverter.cs" />
+    <Compile Include="Formats\ExtractHelper\DDSHelper.cs" />
+    <Compile Include="Formats\ExtractHelper\EndianBinaryWriter.cs" />
+    <Compile Include="Formats\ExtractHelper\LDraw\OptionalLine.cs" />
+    <Compile Include="Formats\ExtractHelper\LDraw\OptionalLines.cs" />
+    <Compile Include="Formats\FormatHelpers\Part.cs" />
+    <Compile Include="Formats\FormatHelpers\Vertex\Vertex.cs" />
+    <Compile Include="Formats\FormatHelpers\Vertex\VertexDefinition.cs" />
+    <Compile Include="Formats\FormatHelpers\Vertex\VertexList.cs" />
+    <Compile Include="Formats\FormatHelpers\Vertex\VertexListReference.cs" />
+    <Compile Include="Formats\GHG\Structure\GhgMtlSettings.cs" />
+    <Compile Include="Formats\GHG\Unpacker\ImageMeta.cs" />
+    <Compile Include="Formats\FormatHelpers\HGOL\HGOL01.cs" />
+    <Compile Include="Formats\FormatHelpers\HGOL\HGOL10.cs" />
+    <Compile Include="Formats\FormatHelpers\IVL5\IVL501.cs" />
+    <Compile Include="Formats\FormatHelpers\MESH\MESH04.cs" />
+    <Compile Include="Formats\FormatHelpers\MESH\MESH05.cs" />
+    <Compile Include="Formats\FormatHelpers\MESH\MESH2E.cs" />
+    <Compile Include="Formats\FormatHelpers\MESH\MESH2F.cs" />
+    <Compile Include="Formats\FormatHelpers\MESH\MESH30.cs" />
+    <Compile Include="Formats\FormatHelpers\MESH\MESHA9.cs" />
+    <Compile Include="Formats\FormatHelpers\MESH\MESHAA.cs" />
+    <Compile Include="Formats\FormatHelpers\MESH\MESHAF.cs" />
+    <Compile Include="Formats\FormatHelpers\TXGH\TXGH01.cs" />
+    <Compile Include="Formats\FormatHelpers\TXGH\TXGH03.cs" />
+    <Compile Include="Formats\FormatHelpers\TXGH\TXGH04.cs" />
+    <Compile Include="Formats\FormatHelpers\TXGH\TXGH05.cs" />
+    <Compile Include="Formats\FormatHelpers\TXGH\TXGH06.cs" />
+    <Compile Include="Formats\FormatHelpers\TXGH\TXGH07.cs" />
+    <Compile Include="Formats\FormatHelpers\TXGH\TXGH08.cs" />
+    <Compile Include="Formats\FormatHelpers\TXGH\TXGH09.cs" />
+    <Compile Include="Formats\FormatHelpers\TXGH\TXGH0A.cs" />
+    <Compile Include="Formats\FormatHelpers\TXGH\TXGH0C.cs" />
+    <Compile Include="SystemExtensions\Half.cs" />
+    <Compile Include="SystemExtensions\HalfHelper.cs" />
+    <Compile Include="Formats\ExtractHelper\VariableTypes\Color4.cs" />
+    <Compile Include="Formats\ExtractHelper\VariableTypes\UVSet.cs" />
+    <Compile Include="Formats\ExtractHelper\VariableTypes\Vector2.cs" />
+    <Compile Include="Formats\ExtractHelper\VariableTypes\Vector3.cs" />
+    <Compile Include="Formats\ExtractHelper\VariableTypes\Vector4.cs" />
+    <Compile Include="Formats\GHG\Structure\GhgDdsFile.cs" />
+    <Compile Include="Formats\GHG\Structure\GhgFile.cs" />
+    <Compile Include="Formats\GHG\Structure\GhgMeta.cs" />
+    <Compile Include="Formats\GHG\Structure\GhgModelFile.cs" />
     <Compile Include="ListViewSorter\Enums\SortTypes.cs" />
     <Compile Include="Renderer\Textures\DDS\DDS_IMAGE.cs" />
     <Compile Include="Renderer\Textures\DDS\DDS_HEADER.cs" />
@@ -251,7 +300,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Pluggi\" />
+    <Folder Include="Renderer\Models\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

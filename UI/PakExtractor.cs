@@ -35,16 +35,16 @@ namespace TT_Games_Explorer.UI
             return null;
         }
 
-        private void ItmQuit_Click(object sender, System.EventArgs e)
+        private void ItmQuit_Click(object sender, EventArgs e)
         {
             Close();
         }
 
-        private void ItmExtractAll_Click(object sender, System.EventArgs e)
+        private void ItmExtractAll_Click(object sender, EventArgs e)
         {
         }
 
-        private void PakExtractor_Load(object sender, System.EventArgs e)
+        private void PakExtractor_Load(object sender, EventArgs e)
         {
         }
     }

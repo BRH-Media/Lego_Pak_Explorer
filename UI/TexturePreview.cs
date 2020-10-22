@@ -33,15 +33,6 @@ namespace TT_Games_Explorer.UI
 
             //designer stuff
             InitializeComponent();
-
-            //double-buffering disabled
-            SetStyle(ControlStyles.OptimizedDoubleBuffer, false);
-
-            //UI configuration
-            SetupUi(handler.Images[0], handler.FilePath);
-
-            //trackbar assignation
-            statusMain.Items.Add(new ToolStripControlHost(trkZoomTexture));
         }
 
         private void TrackBar1_Scroll(object sender, EventArgs e)
@@ -94,7 +85,7 @@ namespace TT_Games_Explorer.UI
                         for (var index = 0; index < TextureHandler.Images.Length; index++)
                         {
                             //construct new menu item
-                            var newItem = new ToolStripMenuItem()
+                            var newItem = new ToolStripMenuItem
                             {
                                 Enabled = true,
                                 Text = $"Image {index + 1}",
@@ -146,7 +137,7 @@ namespace TT_Games_Explorer.UI
 
         private static ToolStripItem BlankMipmapMenuItem()
         {
-            return new ToolStripMenuItem()
+            return new ToolStripMenuItem
             {
                 Enabled = false,
                 Text = @"None",
@@ -177,6 +168,20 @@ namespace TT_Games_Explorer.UI
 
         private void TexturePreview_Load(object sender, EventArgs e)
         {
+            //ensure the constructor gave us a valid handler
+            if (TextureHandler != null)
+            {
+                //double-buffering disabled
+                SetStyle(ControlStyles.OptimizedDoubleBuffer, false);
+
+                //UI configuration
+                SetupUi(TextureHandler.Images[0], TextureHandler.FilePath);
+
+                //trackbar assignation
+                statusMain.Items.Add(new ToolStripControlHost(trkZoomTexture));
+            }
+            else
+                Close();
         }
 
         private void ItmMipmap_Click(object sender, EventArgs e)

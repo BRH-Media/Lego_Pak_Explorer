@@ -1,9 +1,9 @@
-﻿using FastColoredTextBoxNS;
-using System;
+﻿using System;
 using System.Drawing;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using FastColoredTextBoxNS;
 
 // ReSharper disable UnusedMember.Local
 

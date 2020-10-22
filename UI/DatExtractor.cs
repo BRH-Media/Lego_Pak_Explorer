@@ -638,6 +638,37 @@ namespace TT_Games_Explorer.UI
             }
         }
 
+        private void GhgGscOpen()
+        {
+            try
+            {
+                if (lstMain.SelectedItems.Count > 0)
+                {
+                    //grab file name
+                    var fileName = lstMain.SelectedItems[0].SubItems[1].Text;
+                    var fileId = Convert.ToInt32(lstMain.SelectedItems[0].SubItems[0].Text);
+
+                    //grab raw file bytes
+                    var buffer = ExtractFile(fileId);
+
+                    //verify extracted bytes
+                    if (buffer != null)
+                    {
+                        //display texture previewer
+                        var frm = new GhgManager(buffer, fileName);
+                        if (!frm.IsDisposed)
+                            frm.ShowDialog();
+                    }
+                    else
+                        MessageBox.Show(@"Extracted bytes were null; GHG/GSC previewer cannot be opened.");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error whilst loading in-memory GHG/GSC:\n\n{ex}");
+            }
+        }
+
         private void ItmViewTexture_Click(object sender, EventArgs e)
         {
             TextureOpen();
@@ -646,6 +677,11 @@ namespace TT_Games_Explorer.UI
         private void ItmCxtPreviewTexture_Click(object sender, EventArgs e)
         {
             TextureOpen();
+        }
+
+        private void ItmViewModel_Click(object sender, EventArgs e)
+        {
+            GhgGscOpen();
         }
     }
 }
