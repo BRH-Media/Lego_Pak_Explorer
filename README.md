@@ -1,5 +1,6 @@
-# Lego_Pak_Explorer
-Originally programmed by Ac_K (pakexplorer@gmail.com), reversed and refactored by BRH Media.
+# TT Games Explorer
+#### *Previously named Lego Pak Explorer*
+Originally programmed by Ac_K (pakexplorer@gmail.com), reversed, refactored and maintained by BRH Media.
 
 ### A Foreword
 What happened to the original? To be honest, I couldn't tell you. The reality is, Ac_K has been silent about the project for over six years now, with promises to open source the tool falling into obscurity; I think it's safe to say the project's not coming back. It's due to this, that I've decided it's best the community take it into their own hands. The code (as it currently stands) contains much of the spaghetti that was the original code, and bad algorithms were present everywhere - however, it's all going to be eventually ripped out and rewritten. The plan moving forward is to become the new active maintainer of this project, and with that, the promise of hotfixes as necessary (which Ac_K was unfortunately not able to provide).
