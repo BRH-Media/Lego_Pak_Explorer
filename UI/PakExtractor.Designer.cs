@@ -33,245 +33,149 @@ namespace TT_Games_Explorer.UI
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PakExtractor));
-            this.lblArchiveOffset = new System.Windows.Forms.Label();
-            this.lblFileInfo = new System.Windows.Forms.Label();
-            this.txtNameCrc = new System.Windows.Forms.TextBox();
-            this.txtFileInfo = new System.Windows.Forms.TextBox();
-            this.lblName = new System.Windows.Forms.Label();
-            this.lblNameInfo = new System.Windows.Forms.Label();
-            this.txtName = new System.Windows.Forms.TextBox();
-            this.lblNameCRC = new System.Windows.Forms.Label();
             this.imgMain = new System.Windows.Forms.ImageList(this.components);
-            this.lstMain = new System.Windows.Forms.ListView();
-            this._columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this._columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this._columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this._columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this._columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this._columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this._columnHeader7 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.cxtLstExtract = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this._extractToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.txtNameInfo = new System.Windows.Forms.TextBox();
-            this.sfdExtractFile = new System.Windows.Forms.SaveFileDialog();
-            this.containerOffset = new System.Windows.Forms.SplitContainer();
-            this.menuMain = new System.Windows.Forms.MenuStrip();
-            this.itmFile = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmExtract = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmCxtPreview = new System.Windows.Forms.ToolStripMenuItem();
+            this._toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
+            this.pbMain = new System.Windows.Forms.ToolStripProgressBar();
+            this.statusMain = new System.Windows.Forms.StatusStrip();
+            this.fbdExtractFolder = new System.Windows.Forms.FolderBrowserDialog();
+            this.ofdOpenDatFile = new System.Windows.Forms.OpenFileDialog();
             this.itmExtractAll = new System.Windows.Forms.ToolStripMenuItem();
             this._toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.itmQuit = new System.Windows.Forms.ToolStripMenuItem();
             this.itmOperation = new System.Windows.Forms.ToolStripMenuItem();
-            this.itmPlaySound = new System.Windows.Forms.ToolStripMenuItem();
-            this.itmViewTexture = new System.Windows.Forms.ToolStripMenuItem();
-            this.ofdOpenPakFile = new System.Windows.Forms.OpenFileDialog();
-            this.statusMain = new System.Windows.Forms.StatusStrip();
-            this._toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
-            this.pbMain = new System.Windows.Forms.ToolStripProgressBar();
-            this.fbdExtractFolder = new System.Windows.Forms.FolderBrowserDialog();
-            this.containerMain = new System.Windows.Forms.SplitContainer();
+            this.itmPreview = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmFile = new System.Windows.Forms.ToolStripMenuItem();
+            this.sfdExtractFile = new System.Windows.Forms.SaveFileDialog();
+            this.menuMain = new System.Windows.Forms.MenuStrip();
+            this.itmOptions = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmOptionDoubleClick = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmOptionRightClick = new System.Windows.Forms.ToolStripMenuItem();
+            this.lstMain = new System.Windows.Forms.ListView();
+            this.colIcon = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.colID = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.colName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.colType = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.colOffset = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.colSize = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.cxtLstExtract.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.containerOffset)).BeginInit();
-            this.containerOffset.Panel1.SuspendLayout();
-            this.containerOffset.SuspendLayout();
-            this.menuMain.SuspendLayout();
             this.statusMain.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.containerMain)).BeginInit();
-            this.containerMain.Panel1.SuspendLayout();
-            this.containerMain.Panel2.SuspendLayout();
-            this.containerMain.SuspendLayout();
+            this.menuMain.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // lblArchiveOffset
-            // 
-            this.lblArchiveOffset.AutoSize = true;
-            this.lblArchiveOffset.Font = new System.Drawing.Font("Segoe UI", 8.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblArchiveOffset.Location = new System.Drawing.Point(12, 9);
-            this.lblArchiveOffset.Name = "lblArchiveOffset";
-            this.lblArchiveOffset.Size = new System.Drawing.Size(83, 13);
-            this.lblArchiveOffset.TabIndex = 23;
-            this.lblArchiveOffset.Text = "Archive Offset:";
-            // 
-            // lblFileInfo
-            // 
-            this.lblFileInfo.AutoSize = true;
-            this.lblFileInfo.Location = new System.Drawing.Point(12, 32);
-            this.lblFileInfo.Name = "lblFileInfo";
-            this.lblFileInfo.Size = new System.Drawing.Size(47, 13);
-            this.lblFileInfo.TabIndex = 15;
-            this.lblFileInfo.Text = "File Info:";
-            // 
-            // txtNameCrc
-            // 
-            this.txtNameCrc.Location = new System.Drawing.Point(81, 81);
-            this.txtNameCrc.Name = "txtNameCrc";
-            this.txtNameCrc.ReadOnly = true;
-            this.txtNameCrc.Size = new System.Drawing.Size(108, 20);
-            this.txtNameCrc.TabIndex = 21;
-            // 
-            // txtFileInfo
-            // 
-            this.txtFileInfo.Location = new System.Drawing.Point(81, 29);
-            this.txtFileInfo.Name = "txtFileInfo";
-            this.txtFileInfo.ReadOnly = true;
-            this.txtFileInfo.Size = new System.Drawing.Size(108, 20);
-            this.txtFileInfo.TabIndex = 16;
-            // 
-            // lblName
-            // 
-            this.lblName.AutoSize = true;
-            this.lblName.Location = new System.Drawing.Point(12, 110);
-            this.lblName.Name = "lblName";
-            this.lblName.Size = new System.Drawing.Size(38, 13);
-            this.lblName.TabIndex = 19;
-            this.lblName.Text = "Name:";
-            // 
-            // lblNameInfo
-            // 
-            this.lblNameInfo.AutoSize = true;
-            this.lblNameInfo.Location = new System.Drawing.Point(12, 58);
-            this.lblNameInfo.Name = "lblNameInfo";
-            this.lblNameInfo.Size = new System.Drawing.Size(59, 13);
-            this.lblNameInfo.TabIndex = 17;
-            this.lblNameInfo.Text = "Name Info:";
-            // 
-            // txtName
-            // 
-            this.txtName.Location = new System.Drawing.Point(81, 107);
-            this.txtName.Name = "txtName";
-            this.txtName.ReadOnly = true;
-            this.txtName.Size = new System.Drawing.Size(108, 20);
-            this.txtName.TabIndex = 22;
-            // 
-            // lblNameCRC
-            // 
-            this.lblNameCRC.AutoSize = true;
-            this.lblNameCRC.Location = new System.Drawing.Point(12, 84);
-            this.lblNameCRC.Name = "lblNameCRC";
-            this.lblNameCRC.Size = new System.Drawing.Size(63, 13);
-            this.lblNameCRC.TabIndex = 18;
-            this.lblNameCRC.Text = "Name CRC:";
             // 
             // imgMain
             // 
             this.imgMain.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imgMain.ImageStream")));
             this.imgMain.TransparentColor = System.Drawing.Color.Transparent;
             this.imgMain.Images.SetKeyName(0, "folder.png");
-            // 
-            // lstMain
-            // 
-            this.lstMain.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this._columnHeader1,
-            this._columnHeader3,
-            this._columnHeader2,
-            this._columnHeader4,
-            this._columnHeader5,
-            this._columnHeader6,
-            this._columnHeader7});
-            this.lstMain.ContextMenuStrip = this.cxtLstExtract;
-            this.lstMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lstMain.Enabled = false;
-            this.lstMain.FullRowSelect = true;
-            this.lstMain.GridLines = true;
-            this.lstMain.HideSelection = false;
-            this.lstMain.Location = new System.Drawing.Point(0, 0);
-            this.lstMain.Name = "lstMain";
-            this.lstMain.Size = new System.Drawing.Size(604, 405);
-            this.lstMain.TabIndex = 13;
-            this.lstMain.UseCompatibleStateImageBehavior = false;
-            this.lstMain.View = System.Windows.Forms.View.Details;
-            // 
-            // _columnHeader1
-            // 
-            this._columnHeader1.Text = "ID";
-            this._columnHeader1.Width = 31;
-            // 
-            // _columnHeader3
-            // 
-            this._columnHeader3.Text = "Name";
-            this._columnHeader3.Width = 190;
-            // 
-            // _columnHeader2
-            // 
-            this._columnHeader2.Text = "CRC Hash";
-            // 
-            // _columnHeader4
-            // 
-            this._columnHeader4.Text = "Offset";
-            // 
-            // _columnHeader5
-            // 
-            this._columnHeader5.Text = "SizeUnComp";
-            // 
-            // _columnHeader6
-            // 
-            this._columnHeader6.Text = "Size";
-            // 
-            // _columnHeader7
-            // 
-            this._columnHeader7.Text = "Pack";
+            this.imgMain.Images.SetKeyName(1, "page.png");
+            this.imgMain.Images.SetKeyName(2, "page_code.png");
+            this.imgMain.Images.SetKeyName(3, "brick.png");
+            this.imgMain.Images.SetKeyName(4, "image.png");
+            this.imgMain.Images.SetKeyName(5, "application.png");
             // 
             // cxtLstExtract
             // 
             this.cxtLstExtract.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this._extractToolStripMenuItem});
-            this.cxtLstExtract.Name = "_contextMenuStrip1";
-            this.cxtLstExtract.Size = new System.Drawing.Size(111, 26);
+            this.itmExtract,
+            this.itmCxtPreview});
+            this.cxtLstExtract.Name = "cxtLstExtract";
+            this.cxtLstExtract.Size = new System.Drawing.Size(116, 48);
+            this.cxtLstExtract.Opening += new System.ComponentModel.CancelEventHandler(this.CxtLstExtract_Opening);
             // 
-            // _extractToolStripMenuItem
+            // itmExtract
             // 
-            this._extractToolStripMenuItem.Image = global::TT_Games_Explorer.Properties.Resources.disk;
-            this._extractToolStripMenuItem.Name = "_extractToolStripMenuItem";
-            this._extractToolStripMenuItem.Size = new System.Drawing.Size(110, 22);
-            this._extractToolStripMenuItem.Text = "Extract";
+            this.itmExtract.Image = global::TT_Games_Explorer.Properties.Resources.disk;
+            this.itmExtract.Name = "itmExtract";
+            this.itmExtract.Size = new System.Drawing.Size(115, 22);
+            this.itmExtract.Text = "Extract";
+            this.itmExtract.Click += new System.EventHandler(this.ItmExtract_Click);
             // 
-            // txtNameInfo
+            // itmCxtPreview
             // 
-            this.txtNameInfo.Location = new System.Drawing.Point(81, 55);
-            this.txtNameInfo.Name = "txtNameInfo";
-            this.txtNameInfo.ReadOnly = true;
-            this.txtNameInfo.Size = new System.Drawing.Size(108, 20);
-            this.txtNameInfo.TabIndex = 20;
+            this.itmCxtPreview.Name = "itmCxtPreview";
+            this.itmCxtPreview.Size = new System.Drawing.Size(115, 22);
+            this.itmCxtPreview.Text = "Preview";
+            this.itmCxtPreview.Click += new System.EventHandler(this.ItmCxtPreview_Click);
             // 
-            // sfdExtractFile
+            // _toolStripStatusLabel1
             // 
-            this.sfdExtractFile.Filter = "All Files|*.*";
+            this._toolStripStatusLabel1.Name = "_toolStripStatusLabel1";
+            this._toolStripStatusLabel1.Size = new System.Drawing.Size(0, 17);
             // 
-            // containerOffset
+            // lblStatus
             // 
-            this.containerOffset.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.containerOffset.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
-            this.containerOffset.Location = new System.Drawing.Point(0, 0);
-            this.containerOffset.Name = "containerOffset";
-            this.containerOffset.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            this.lblStatus.Name = "lblStatus";
+            this.lblStatus.Size = new System.Drawing.Size(697, 17);
+            this.lblStatus.Spring = true;
             // 
-            // containerOffset.Panel1
+            // pbMain
             // 
-            this.containerOffset.Panel1.Controls.Add(this.lblArchiveOffset);
-            this.containerOffset.Panel1.Controls.Add(this.txtNameInfo);
-            this.containerOffset.Panel1.Controls.Add(this.lblFileInfo);
-            this.containerOffset.Panel1.Controls.Add(this.txtNameCrc);
-            this.containerOffset.Panel1.Controls.Add(this.txtFileInfo);
-            this.containerOffset.Panel1.Controls.Add(this.lblName);
-            this.containerOffset.Panel1.Controls.Add(this.lblNameInfo);
-            this.containerOffset.Panel1.Controls.Add(this.txtName);
-            this.containerOffset.Panel1.Controls.Add(this.lblNameCRC);
-            this.containerOffset.Panel1MinSize = 139;
-            this.containerOffset.Size = new System.Drawing.Size(206, 405);
-            this.containerOffset.SplitterDistance = 139;
-            this.containerOffset.TabIndex = 0;
+            this.pbMain.Name = "pbMain";
+            this.pbMain.Size = new System.Drawing.Size(100, 16);
             // 
-            // menuMain
+            // statusMain
             // 
-            this.menuMain.BackColor = System.Drawing.SystemColors.Control;
-            this.menuMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.itmFile,
-            this.itmOperation});
-            this.menuMain.Location = new System.Drawing.Point(0, 0);
-            this.menuMain.Name = "menuMain";
-            this.menuMain.Size = new System.Drawing.Size(814, 24);
-            this.menuMain.TabIndex = 4;
-            this.menuMain.Text = "menuStrip1";
+            this.statusMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this._toolStripStatusLabel1,
+            this.lblStatus,
+            this.pbMain});
+            this.statusMain.Location = new System.Drawing.Point(0, 429);
+            this.statusMain.Name = "statusMain";
+            this.statusMain.Size = new System.Drawing.Size(814, 22);
+            this.statusMain.TabIndex = 5;
+            this.statusMain.Text = "statusMain";
+            // 
+            // fbdExtractFolder
+            // 
+            this.fbdExtractFolder.Description = "Choose Extract Folder";
+            this.fbdExtractFolder.RootFolder = System.Environment.SpecialFolder.MyComputer;
+            // 
+            // ofdOpenDatFile
+            // 
+            this.ofdOpenDatFile.Filter = "Lego Dat Files|*.dat|All Files|*.*";
+            // 
+            // itmExtractAll
+            // 
+            this.itmExtractAll.Image = global::TT_Games_Explorer.Properties.Resources.disk_multiple;
+            this.itmExtractAll.Name = "itmExtractAll";
+            this.itmExtractAll.Size = new System.Drawing.Size(127, 22);
+            this.itmExtractAll.Text = "Extract All";
+            this.itmExtractAll.Click += new System.EventHandler(this.ItmExtractAll_Click);
+            // 
+            // _toolStripSeparator1
+            // 
+            this._toolStripSeparator1.Name = "_toolStripSeparator1";
+            this._toolStripSeparator1.Size = new System.Drawing.Size(124, 6);
+            // 
+            // itmQuit
+            // 
+            this.itmQuit.Image = ((System.Drawing.Image)(resources.GetObject("itmQuit.Image")));
+            this.itmQuit.Name = "itmQuit";
+            this.itmQuit.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.itmQuit.Size = new System.Drawing.Size(127, 22);
+            this.itmQuit.Text = "Quit";
+            this.itmQuit.Click += new System.EventHandler(this.ItmQuit_Click);
+            // 
+            // itmOperation
+            // 
+            this.itmOperation.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.itmPreview});
+            this.itmOperation.Enabled = false;
+            this.itmOperation.Image = global::TT_Games_Explorer.Properties.Resources.cog;
+            this.itmOperation.Name = "itmOperation";
+            this.itmOperation.Size = new System.Drawing.Size(88, 20);
+            this.itmOperation.Text = "Operation";
+            // 
+            // itmPreview
+            // 
+            this.itmPreview.Name = "itmPreview";
+            this.itmPreview.Size = new System.Drawing.Size(180, 22);
+            this.itmPreview.Text = "Preview";
+            this.itmPreview.Click += new System.EventHandler(this.ItmPreview_Click);
             // 
             // itmFile
             // 
@@ -284,112 +188,111 @@ namespace TT_Games_Explorer.UI
             this.itmFile.Size = new System.Drawing.Size(53, 20);
             this.itmFile.Text = "File";
             // 
-            // itmExtractAll
+            // sfdExtractFile
             // 
-            this.itmExtractAll.Image = global::TT_Games_Explorer.Properties.Resources.disk_multiple;
-            this.itmExtractAll.Name = "itmExtractAll";
-            this.itmExtractAll.Size = new System.Drawing.Size(180, 22);
-            this.itmExtractAll.Text = "Extract All";
-            this.itmExtractAll.Click += new System.EventHandler(this.ItmExtractAll_Click);
+            this.sfdExtractFile.Filter = "All Files|*.*";
             // 
-            // _toolStripSeparator1
+            // menuMain
             // 
-            this._toolStripSeparator1.Name = "_toolStripSeparator1";
-            this._toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
+            this.menuMain.BackColor = System.Drawing.SystemColors.Control;
+            this.menuMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.itmFile,
+            this.itmOptions,
+            this.itmOperation});
+            this.menuMain.Location = new System.Drawing.Point(0, 0);
+            this.menuMain.Name = "menuMain";
+            this.menuMain.Size = new System.Drawing.Size(814, 24);
+            this.menuMain.TabIndex = 4;
+            this.menuMain.Text = "menuStrip1";
             // 
-            // itmQuit
+            // itmOptions
             // 
-            this.itmQuit.Image = ((System.Drawing.Image)(resources.GetObject("itmQuit.Image")));
-            this.itmQuit.Name = "itmQuit";
-            this.itmQuit.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.itmQuit.Size = new System.Drawing.Size(180, 22);
-            this.itmQuit.Text = "Quit";
-            this.itmQuit.Click += new System.EventHandler(this.ItmQuit_Click);
+            this.itmOptions.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.itmOptionDoubleClick,
+            this.itmOptionRightClick});
+            this.itmOptions.Enabled = false;
+            this.itmOptions.Image = global::TT_Games_Explorer.Properties.Resources.wrench;
+            this.itmOptions.Name = "itmOptions";
+            this.itmOptions.Size = new System.Drawing.Size(77, 20);
+            this.itmOptions.Text = "Options";
             // 
-            // itmOperation
+            // itmOptionDoubleClick
             // 
-            this.itmOperation.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.itmPlaySound,
-            this.itmViewTexture});
-            this.itmOperation.Name = "itmOperation";
-            this.itmOperation.Size = new System.Drawing.Size(72, 20);
-            this.itmOperation.Text = "Operation";
+            this.itmOptionDoubleClick.Checked = true;
+            this.itmOptionDoubleClick.CheckOnClick = true;
+            this.itmOptionDoubleClick.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.itmOptionDoubleClick.Name = "itmOptionDoubleClick";
+            this.itmOptionDoubleClick.Size = new System.Drawing.Size(234, 22);
+            this.itmOptionDoubleClick.Text = "Open File by Double Click";
             // 
-            // itmPlaySound
+            // itmOptionRightClick
             // 
-            this.itmPlaySound.Name = "itmPlaySound";
-            this.itmPlaySound.Size = new System.Drawing.Size(140, 22);
-            this.itmPlaySound.Text = "Play Sound";
+            this.itmOptionRightClick.Checked = true;
+            this.itmOptionRightClick.CheckOnClick = true;
+            this.itmOptionRightClick.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.itmOptionRightClick.Name = "itmOptionRightClick";
+            this.itmOptionRightClick.Size = new System.Drawing.Size(234, 22);
+            this.itmOptionRightClick.Text = "Open File by Right Click Menu";
             // 
-            // itmViewTexture
+            // lstMain
             // 
-            this.itmViewTexture.Name = "itmViewTexture";
-            this.itmViewTexture.Size = new System.Drawing.Size(140, 22);
-            this.itmViewTexture.Text = "View Texture";
+            this.lstMain.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.colIcon,
+            this.colID,
+            this.colName,
+            this.colType,
+            this.colOffset,
+            this.colSize});
+            this.lstMain.ContextMenuStrip = this.cxtLstExtract;
+            this.lstMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lstMain.Enabled = false;
+            this.lstMain.FullRowSelect = true;
+            this.lstMain.GridLines = true;
+            this.lstMain.HideSelection = false;
+            this.lstMain.Location = new System.Drawing.Point(0, 24);
+            this.lstMain.Name = "lstMain";
+            this.lstMain.Size = new System.Drawing.Size(814, 405);
+            this.lstMain.SmallImageList = this.imgMain;
+            this.lstMain.TabIndex = 14;
+            this.lstMain.UseCompatibleStateImageBehavior = false;
+            this.lstMain.View = System.Windows.Forms.View.Details;
+            this.lstMain.SelectedIndexChanged += new System.EventHandler(this.LstMain_SelectedIndexChanged);
+            this.lstMain.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.LstMain_MouseDoubleClick);
             // 
-            // ofdOpenPakFile
+            // colIcon
             // 
-            this.ofdOpenPakFile.Filter = "Lego Pak Files|*.pak|All Files|*.*";
+            this.colIcon.Text = "";
             // 
-            // statusMain
+            // colID
             // 
-            this.statusMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this._toolStripStatusLabel1,
-            this.lblStatus,
-            this.pbMain});
-            this.statusMain.Location = new System.Drawing.Point(0, 429);
-            this.statusMain.Name = "statusMain";
-            this.statusMain.Size = new System.Drawing.Size(814, 22);
-            this.statusMain.TabIndex = 5;
-            this.statusMain.Text = "statusStrip1";
+            this.colID.Text = "ID";
+            this.colID.Width = 31;
             // 
-            // _toolStripStatusLabel1
+            // colName
             // 
-            this._toolStripStatusLabel1.Name = "_toolStripStatusLabel1";
-            this._toolStripStatusLabel1.Size = new System.Drawing.Size(0, 17);
+            this.colName.Text = "Name";
+            this.colName.Width = 190;
             // 
-            // lblStatus
+            // colType
             // 
-            this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(683, 17);
-            this.lblStatus.Spring = true;
+            this.colType.Text = "Type";
             // 
-            // pbMain
+            // colOffset
             // 
-            this.pbMain.Name = "pbMain";
-            this.pbMain.Size = new System.Drawing.Size(100, 16);
+            this.colOffset.Text = "Offset";
             // 
-            // fbdExtractFolder
+            // colSize
             // 
-            this.fbdExtractFolder.Description = "Choose Extract Folder";
-            this.fbdExtractFolder.RootFolder = System.Environment.SpecialFolder.MyComputer;
-            // 
-            // containerMain
-            // 
-            this.containerMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.containerMain.Location = new System.Drawing.Point(0, 24);
-            this.containerMain.Name = "containerMain";
-            // 
-            // containerMain.Panel1
-            // 
-            this.containerMain.Panel1.Controls.Add(this.containerOffset);
-            this.containerMain.Panel1MinSize = 206;
-            // 
-            // containerMain.Panel2
-            // 
-            this.containerMain.Panel2.Controls.Add(this.lstMain);
-            this.containerMain.Size = new System.Drawing.Size(814, 405);
-            this.containerMain.SplitterDistance = 206;
-            this.containerMain.TabIndex = 6;
+            this.colSize.Text = "Size";
             // 
             // PakExtractor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(814, 451);
-            this.Controls.Add(this.containerMain);
-            this.Controls.Add(this.menuMain);
+            this.Controls.Add(this.lstMain);
             this.Controls.Add(this.statusMain);
+            this.Controls.Add(this.menuMain);
             this.MinimizeBox = false;
             this.Name = "PakExtractor";
             this.ShowIcon = false;
@@ -397,61 +300,43 @@ namespace TT_Games_Explorer.UI
             this.Text = "Pak Extractor";
             this.Load += new System.EventHandler(this.PakExtractor_Load);
             this.cxtLstExtract.ResumeLayout(false);
-            this.containerOffset.Panel1.ResumeLayout(false);
-            this.containerOffset.Panel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.containerOffset)).EndInit();
-            this.containerOffset.ResumeLayout(false);
-            this.menuMain.ResumeLayout(false);
-            this.menuMain.PerformLayout();
             this.statusMain.ResumeLayout(false);
             this.statusMain.PerformLayout();
-            this.containerMain.Panel1.ResumeLayout(false);
-            this.containerMain.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.containerMain)).EndInit();
-            this.containerMain.ResumeLayout(false);
+            this.menuMain.ResumeLayout(false);
+            this.menuMain.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-
-        private Label lblArchiveOffset;
-        private Label lblFileInfo;
-        private TextBox txtNameCrc;
-        private TextBox txtFileInfo;
-        private Label lblName;
-        private Label lblNameInfo;
-        private TextBox txtName;
-        private Label lblNameCRC;
         private ImageList imgMain;
-        private ListView lstMain;
-        private ColumnHeader _columnHeader1;
-        private ColumnHeader _columnHeader3;
-        private ColumnHeader _columnHeader2;
-        private ColumnHeader _columnHeader4;
-        private ColumnHeader _columnHeader5;
-        private ColumnHeader _columnHeader6;
-        private ColumnHeader _columnHeader7;
         private ContextMenuStrip cxtLstExtract;
-        private ToolStripMenuItem _extractToolStripMenuItem;
-        private TextBox txtNameInfo;
-        private SaveFileDialog sfdExtractFile;
-        private SplitContainer containerOffset;
-        private MenuStrip menuMain;
-        private ToolStripMenuItem itmFile;
+        private ToolStripMenuItem itmExtract;
+        private ToolStripMenuItem itmCxtPreview;
+        private ToolStripStatusLabel _toolStripStatusLabel1;
+        private ToolStripStatusLabel lblStatus;
+        private ToolStripProgressBar pbMain;
+        private StatusStrip statusMain;
+        private FolderBrowserDialog fbdExtractFolder;
+        private OpenFileDialog ofdOpenDatFile;
         private ToolStripMenuItem itmExtractAll;
         private ToolStripSeparator _toolStripSeparator1;
         private ToolStripMenuItem itmQuit;
         private ToolStripMenuItem itmOperation;
-        private ToolStripMenuItem itmPlaySound;
-        private ToolStripMenuItem itmViewTexture;
-        private OpenFileDialog ofdOpenPakFile;
-        private StatusStrip statusMain;
-        private ToolStripStatusLabel _toolStripStatusLabel1;
-        private ToolStripStatusLabel lblStatus;
-        private ToolStripProgressBar pbMain;
-        private FolderBrowserDialog fbdExtractFolder;
-        private SplitContainer containerMain;
+        private ToolStripMenuItem itmPreview;
+        private ToolStripMenuItem itmFile;
+        private SaveFileDialog sfdExtractFile;
+        private MenuStrip menuMain;
+        private ListView lstMain;
+        private ColumnHeader colIcon;
+        private ColumnHeader colID;
+        private ColumnHeader colName;
+        private ColumnHeader colType;
+        private ColumnHeader colOffset;
+        private ColumnHeader colSize;
+        private ToolStripMenuItem itmOptions;
+        private ToolStripMenuItem itmOptionDoubleClick;
+        private ToolStripMenuItem itmOptionRightClick;
     }
 }

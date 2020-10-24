@@ -127,6 +127,7 @@
     <Compile Include="Formats\ExtractHelper\LDraw\OptionalLine.cs" />
     <Compile Include="Formats\ExtractHelper\LDraw\OptionalLines.cs" />
     <Compile Include="Formats\FormatHelpers\Part.cs" />
+    <Compile Include="Formats\ExtractHelper\StructConverter.cs" />
     <Compile Include="Formats\FormatHelpers\Vertex\Vertex.cs" />
     <Compile Include="Formats\FormatHelpers\Vertex\VertexDefinition.cs" />
     <Compile Include="Formats\FormatHelpers\Vertex\VertexList.cs" />
@@ -201,9 +202,9 @@
     <Compile Include="Components\NoFocusTrackBar.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Structs\PakFormat\PakFile.cs" />
-    <Compile Include="Structs\PakFormat\PakPkgInfo.cs" />
-    <Compile Include="Structs\PakFormat\PakFileEntry.cs" />
+    <Compile Include="Formats\PAK\PakFile.cs" />
+    <Compile Include="Formats\PAK\PakPkgInfo.cs" />
+    <Compile Include="Formats\PAK\PakFileEntry.cs" />
     <Compile Include="UI\About.cs">
       <SubType>Form</SubType>
     </Compile>

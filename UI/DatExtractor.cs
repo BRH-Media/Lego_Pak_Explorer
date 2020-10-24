@@ -56,12 +56,14 @@ namespace TT_Games_Explorer.UI
             trvMain.Nodes.Clear();
             trvMain.Sort();
             itmExtractAll.Enabled = false;
+            itmOptions.Enabled = false;
+            itmOperation.Enabled = false;
 
             //parsing
             var path = _pkgInfo.FilePath;
-            if (File.Exists(Path.GetDirectoryName(path) + "\\" + Path.GetFileNameWithoutExtension(path) + ".HDR"))
+            if (File.Exists($"{Path.GetDirectoryName(path)}\\{Path.GetFileNameWithoutExtension(path)}.HDR"))
             {
-                path = Path.GetDirectoryName(path) + "\\" + Path.GetFileNameWithoutExtension(path) + ".HDR";
+                path = $"{Path.GetDirectoryName(path)}\\{Path.GetFileNameWithoutExtension(path)}.HDR";
                 _pkgInfo.Version = 2;
             }
             else
@@ -207,7 +209,7 @@ namespace TT_Games_Explorer.UI
                             }
                             else
                             {
-                                var blah2 = LocateNode("/\\" + str1.Remove(str1.Length - 1), trvMain.Nodes);
+                                var blah2 = LocateNode($"/\\{str1.Remove(str1.Length - 1)}", trvMain.Nodes);
                                 trvMain.Invoke((MethodInvoker)delegate { blah2.Nodes.Add(namesArray[i].Name, namesArray[i].Name); });
                             }
                             str1 = str1 + namesArray[i].Name + Path.DirectorySeparatorChar;
@@ -245,7 +247,7 @@ namespace TT_Games_Explorer.UI
                 {
                     pbMain.ProgressBar.Value = i;
                     var num2 = (int)(pbMain.ProgressBar.Value / (double)pbMain.ProgressBar.Maximum * 100.0);
-                    pbMain.ProgressBar.CreateGraphics().DrawString(num2 + "%", new Font("Arial", 8.25f, FontStyle.Regular), Brushes.Gray, new PointF(pbMain.ProgressBar.Width / 2 - 10, pbMain.ProgressBar.Height / 2 - 7));
+                    pbMain.ProgressBar.CreateGraphics().DrawString($"{num2}%", new Font("Arial", 8.25f, FontStyle.Regular), Brushes.Gray, new PointF(pbMain.ProgressBar.Width / 2 - 10, pbMain.ProgressBar.Height / 2 - 7));
                 });
             }
             lstMain.Invoke((MethodInvoker)delegate
@@ -259,6 +261,8 @@ namespace TT_Games_Explorer.UI
                 trvMain.Nodes[0].Expand();
                 trvMain.SelectedNode = trvMain.Nodes[0];
                 itmExtractAll.Enabled = true;
+                itmOptions.Enabled = true;
+                itmOperation.Enabled = true;
                 trvMain.Focus();
             });
 
@@ -430,7 +434,7 @@ namespace TT_Games_Explorer.UI
             {
                 if (e.Node.FullPath.Length > 2)
                 {
-                    if (_filesArray[index].Parent != e.Node.FullPath.Remove(0, 2) + "\\")
+                    if (_filesArray[index].Parent != $"{e.Node.FullPath.Remove(0, 2)}\\")
                         continue;
 
                     //add the new item
@@ -482,6 +486,7 @@ namespace TT_Games_Explorer.UI
                 //archive files
                 case ".dat":
                 case ".hdr":
+                case ".pak":
                     imageIndex = 3;
                     break;
 
@@ -536,23 +541,9 @@ namespace TT_Games_Explorer.UI
             return newItem;
         }
 
-        private void ExtractToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            fbdExtractFolder.SelectedPath = Path.GetDirectoryName(_pkgInfo.FilePath);
-            if (fbdExtractFolder.ShowDialog() != DialogResult.OK)
-                return;
-            foreach (ListViewItem selectedItem in lstMain.SelectedItems)
-            {
-                MessageBox.Show(
-                    ExtractFile(int.Parse(selectedItem.SubItems[0].Text), fbdExtractFolder.SelectedPath + "\\")
-                        ? $@"{selectedItem.SubItems[1].Text} extracted!"
-                        : @"Error during file extracting!");
-            }
-        }
-
         private void CxtLstExtract_Opening(object sender, CancelEventArgs e)
         {
-            if (lstMain.SelectedItems.Count > 0)
+            if (lstMain.SelectedItems.Count > 0 && itmOptionRightClick.Checked)
             {
                 //grab file name and file extension for verification
                 var fileName = lstMain.SelectedItems[0].SubItems[2].Text;
@@ -611,26 +602,156 @@ namespace TT_Games_Explorer.UI
                 e.Cancel = true;
         }
 
-        private void ExtractAllMenuItem_Click(object sender, EventArgs e)
+        private void ItmExtract_Click(object sender, EventArgs e)
         {
-            fbdExtractFolder.SelectedPath = Path.GetDirectoryName(_pkgInfo.FilePath);
-            if (fbdExtractFolder.ShowDialog() != DialogResult.OK)
-                return;
-            for (var fileId = 0; fileId < (int)_pkgInfo.FilesNumber; ++fileId)
+            try
             {
-                var strArray = Path.GetDirectoryName(_filesArray[fileId].Parent + _filesArray[fileId].Name)?.Split('\\');
-                var str1 = "";
-                if (strArray != null)
-                    foreach (var str2 in strArray)
-                    {
-                        str1 = str1 + str2 + "\\";
-                        if (!Directory.Exists(fbdExtractFolder.SelectedPath + "\\" + str1))
-                            Directory.CreateDirectory(fbdExtractFolder.SelectedPath + "\\" + str1);
-                    }
-
-                ExtractFile(fileId, fbdExtractFolder.SelectedPath + "\\" + _filesArray[fileId].Parent);
+                fbdExtractFolder.SelectedPath = Path.GetDirectoryName(_pkgInfo.FilePath);
+                if (fbdExtractFolder.ShowDialog() != DialogResult.OK)
+                    return;
+                foreach (ListViewItem selectedItem in lstMain.SelectedItems)
+                {
+                    MessageBox.Show(
+                        ExtractFile(int.Parse(selectedItem.SubItems[1].Text), $"{fbdExtractFolder.SelectedPath}\\")
+                            ? $@"{selectedItem.SubItems[1].Text} extracted!"
+                            : @"Error during file extracting!");
+                }
             }
-            MessageBox.Show(@"Extract Finish!");
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Extract error. Stack trace:\n\n{ex}");
+            }
+        }
+
+        private void ItmExtractAll_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                fbdExtractFolder.SelectedPath = Path.GetDirectoryName(_pkgInfo.FilePath);
+                if (fbdExtractFolder.ShowDialog() != DialogResult.OK)
+                    return;
+                for (var fileId = 0; fileId < (int)_pkgInfo.FilesNumber; ++fileId)
+                {
+                    var strArray = Path.GetDirectoryName(_filesArray[fileId].Parent + _filesArray[fileId].Name)?.Split('\\');
+                    var str1 = "";
+                    if (strArray != null)
+                        foreach (var str2 in strArray)
+                        {
+                            str1 += $"{str2}\\";
+                            if (!Directory.Exists($"{fbdExtractFolder.SelectedPath}\\{str1}"))
+                                Directory.CreateDirectory($"{fbdExtractFolder.SelectedPath}\\{str1}");
+                        }
+
+                    ExtractFile(fileId, $"{fbdExtractFolder.SelectedPath}\\{_filesArray[fileId].Parent}");
+                }
+                MessageBox.Show(@"Successfully extracted files!");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Extract error. Stack trace:\n\n{ex}");
+            }
+        }
+
+        private void LstMain_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button != MouseButtons.Left || !itmOptionDoubleClick.Checked)
+                return;
+            if (lstMain.SelectedItems.Count > 0)
+                PreviewFile();
+        }
+
+        private void PreviewFile()
+        {
+            //more validation
+            if (lstMain.SelectedItems.Count > 0)
+            {
+                //parse out file extension from list view
+                var fileName = lstMain.SelectedItems[0].SubItems[2].Text;
+                var fileId = Convert.ToInt32(lstMain.SelectedItems[0].SubItems[1].Text);
+                var ext = Path.GetExtension(fileName).ToLower();
+
+                //grab needed data from archive via extraction
+                var buffer = ExtractFile(fileId);
+
+                //validation
+                if (buffer != null)
+                    switch (ext)
+                    {
+                        //executables
+                        case ".exe":
+                        case ".dll":
+                        case ".bat":
+                        case ".com":
+                        case ".cmd":
+                        case ".sh":
+                        case ".so":
+                            MessageBox.Show(
+                                $"You cannot run executable files of type '*{ext}' from within an archive, as this could lead to arbitrary code execution.",
+                                @"Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+
+                            break;
+
+                        //code files
+                        case ".txt":
+                        case ".csv":
+                        case ".sub":
+                        case ".bms":
+                        case ".sf":
+                        case ".scp":
+                        case ".cfg":
+                        case ".ini":
+                        case ".inf":
+                        case ".vdf":
+                        case ".gip":
+                        case ".gix":
+                        case ".giz":
+                        case ".gin":
+                        case ".ats":
+                            new CodePreview(buffer, fileName).ShowDialog();
+                            break;
+
+                        //archive files
+                        case ".dat":
+                            MessageBox.Show(@"You cannot open *.DAT files from within a *.DAT file");
+                            break;
+
+                        case ".hdr":
+                            MessageBox.Show(@"You cannot open *.HDR files from within a *.DAT file");
+                            break;
+
+                        case ".pak":
+                            new PakExtractor(buffer, fileName).ShowDialog();
+                            break;
+
+                        //image files
+                        case ".tex":
+                        case ".dds":
+                        case ".png":
+                        case ".bmp":
+                        case ".raw":
+                        case ".tga":
+                        case ".jpg":
+                        case ".jpeg":
+                        case ".gif":
+                        case ".giff":
+                        case ".tif":
+                        case ".tiff":
+                            //new texture handler
+                            var texHandler = new TexTrend(buffer, fileName);
+
+                            //run preview window
+                            new TexturePreview(texHandler).ShowDialog();
+                            break;
+
+                        //anything else is unsupported
+                        default:
+                            MessageBox.Show(
+                                $@"*{ext} files are not currently supported");
+                            break;
+                    }
+                else
+                    MessageBox.Show(@"Null extracted data; could not open file.");
+            }
         }
 
         private void SoundPlay()
@@ -642,7 +763,7 @@ namespace TT_Games_Explorer.UI
                     //parse out file extension from list view
                     var fileName = lstMain.SelectedItems[0].SubItems[2].Text;
                     var fileId = Convert.ToInt32(lstMain.SelectedItems[0].SubItems[1].Text);
-                    var ext = Path.GetExtension(fileName);
+                    var ext = Path.GetExtension(fileName).ToLower();
 
                     //read raw sound bytes from DAT
                     var buffer = ExtractFile(fileId);
@@ -740,6 +861,37 @@ namespace TT_Games_Explorer.UI
             }
         }
 
+        private void PakOpen()
+        {
+            try
+            {
+                if (lstMain.SelectedItems.Count > 0)
+                {
+                    //grab file name
+                    var fileName = lstMain.SelectedItems[0].SubItems[2].Text;
+                    var fileId = Convert.ToInt32(lstMain.SelectedItems[0].SubItems[1].Text);
+
+                    //grab raw file bytes
+                    var buffer = ExtractFile(fileId);
+
+                    //verify extracted bytes
+                    if (buffer != null)
+                    {
+                        //display texture previewer
+                        var frm = new PakExtractor(buffer, fileName);
+                        if (!frm.IsDisposed)
+                            frm.ShowDialog();
+                    }
+                    else
+                        MessageBox.Show(@"Extracted bytes were null; PAK extractor cannot be opened.");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error whilst loading in-memory PAK file:\n\n{ex}");
+            }
+        }
+
         private void CodeOpen()
         {
             try
@@ -825,6 +977,15 @@ namespace TT_Games_Explorer.UI
         private void ItmViewCode_Click(object sender, EventArgs e)
         {
             CodeOpen();
+        }
+
+        private void ItmViewPak_Click(object sender, EventArgs e)
+        {
+            PakOpen();
+        }
+
+        private void LstMain_SelectedIndexChanged(object sender, EventArgs e)
+        {
         }
     }
 }

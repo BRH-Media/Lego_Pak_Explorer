@@ -1,11 +1,9 @@
-﻿namespace TT_Games_Explorer.Structs.PakFormat
+﻿namespace TT_Games_Explorer.Formats.PAK
 {
     public class PakFile
     {
         public PakFile(PakPkgInfo pakFileInfo)
         {
-            var magicHeader = new byte[4];
-
             PakFileInfo = pakFileInfo;
         }
 

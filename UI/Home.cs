@@ -135,6 +135,7 @@ namespace TT_Games_Explorer.UI
                     //archive files
                     case ".dat":
                     case ".hdr":
+                    case ".pak":
                         imageIndex = 3;
                         break;
 
@@ -238,9 +239,8 @@ namespace TT_Games_Explorer.UI
             {
                 if (lstMain.SelectedItems.Count != 1)
                     return;
-                _listviewFileSelected = _legoGameFolder.Substring(0,
-                    _legoGameFolder.LastIndexOf("\\",
-                        StringComparison.Ordinal)) + "\\" + trvMain.SelectedNode.FullPath + "\\" + lstMain.SelectedItems[0].SubItems[0].Text;
+                _listviewFileSelected =
+                    $"{_legoGameFolder.Substring(0, _legoGameFolder.LastIndexOf("\\", StringComparison.Ordinal))}\\{trvMain.SelectedNode.FullPath}\\{lstMain.SelectedItems[0].SubItems[0].Text}";
                 if (new FileInfo(_listviewFileSelected).Length != 0L)
                     return;
                 e.Cancel = true;
@@ -306,7 +306,8 @@ namespace TT_Games_Explorer.UI
         private void ItmLoadGame_Click(object sender, EventArgs e)
         {
             fbdOpenGameFolder.Description = @"Choose your LEGO Game folder";
-            fbdOpenGameFolder.SelectedPath = Path.GetDirectoryName(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles) + "\\");
+            fbdOpenGameFolder.SelectedPath = Path.GetDirectoryName(
+                $"{Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles)}\\");
             if (fbdOpenGameFolder.ShowDialog() != DialogResult.OK)
                 return;
             Globals.MruManager.AddRecentFile(fbdOpenGameFolder.SelectedPath);
@@ -321,7 +322,7 @@ namespace TT_Games_Explorer.UI
             MessageBox.Show(ofdOpenExecutable.FileName);
         }
 
-        private void Preview_File()
+        private void PreviewFile()
         {
             switch (Path.GetExtension(_listviewFileSelected).ToLower())
             {
@@ -382,6 +383,10 @@ namespace TT_Games_Explorer.UI
                     MessageBox.Show(@"Please open the *.DAT instead of the *.HDR");
                     break;
 
+                case ".pak":
+                    new PakExtractor(_listviewFileSelected).ShowDialog();
+                    break;
+
                 //image files
                 case ".tex":
                 case ".dds":
@@ -414,7 +419,7 @@ namespace TT_Games_Explorer.UI
         {
             if (!itmOptionRightClick.Checked)
                 return;
-            Preview_File();
+            PreviewFile();
         }
 
         private void ItmAbout_Click(object sender, EventArgs e)
@@ -461,10 +466,9 @@ namespace TT_Games_Explorer.UI
                 if (lstMain.SelectedItems.Count != 1)
                     return;
                 _listviewFileSelected =
-                    _legoGameFolder.Substring(0, _legoGameFolder.LastIndexOf("\\", StringComparison.Ordinal)) + "\\" +
-                    trvMain.SelectedNode.FullPath + "\\" + lstMain.SelectedItems[0].SubItems[0].Text;
+                    $"{_legoGameFolder.Substring(0, _legoGameFolder.LastIndexOf("\\", StringComparison.Ordinal))}\\{trvMain.SelectedNode.FullPath}\\{lstMain.SelectedItems[0].SubItems[0].Text}";
                 if (new FileInfo(_listviewFileSelected).Length != 0L)
-                    Preview_File();
+                    PreviewFile();
                 else
                     _listviewFileSelected = "";
             }

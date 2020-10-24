@@ -122,6 +122,10 @@ namespace TT_Games_Explorer.Common
                 "Full Motion Video File"
             },
             {
+                ".raw",
+                "Raw Image File"
+            },
+            {
                 ".bik",
                 "Bink 1 Video File"
             },
