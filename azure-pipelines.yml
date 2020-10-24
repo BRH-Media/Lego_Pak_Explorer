@@ -31,17 +31,11 @@ steps:
     solution: '$(solution)'
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
-- task: CopyFiles@1
-  displayName: 'Copy executables into Artifact staging folder'
-  inputs:
-    sourceFolder: '$(Build.SourcesDirectory)'
-    contents: '**/bin/$(BuildConfiguration)/**/**/?(*.exe|*.dll|*.pdb)'
-    targetFolder: '$(Build.ArtifactStagingDirectory)'
 - task: CopyFiles@2
-  displayName: 'Copy needed libraries into Artifact staging folder'
+  displayName: 'Copy all executables into Artifact staging folder'
   inputs:
     sourceFolder: '$(Build.SourcesDirectory)'
-    contents: '**/lib/?(*.dll|*.pdb)'
+    contents: '**/?(*.dll|*.pdb|*.exe)'
     targetFolder: '$(Build.ArtifactStagingDirectory)'
 - task: PublishBuildArtifacts@1
   displayName: 'Publish build artifacts'
