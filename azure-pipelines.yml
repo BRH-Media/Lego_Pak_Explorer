@@ -14,17 +14,19 @@ variables:
 #run at midnight
 schedules:
 - cron: "0 0 * * *"
-  displayName: Nightly Build
+  displayName: 'Nightly Build'
   branches:
     include:
     - master
 steps:
 - task: NuGetToolInstaller@1
 - task: NuGetCommand@2
+  displayName: 'NuGet package restore'
   inputs:
     restoreSolution: '$(solution)'
 
 - task: VSBuild@1
+  displayName: 'MSBuild task for all solutions'
   inputs:
     solution: '$(solution)'
     platform: '$(buildPlatform)'
@@ -32,15 +34,10 @@ steps:
 - task: CopyFiles@2
   inputs:
     sourceFolder: '$(Build.SourcesDirectory)'
-    #exclude obj folder
-    contents: '**/bin/$(BuildConfiguration)/**/?(*.exe|*.dll|*.pdb)'
-    targetFolder: '$(Build.ArtifactStagingDirectory)'
-- task: CopyFiles@2
-  inputs:
-    sourceFolder: '$(Build.SourcesDirectory)'
-    contents: '**/lib/?(*.dll|*.pdb)'
+    contents: '**/bin/$(BuildConfiguration)/**/**/?(*.exe|*.dll|*.pdb)'
     targetFolder: '$(Build.ArtifactStagingDirectory)'
 - task: PublishBuildArtifacts@1
+  displayName: 'Publish build artifacts'
   inputs:
     pathToPublish: '$(Build.ArtifactStagingDirectory)'
     artifactName: Build
