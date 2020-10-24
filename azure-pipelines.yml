@@ -32,13 +32,9 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 - task: CopyFiles@2
-  displayName: 'Copy all executables into Artifact staging folder'
   inputs:
     sourceFolder: '$(Build.SourcesDirectory)'
-    contents: '**/?(*.dll|*.pdb|*.exe)
-              !**/obj/**
-              !**/packages/**
-              '
+    contents: '**/bin/$(BuildConfiguration)/**/?(*.exe|*.dll|*.pdb)'
     targetFolder: '$(Build.ArtifactStagingDirectory)'
 - task: PublishBuildArtifacts@1
   displayName: 'Publish build artifacts'
