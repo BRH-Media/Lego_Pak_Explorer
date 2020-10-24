@@ -35,7 +35,10 @@ steps:
   displayName: 'Copy all executables into Artifact staging folder'
   inputs:
     sourceFolder: '$(Build.SourcesDirectory)'
-    contents: '**/?(*.dll|*.pdb|*.exe)'
+    contents: '**/?(*.dll|*.pdb|*.exe)
+              !**/obj/**
+              !**/packages/**
+              '
     targetFolder: '$(Build.ArtifactStagingDirectory)'
 - task: PublishBuildArtifacts@1
   displayName: 'Publish build artifacts'
