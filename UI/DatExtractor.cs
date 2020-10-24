@@ -1,22 +1,20 @@
-﻿using NAudio.Vorbis;
-using NAudio.Wave;
-using System;
+﻿using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Drawing;
 using System.IO;
-using System.Media;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 using TT_Games_Explorer.Common;
 using TT_Games_Explorer.ListViewSorter;
+using TT_Games_Explorer.Renderer.Audio;
+using TT_Games_Explorer.Renderer.Audio.Cache;
 using TT_Games_Explorer.Renderer.Textures;
 using TT_Games_Explorer.Structs.DatFormat;
 
 // ReSharper disable LocalizableElement
-
 // ReSharper disable UnusedParameter.Local
 // ReSharper disable AccessToModifiedClosure
 // ReSharper disable UnusedMember.Local
@@ -34,6 +32,7 @@ namespace TT_Games_Explorer.UI
         private DatPkgInfo _pkgInfo;
         private int[] _crcArray = new int[0];
         private ListViewColumnSorter _lvs;
+        private AudioPlaybackEngine _audioEngine;
 
         [DllImport("TTGames.UnComp.dll", CallingConvention = CallingConvention.Cdecl)]
         public static extern void Un_LZ2K(IntPtr @in, IntPtr @out, int inSz, int outSz);
@@ -426,41 +425,115 @@ namespace TT_Games_Explorer.UI
         {
             lstMain.Items.Clear();
             _lvs = new ListViewColumnSorter();
-            _lvs.Initialize(lstMain, "num,text,text,text,num,num,text", null);
+            _lvs.Initialize(lstMain, "text,num,text,text,text,text,text,num,num", null);
             for (var index = 0; index < _filesArray.Length; ++index)
             {
                 if (e.Node.FullPath.Length > 2)
                 {
-                    if (_filesArray[index].Parent != e.Node.FullPath.Remove(0, 2) + "\\") continue;
+                    if (_filesArray[index].Parent != e.Node.FullPath.Remove(0, 2) + "\\")
+                        continue;
 
-                    var items = new[]
-                    {
-                        _filesArray[index].Name,
-                        $"0x{_filesArray[index].Crc:X8}",
-                        $"0x{_filesArray[index].Offset:X8}",
-                        _filesArray[index].SizeUnComp.ToString(),
-                        _filesArray[index].Size.ToString(),
-                        $"0x{_filesArray[index].Pack:X3}"
-                    };
-                    lstMain.Items.Add(index.ToString()).SubItems.AddRange(items);
+                    //add the new item
+                    lstMain.Items.Add(GetItem(index));
                 }
-                else if (_filesArray[index].Parent == "")
+                else if (_filesArray[index].Parent == @"")
                 {
-                    var items = new[]
-                    {
-            _filesArray[index].Name,
-            $"0x{_filesArray[index].Crc:X8}",
-            $"0x{_filesArray[index].Offset:X8}",
-            _filesArray[index].SizeUnComp.ToString(),
-            _filesArray[index].Size.ToString(),
-            $"0x{_filesArray[index].Pack:X3}"
-                    };
-                    lstMain.Items.Add(index.ToString()).SubItems.AddRange(items);
+                    //add the new item
+                    lstMain.Items.Add(GetItem(index));
                 }
             }
+
             _lvs.lv_ColumnClick(this, new ColumnClickEventArgs(1));
             lstMain.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
             lstMain.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+        }
+
+        private ListViewItem GetItem(int index)
+        {
+            //information needed for parsing
+            var fileName = _filesArray[index].Name;
+            var fileType = Methods.GetLegoFileType(fileName);
+
+            //icon assignation (default is the 'Unknown File' icon)
+            var imageIndex = 1;
+
+            //go through and attempt icon assignations
+            switch (Path.GetExtension(fileName).ToLower())
+            {
+                //code files
+                case ".txt":
+                case ".csv":
+                case ".sub":
+                case ".bms":
+                case ".sf":
+                case ".scp":
+                case ".cfg":
+                case ".ini":
+                case ".inf":
+                case ".vdf":
+                case ".gip":
+                case ".gix":
+                case ".giz":
+                case ".gin":
+                case ".ats":
+                    imageIndex = 2;
+                    break;
+
+                //archive files
+                case ".dat":
+                case ".hdr":
+                    imageIndex = 3;
+                    break;
+
+                //image files
+                case ".tex":
+                case ".dds":
+                case ".png":
+                case ".bmp":
+                case ".raw":
+                case ".tga":
+                case ".jpg":
+                case ".jpeg":
+                case ".gif":
+                case ".giff":
+                case ".tif":
+                case ".tiff":
+                    imageIndex = 4;
+                    break;
+
+                //executables
+                case ".exe":
+                case ".dll":
+                case ".bat":
+                case ".com":
+                case ".cmd":
+                case ".sh":
+                case ".so":
+                    imageIndex = 5;
+                    break;
+            }
+
+            //item to add to the list view
+            var newItem = new ListViewItem(@"", imageIndex);
+
+            //construct sub-items
+            var items = new[]
+            {
+                new ListViewItem.ListViewSubItem(newItem, index.ToString()),
+                new ListViewItem.ListViewSubItem(newItem, fileName),
+                new ListViewItem.ListViewSubItem(newItem, fileType),
+                new ListViewItem.ListViewSubItem(newItem, $"0x{_filesArray[index].Crc:X8}"),
+                new ListViewItem.ListViewSubItem(newItem, $"0x{_filesArray[index].Offset:X8}"),
+                new ListViewItem.ListViewSubItem(newItem, _filesArray[index].SizeUnComp.ToString()),
+                new ListViewItem.ListViewSubItem(newItem, _filesArray[index].Size.ToString()),
+                new ListViewItem.ListViewSubItem(newItem, $"0x{_filesArray[index].Pack:X3}")
+            };
+
+            //add sub-items
+            newItem.SubItems.AddRange(items);
+
+            //return the final item
+            return newItem;
         }
 
         private void ExtractToolStripMenuItem_Click(object sender, EventArgs e)
@@ -482,17 +555,22 @@ namespace TT_Games_Explorer.UI
             if (lstMain.SelectedItems.Count > 0)
             {
                 //grab file name and file extension for verification
-                var fileName = lstMain.SelectedItems[0].SubItems[1].Text;
+                var fileName = lstMain.SelectedItems[0].SubItems[2].Text;
                 var ext = Path.GetExtension(fileName).ToLower();
 
                 //is it an image?
-                if (ext == @".png" ||
-                    ext == @".tex" ||
+                if (ext == @".tex" ||
                     ext == @".dds" ||
+                    ext == @".png" ||
+                    ext == @".bmp" ||
+                    ext == @".raw" ||
+                    ext == @".tga" ||
                     ext == @".jpg" ||
                     ext == @".jpeg" ||
-                    ext == @".bmp" ||
-                    ext == @".gif")
+                    ext == @".gif" ||
+                    ext == @".giff" ||
+                    ext == @".tif" ||
+                    ext == @".tiff")
                 {
                     //yes, enable the view option in the context menu
                     if (!cxtLstExtract.Items.Contains(itmCxtPreviewTexture))
@@ -502,6 +580,32 @@ namespace TT_Games_Explorer.UI
                     //no, disable the view option in the context menu
                     if (cxtLstExtract.Items.Contains(itmCxtPreviewTexture))
                     cxtLstExtract.Items.Remove(itmCxtPreviewTexture);
+
+                //is it a code file?
+                if (ext == @".txt" ||
+                    ext == @".cfg" ||
+                    ext == @".scp" ||
+                    ext == @".gip" ||
+                    ext == @".gix" ||
+                    ext == @".gin" ||
+                    ext == @".giz" ||
+                    ext == @".bms" ||
+                    ext == @".sf" ||
+                    ext == @".sub" ||
+                    ext == @".vdf" ||
+                    ext == @".ini" ||
+                    ext == @".inf" ||
+                    ext == @".csv" ||
+                    ext == @".ats")
+                {
+                    //yes, enable the view option in the context menu
+                    if (!cxtLstExtract.Items.Contains(itmCxtViewCode))
+                        cxtLstExtract.Items.Add(itmCxtViewCode);
+                }
+                else
+                //no, disable the view option in the context menu
+                if (cxtLstExtract.Items.Contains(itmCxtViewCode))
+                    cxtLstExtract.Items.Remove(itmCxtViewCode);
             }
             else
                 e.Cancel = true;
@@ -536,8 +640,8 @@ namespace TT_Games_Explorer.UI
                 if (lstMain.SelectedItems.Count > 0)
                 {
                     //parse out file extension from list view
-                    var fileName = lstMain.SelectedItems[0].SubItems[1].Text;
-                    var fileId = Convert.ToInt32(lstMain.SelectedItems[0].SubItems[0].Text);
+                    var fileName = lstMain.SelectedItems[0].SubItems[2].Text;
+                    var fileId = Convert.ToInt32(lstMain.SelectedItems[0].SubItems[1].Text);
                     var ext = Path.GetExtension(fileName);
 
                     //read raw sound bytes from DAT
@@ -550,21 +654,19 @@ namespace TT_Games_Explorer.UI
                     {
                         case @".wav":
 
-                            new SoundPlayer(memStream).Play();
+                            var cachedWave = new WaveCachedSound(memStream);
+                            _audioEngine = new AudioPlaybackEngine(cachedWave.WaveFormat.SampleRate, cachedWave.WaveFormat.Channels);
+                            _audioEngine.PlaySound(cachedWave);
                             break;
 
                         case @".ogg":
-                            using (var vorbisStream = new VorbisWaveReader(memStream))
-                            using (var waveOut = new WaveOutEvent())
-                            {
-                                waveOut.Init(vorbisStream);
-                                waveOut.Play();
+                            var cachedVorbis = new VorbisCachedSound(memStream);
+                            _audioEngine = new AudioPlaybackEngine(cachedVorbis.WaveFormat.SampleRate, cachedVorbis.WaveFormat.Channels);
+                            _audioEngine.PlaySound(cachedVorbis);
+                            break;
 
-                                while (waveOut.PlaybackState == PlaybackState.Playing)
-                                {
-                                    //wait
-                                }
-                            }
+                        case @".cbx":
+                            MessageBox.Show(@"You tried to play a LEGO *.cbx file. These are proprietary files that cannot be directly played as of now; progress is being made towards dissecting the format.");
                             break;
                     }
 
@@ -611,8 +713,8 @@ namespace TT_Games_Explorer.UI
                 if (lstMain.SelectedItems.Count > 0)
                 {
                     //grab file name
-                    var fileName = lstMain.SelectedItems[0].SubItems[1].Text;
-                    var fileId = Convert.ToInt32(lstMain.SelectedItems[0].SubItems[0].Text);
+                    var fileName = lstMain.SelectedItems[0].SubItems[2].Text;
+                    var fileId = Convert.ToInt32(lstMain.SelectedItems[0].SubItems[1].Text);
 
                     //grab raw file bytes
                     var buffer = ExtractFile(fileId);
@@ -638,6 +740,37 @@ namespace TT_Games_Explorer.UI
             }
         }
 
+        private void CodeOpen()
+        {
+            try
+            {
+                if (lstMain.SelectedItems.Count > 0)
+                {
+                    //grab file name
+                    var fileName = lstMain.SelectedItems[0].SubItems[2].Text;
+                    var fileId = Convert.ToInt32(lstMain.SelectedItems[0].SubItems[1].Text);
+
+                    //grab raw file bytes
+                    var buffer = ExtractFile(fileId);
+
+                    //verify extracted bytes
+                    if (buffer != null)
+                    {
+                        //display texture previewer
+                        var frm = new CodePreview(buffer, fileName);
+                        if (!frm.IsDisposed)
+                            frm.ShowDialog();
+                    }
+                    else
+                        MessageBox.Show(@"Extracted bytes were null; code previewer cannot be opened.");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error whilst loading in-memory code file:\n\n{ex}");
+            }
+        }
+
         private void GhgGscOpen()
         {
             try
@@ -645,8 +778,8 @@ namespace TT_Games_Explorer.UI
                 if (lstMain.SelectedItems.Count > 0)
                 {
                     //grab file name
-                    var fileName = lstMain.SelectedItems[0].SubItems[1].Text;
-                    var fileId = Convert.ToInt32(lstMain.SelectedItems[0].SubItems[0].Text);
+                    var fileName = lstMain.SelectedItems[0].SubItems[2].Text;
+                    var fileId = Convert.ToInt32(lstMain.SelectedItems[0].SubItems[1].Text);
 
                     //grab raw file bytes
                     var buffer = ExtractFile(fileId);
@@ -682,6 +815,16 @@ namespace TT_Games_Explorer.UI
         private void ItmViewModel_Click(object sender, EventArgs e)
         {
             GhgGscOpen();
+        }
+
+        private void ItmCxtViewCode_Click(object sender, EventArgs e)
+        {
+            CodeOpen();
+        }
+
+        private void ItmViewCode_Click(object sender, EventArgs e)
+        {
+            CodeOpen();
         }
     }
 }

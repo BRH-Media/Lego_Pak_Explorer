@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Threading;
@@ -85,13 +86,17 @@ namespace TT_Games_Explorer.UI
 
         private void PopulateListView()
         {
+            //clear the list of any items then disable it to prevent user input while working
             lstMain.Invoke((MethodInvoker)delegate
             {
                 lstMain.Items.Clear();
                 lstMain.Enabled = false;
             });
+
             var nodeDirInfo = (DirectoryInfo)_newSelected.Tag;
             ListViewItem item;
+
+            //reset progress bar
             lstMain.Invoke((MethodInvoker)delegate
             {
                 if (pbMain.ProgressBar == null) return;
@@ -99,11 +104,16 @@ namespace TT_Games_Explorer.UI
                 pbMain.ProgressBar.Maximum = nodeDirInfo.GetFiles().Length;
                 pbMain.ProgressBar.Value = 0;
             });
+
             foreach (var file in nodeDirInfo.GetFiles())
             {
+                //index 1 is the 'Unknown File' icon
                 var imageIndex = 1;
+
+                //go through and attempt icon assignations
                 switch (Path.GetExtension(file.Name).ToLower())
                 {
+                    //code files
                     case ".txt":
                     case ".csv":
                     case ".sub":
@@ -111,14 +121,24 @@ namespace TT_Games_Explorer.UI
                     case ".sf":
                     case ".scp":
                     case ".cfg":
+                    case ".ini":
+                    case ".inf":
+                    case ".vdf":
+                    case ".gip":
+                    case ".gix":
+                    case ".giz":
+                    case ".gin":
+                    case ".ats":
                         imageIndex = 2;
                         break;
 
+                    //archive files
                     case ".dat":
                     case ".hdr":
                         imageIndex = 3;
                         break;
 
+                    //image files
                     case ".tex":
                     case ".dds":
                     case ".png":
@@ -134,6 +154,7 @@ namespace TT_Games_Explorer.UI
                         imageIndex = 4;
                         break;
 
+                    //executables
                     case ".exe":
                     case ".dll":
                     case ".bat":
@@ -144,28 +165,46 @@ namespace TT_Games_Explorer.UI
                         imageIndex = 5;
                         break;
                 }
+
+                //the new item to add
                 item = new ListViewItem(file.Name, imageIndex);
+
+                //the cells that belong to the new item
                 var items = new[]
                 {
-          new ListViewItem.ListViewSubItem(item, Methods.GetLegoFileType(file.Extension)),
-          new ListViewItem.ListViewSubItem(item, Methods.FormatSize(file.Length, true)),
-          new ListViewItem.ListViewSubItem(item, file.LastAccessTime.ToShortDateString())
+                    new ListViewItem.ListViewSubItem(item, Methods.GetLegoFileType(file.Extension)),
+                    new ListViewItem.ListViewSubItem(item, Methods.FormatSize(file.Length, true)),
+                    new ListViewItem.ListViewSubItem(item, file.LastAccessTime.ToShortDateString())
                 };
+
+                //add the new sub items
                 item.SubItems.AddRange(items);
+
+                //invoke and begin adding
                 lstMain.Invoke((MethodInvoker)delegate
                 {
+                    //new entry is added
                     lstMain.Items.Add(item);
+
+                    //the method is exited if the progress bar is undefined
                     if (pbMain.ProgressBar == null) return;
 
+                    //the progress bar is incremented
                     ++pbMain.ProgressBar.Value;
-                    var num = (int)(pbMain.ProgressBar.Value /
+
+                    //percentage completion calculation
+                    var percComplete = (int)(pbMain.ProgressBar.Value /
                         (double)pbMain.ProgressBar.Maximum * 100.0);
-                    pbMain.ProgressBar.CreateGraphics().DrawString($"{num}%",
+
+                    //draws the % completion inside of the progressbar (on-the-fly)
+                    pbMain.ProgressBar.CreateGraphics().DrawString($"{percComplete}%",
                         new Font("Arial", 8.25f, FontStyle.Regular), Brushes.Gray,
                         new PointF(pbMain.ProgressBar.Width / 2 - 10,
                             pbMain.ProgressBar.Height / 2 - 7));
                 });
             }
+
+            //resize the columns to fit the window
             lstMain.Invoke((MethodInvoker)delegate
             {
                 lstMain.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
@@ -286,6 +325,36 @@ namespace TT_Games_Explorer.UI
         {
             switch (Path.GetExtension(_listviewFileSelected).ToLower())
             {
+                //executables
+                case ".exe":
+                case ".dll":
+                case ".bat":
+                case ".com":
+                case ".cmd":
+                case ".sh":
+                case ".so":
+                    var ask = MessageBox.Show(
+                        @"Are you sure? You're about to open an executable file which will run code on your PC; this may have unforeseen adverse effects.",
+                            @"Question", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    if (ask == DialogResult.Yes)
+                        if (!string.IsNullOrEmpty(_listviewFileSelected))
+                        {
+                            var dir = Path.GetDirectoryName(Path.GetFullPath(_listviewFileSelected));
+                            var p = new Process
+                            {
+                                StartInfo =
+                                {
+                                    FileName = _listviewFileSelected,
+                                    CreateNoWindow = false,
+                                    WorkingDirectory = !string.IsNullOrEmpty(dir) ? dir : @""
+                                }
+                            };
+                            p.Start();
+                        }
+
+                    break;
+
+                //code files
                 case ".txt":
                 case ".csv":
                 case ".sub":
@@ -293,9 +362,18 @@ namespace TT_Games_Explorer.UI
                 case ".sf":
                 case ".scp":
                 case ".cfg":
+                case ".ini":
+                case ".inf":
+                case ".vdf":
+                case ".gip":
+                case ".gix":
+                case ".giz":
+                case ".gin":
+                case ".ats":
                     new CodePreview(_listviewFileSelected).ShowDialog();
                     break;
 
+                //archive files
                 case ".dat":
                     new DatExtractor(_listviewFileSelected).ShowDialog();
                     break;
@@ -304,6 +382,7 @@ namespace TT_Games_Explorer.UI
                     MessageBox.Show(@"Please open the *.DAT instead of the *.HDR");
                     break;
 
+                //image files
                 case ".tex":
                 case ".dds":
                 case ".png":
@@ -323,6 +402,7 @@ namespace TT_Games_Explorer.UI
                     new TexturePreview(texHandler).ShowDialog();
                     break;
 
+                //anything else is unsupported
                 default:
                     MessageBox.Show(
                         $@"*{Path.GetExtension(_listviewFileSelected)?.ToLower()} files are not currently supported");

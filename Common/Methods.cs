@@ -58,10 +58,11 @@ namespace TT_Games_Explorer.Common
         /// <summary>
         /// Maps extensions to their ListView description
         /// </summary>
-        public static string GetLegoFileType(string ext)
+        public static string GetLegoFileType(string fileName)
         {
             try
             {
+                var ext = Path.GetExtension(fileName);
                 return Globals.LegoFileType[ext.ToLower()];
             }
             catch (Exception)

@@ -23,115 +23,140 @@ namespace TT_Games_Explorer.UI
 
         private void InitializeComponent()
         {
-            components = new Container();
-            resources = new ComponentResourceManager(typeof(CodePreview));
-
-            _menuStrip1 = new MenuStrip();
-            _fileToolStripMenuItem = new ToolStripMenuItem();
-            _saveToolStripMenuItem = new ToolStripMenuItem();
-            _saveAsToolStripMenuItem = new ToolStripMenuItem();
-            _toolStripSeparator1 = new ToolStripSeparator();
-            _quitToolStripMenuItem = new ToolStripMenuItem();
-            _fastColoredTextBox1 = new FastColoredTextBox();
-            _saveFileDialog1 = new SaveFileDialog();
-            _menuStrip1.SuspendLayout();
-            ((ISupportInitialize)_fastColoredTextBox1).BeginInit();
-            SuspendLayout();
-            _menuStrip1.Items.AddRange(new ToolStripItem[1]
-            {
-        _fileToolStripMenuItem
-            });
-            _menuStrip1.Location = new Point(0, 0);
-            _menuStrip1.Name = @"_menuStrip1";
-            _menuStrip1.Size = new Size(711, 24);
-            _menuStrip1.TabIndex = 1;
-            _menuStrip1.Text = @"menuStrip1";
-            _fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[4]
-            {
-        _saveToolStripMenuItem,
-        _saveAsToolStripMenuItem,
-        _toolStripSeparator1,
-        _quitToolStripMenuItem
-            });
-            _fileToolStripMenuItem.Image = Resources.brick_go;
-            _fileToolStripMenuItem.Name = @"_fileToolStripMenuItem";
-            _fileToolStripMenuItem.Size = new Size(53, 20);
-            _fileToolStripMenuItem.Text = @"File";
-            _saveToolStripMenuItem.Image = Resources.disk;
-            _saveToolStripMenuItem.Name = @"_saveToolStripMenuItem";
-            _saveToolStripMenuItem.ShortcutKeys = Keys.S | Keys.Control;
-            _saveToolStripMenuItem.Size = new Size(152, 22);
-            _saveToolStripMenuItem.Text = @"Save";
-            _saveToolStripMenuItem.Click += SaveToolStripMenuItem_Click;
-            _saveAsToolStripMenuItem.Image = Resources.disk;
-            _saveAsToolStripMenuItem.Name = @"_saveAsToolStripMenuItem";
-            _saveAsToolStripMenuItem.Size = new Size(152, 22);
-            _saveAsToolStripMenuItem.Text = @"Save as...";
-            _saveAsToolStripMenuItem.Click += SaveAsToolStripMenuItem_Click;
-            _toolStripSeparator1.Name = @"_toolStripSeparator1";
-            _toolStripSeparator1.Size = new Size(149, 6);
-            _quitToolStripMenuItem.Image = (Image)resources.GetObject(@"_quitToolStripMenuItem.Image");
-            _quitToolStripMenuItem.Name = @"_quitToolStripMenuItem";
-            _quitToolStripMenuItem.ShortcutKeys = Keys.Q | Keys.Control;
-            _quitToolStripMenuItem.Size = new Size(152, 22);
-            _quitToolStripMenuItem.Text = @"Quit";
-            _quitToolStripMenuItem.Click += QuitToolStripMenuItem_Click;
-            _fastColoredTextBox1.AutoCompleteBracketsList = new char[10]
-            {
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CodePreview));
+            this.menuMain = new System.Windows.Forms.MenuStrip();
+            this.itmFile = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmSave = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmSaveAs = new System.Windows.Forms.ToolStripMenuItem();
+            this._toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.itmQuit = new System.Windows.Forms.ToolStripMenuItem();
+            this.txtCodePreview = new FastColoredTextBoxNS.FastColoredTextBox();
+            this.sfdExport = new System.Windows.Forms.SaveFileDialog();
+            this.menuMain.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.txtCodePreview)).BeginInit();
+            this.SuspendLayout();
+            // 
+            // menuMain
+            // 
+            this.menuMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.itmFile});
+            this.menuMain.Location = new System.Drawing.Point(0, 0);
+            this.menuMain.Name = "menuMain";
+            this.menuMain.Size = new System.Drawing.Size(711, 24);
+            this.menuMain.TabIndex = 1;
+            this.menuMain.Text = "menuStrip1";
+            // 
+            // itmFile
+            // 
+            this.itmFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.itmSave,
+            this.itmSaveAs,
+            this._toolStripSeparator1,
+            this.itmQuit});
+            this.itmFile.Image = global::TT_Games_Explorer.Properties.Resources.brick_go;
+            this.itmFile.Name = "itmFile";
+            this.itmFile.Size = new System.Drawing.Size(53, 20);
+            this.itmFile.Text = "File";
+            // 
+            // itmSave
+            // 
+            this.itmSave.Enabled = false;
+            this.itmSave.Image = global::TT_Games_Explorer.Properties.Resources.disk;
+            this.itmSave.Name = "itmSave";
+            this.itmSave.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
+            this.itmSave.Size = new System.Drawing.Size(180, 22);
+            this.itmSave.Text = "Save";
+            this.itmSave.Click += new System.EventHandler(this.ItmSave_Click);
+            // 
+            // itmSaveAs
+            // 
+            this.itmSaveAs.Image = global::TT_Games_Explorer.Properties.Resources.disk;
+            this.itmSaveAs.Name = "itmSaveAs";
+            this.itmSaveAs.Size = new System.Drawing.Size(180, 22);
+            this.itmSaveAs.Text = "Save as...";
+            this.itmSaveAs.Click += new System.EventHandler(this.ItmSaveAs_Click);
+            // 
+            // _toolStripSeparator1
+            // 
+            this._toolStripSeparator1.Name = "_toolStripSeparator1";
+            this._toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
+            // 
+            // itmQuit
+            // 
+            this.itmQuit.Image = ((System.Drawing.Image)(resources.GetObject("itmQuit.Image")));
+            this.itmQuit.Name = "itmQuit";
+            this.itmQuit.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Q)));
+            this.itmQuit.Size = new System.Drawing.Size(180, 22);
+            this.itmQuit.Text = "Quit";
+            this.itmQuit.Click += new System.EventHandler(this.ItmQuit_Click);
+            // 
+            // txtCodePreview
+            // 
+            this.txtCodePreview.AutoCompleteBracketsList = new char[] {
         '(',
         ')',
         '{',
         '}',
         '[',
         ']',
-        '"',
-        '"',
+        '\"',
+        '\"',
         '\'',
-        '\''
-            };
-            _fastColoredTextBox1.AutoScrollMinSize = new Size(27, 14);
-            _fastColoredTextBox1.BackBrush = null;
-            _fastColoredTextBox1.CharHeight = 14;
-            _fastColoredTextBox1.CharWidth = 8;
-            _fastColoredTextBox1.Cursor = Cursors.IBeam;
-            _fastColoredTextBox1.DisabledColor = Color.FromArgb(100, 180, 180, 180);
-            _fastColoredTextBox1.Dock = DockStyle.Fill;
-            _fastColoredTextBox1.IsReplaceMode = false;
-            _fastColoredTextBox1.Location = new Point(0, 24);
-            _fastColoredTextBox1.Name = @"_fastColoredTextBox1";
-            _fastColoredTextBox1.Paddings = new Padding(0);
-            _fastColoredTextBox1.SelectionColor = Color.FromArgb(60, 0, 0, byte.MaxValue);
-            _fastColoredTextBox1.Size = new Size(711, 339);
-            _fastColoredTextBox1.TabIndex = 2;
-            _fastColoredTextBox1.Zoom = 100;
-            _fastColoredTextBox1.TextChanged += FastColoredTextBox1_TextChanged;
-            _saveFileDialog1.Filter = @"All Files|*.*";
-            AutoScaleDimensions = new SizeF(6f, 13f);
-            AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(711, 363);
-            Controls.Add(_fastColoredTextBox1);
-            Controls.Add(_menuStrip1);
-            FormBorderStyle = FormBorderStyle.SizableToolWindow;
-            MainMenuStrip = _menuStrip1;
-            Name = @"CodePreview";
-            ShowIcon = false;
-            ShowInTaskbar = false;
-            StartPosition = FormStartPosition.CenterScreen;
-            Text = @"Text / Code Preview";
-            _menuStrip1.ResumeLayout(false);
-            _menuStrip1.PerformLayout();
-            ((ISupportInitialize)_fastColoredTextBox1).EndInit();
-            ResumeLayout(false);
-            PerformLayout();
+        '\''};
+            this.txtCodePreview.AutoScrollMinSize = new System.Drawing.Size(27, 14);
+            this.txtCodePreview.BackBrush = null;
+            this.txtCodePreview.CharHeight = 14;
+            this.txtCodePreview.CharWidth = 8;
+            this.txtCodePreview.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.txtCodePreview.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
+            this.txtCodePreview.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtCodePreview.Font = new System.Drawing.Font("Courier New", 9.75F);
+            this.txtCodePreview.IsReplaceMode = false;
+            this.txtCodePreview.Location = new System.Drawing.Point(0, 24);
+            this.txtCodePreview.Name = "txtCodePreview";
+            this.txtCodePreview.Paddings = new System.Windows.Forms.Padding(0);
+            this.txtCodePreview.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
+            this.txtCodePreview.Size = new System.Drawing.Size(711, 339);
+            this.txtCodePreview.TabIndex = 2;
+            this.txtCodePreview.Zoom = 100;
+            this.txtCodePreview.TextChanged += new System.EventHandler<FastColoredTextBoxNS.TextChangedEventArgs>(this.TxtCodePreview_TextChanged);
+            // 
+            // sfdExport
+            // 
+            this.sfdExport.Filter = "All Files|*.*";
+            // 
+            // CodePreview
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(711, 363);
+            this.Controls.Add(this.txtCodePreview);
+            this.Controls.Add(this.menuMain);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MainMenuStrip = this.menuMain;
+            this.MinimizeBox = false;
+            this.Name = "CodePreview";
+            this.ShowIcon = false;
+            this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Text / Code Preview";
+            this.Load += new System.EventHandler(this.CodePreview_Load);
+            this.menuMain.ResumeLayout(false);
+            this.menuMain.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.txtCodePreview)).EndInit();
+            this.ResumeLayout(false);
+            this.PerformLayout();
+
         }
 
-        private MenuStrip _menuStrip1;
-        private ToolStripMenuItem _fileToolStripMenuItem;
-        private ToolStripMenuItem _saveToolStripMenuItem;
-        private ToolStripMenuItem _saveAsToolStripMenuItem;
+        private MenuStrip menuMain;
+        private ToolStripMenuItem itmFile;
+        private ToolStripMenuItem itmSave;
+        private ToolStripMenuItem itmSaveAs;
         private ToolStripSeparator _toolStripSeparator1;
-        private ToolStripMenuItem _quitToolStripMenuItem;
-        private FastColoredTextBox _fastColoredTextBox1;
-        private SaveFileDialog _saveFileDialog1;
+        private ToolStripMenuItem itmQuit;
+        private FastColoredTextBox txtCodePreview;
+        private SaveFileDialog sfdExport;
     }
 }

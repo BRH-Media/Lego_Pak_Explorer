@@ -58,6 +58,46 @@ namespace TT_Games_Explorer.Common
                 "Comma Separated Values File"
             },
             {
+                ".ter",
+                "Terrain Data File"
+            },
+            {
+                ".ats",
+                "Script File"
+            },
+            {
+                ".gip",
+                "PC Script File"
+            },
+            {
+                ".gix",
+                "Xbox Script File"
+            },
+            {
+                ".gin",
+                "Nintendo Script File"
+            },
+            {
+                ".giz",
+                "Script File"
+            },
+            {
+                ".vdf",
+                "Valve Script File"
+            },
+            {
+                ".sf",
+                "Script File"
+            },
+            {
+                ".scp",
+                "Script File"
+            },
+            {
+                ".fnt",
+                "Compiled Font File"
+            },
+            {
                 ".dat",
                 "Data Archive File"
             },
@@ -80,6 +120,18 @@ namespace TT_Games_Explorer.Common
             {
                 ".fmv",
                 "Full Motion Video File"
+            },
+            {
+                ".bik",
+                "Bink 1 Video File"
+            },
+            {
+                ".bk2",
+                "Bink 2 Video File"
+            },
+            {
+                ".led",
+                "Lighting Data File"
             },
             {
                 ".hdr",
@@ -114,16 +166,16 @@ namespace TT_Games_Explorer.Common
                 "Windows Icon File"
             },
             {
+                ".cd",
+                "Character Data File"
+            },
+            {
+                ".cu2",
+                "Cutscene Data File"
+            },
+            {
                 ".jpeg",
                 "JPEG Image File"
-            },
-            {
-                ".sf",
-                "Script File"
-            },
-            {
-                ".scp",
-                "Script File"
             },
             {
                 ".an3",
@@ -151,11 +203,11 @@ namespace TT_Games_Explorer.Common
             },
             {
                 ".ghg",
-                "Complex Model File"
+                "Model File"
             },
             {
                 ".gsc",
-                "Basic Model File"
+                "Model File"
             },
             {
                 ".cab",
@@ -166,16 +218,20 @@ namespace TT_Games_Explorer.Common
                 "Rich Text File"
             },
             {
+                ".spl",
+                "Model Spline File"
+            },
+            {
+                ".sfx",
+                "Sound Data File"
+            },
+            {
                 ".pdf",
                 "Portable Document File"
             },
             {
                 ".cbx",
                 "LEGO Audio File"
-            },
-            {
-                ".vdf",
-                "Valve Script File"
             }
         };
     }

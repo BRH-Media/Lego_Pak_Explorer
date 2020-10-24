@@ -154,6 +154,12 @@
     <Compile Include="Formats\FormatHelpers\TXGH\TXGH09.cs" />
     <Compile Include="Formats\FormatHelpers\TXGH\TXGH0A.cs" />
     <Compile Include="Formats\FormatHelpers\TXGH\TXGH0C.cs" />
+    <Compile Include="Renderer\Audio\AudioPlaybackEngine.cs" />
+    <Compile Include="Renderer\Audio\AutoDisposeFileReader.cs" />
+    <Compile Include="Renderer\Audio\Cache\CachedSound.cs" />
+    <Compile Include="Renderer\Audio\Cache\VorbisCachedSound.cs" />
+    <Compile Include="Renderer\Audio\Cache\WaveCachedSound.cs" />
+    <Compile Include="Renderer\Audio\Cache\CachedSoundSampleProvider.cs" />
     <Compile Include="SystemExtensions\Half.cs" />
     <Compile Include="SystemExtensions\HalfHelper.cs" />
     <Compile Include="Formats\ExtractHelper\VariableTypes\Color4.cs" />
