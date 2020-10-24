@@ -4,8 +4,6 @@ VisualStudioVersion = 16.0.30611.23
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lego_Pak_Explorer", "Lego_Pak_Explorer.csproj", "{C84B4546-5E42-4D7F-A300-324396DE9F0F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pluggi", "..\Pluggi\Pluggi.csproj", "{6EB9AA96-75B1-4BF2-9366-B43261AD32A7}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -28,18 +26,6 @@ Global
 		{C84B4546-5E42-4D7F-A300-324396DE9F0F}.Release|x64.Build.0 = Release|x64
 		{C84B4546-5E42-4D7F-A300-324396DE9F0F}.Release|x86.ActiveCfg = Release|x86
 		{C84B4546-5E42-4D7F-A300-324396DE9F0F}.Release|x86.Build.0 = Release|x86
-		{6EB9AA96-75B1-4BF2-9366-B43261AD32A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6EB9AA96-75B1-4BF2-9366-B43261AD32A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6EB9AA96-75B1-4BF2-9366-B43261AD32A7}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{6EB9AA96-75B1-4BF2-9366-B43261AD32A7}.Debug|x64.Build.0 = Debug|Any CPU
-		{6EB9AA96-75B1-4BF2-9366-B43261AD32A7}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{6EB9AA96-75B1-4BF2-9366-B43261AD32A7}.Debug|x86.Build.0 = Debug|Any CPU
-		{6EB9AA96-75B1-4BF2-9366-B43261AD32A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6EB9AA96-75B1-4BF2-9366-B43261AD32A7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6EB9AA96-75B1-4BF2-9366-B43261AD32A7}.Release|x64.ActiveCfg = Release|Any CPU
-		{6EB9AA96-75B1-4BF2-9366-B43261AD32A7}.Release|x64.Build.0 = Release|Any CPU
-		{6EB9AA96-75B1-4BF2-9366-B43261AD32A7}.Release|x86.ActiveCfg = Release|Any CPU
-		{6EB9AA96-75B1-4BF2-9366-B43261AD32A7}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
