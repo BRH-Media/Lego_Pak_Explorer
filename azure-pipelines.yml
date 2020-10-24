@@ -34,7 +34,7 @@ steps:
 - task: CopyFiles@2
   inputs:
     sourceFolder: '$(Build.SourcesDirectory)'
-    contents: '**/bin/$(BuildConfiguration)/**/?(*.exe|*.dll|*.pdb)'
+    contents: '**/bin/$(BuildConfiguration)/**/**/?(*.exe|*.dll|*.pdb)'
     targetFolder: '$(Build.ArtifactStagingDirectory)'
 - task: PublishBuildArtifacts@1
   displayName: 'Publish build artifacts'
