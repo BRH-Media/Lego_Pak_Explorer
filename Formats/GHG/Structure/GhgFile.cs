@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows.Forms;
-using TT_Games_Explorer.Formats.GHG.Unpacker;
 
 // ReSharper disable LocalizableElement
 
@@ -41,7 +40,6 @@ namespace TT_Games_Explorer.Formats.GHG.Structure
                 if (ghgData != null)
                     if (ghgData.Length > 0)
                     {
-                        
                     }
                     else
                     {

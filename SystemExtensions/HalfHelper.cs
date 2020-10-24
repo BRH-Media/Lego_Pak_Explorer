@@ -22,7 +22,7 @@ namespace System
         private static ushort[] baseTable = GenerateBaseTable();
         private static sbyte[] shiftTable = GenerateShiftTable();
 
-        // Transforms the subnormal representation to a normalized one. 
+        // Transforms the subnormal representation to a normalized one.
         private static uint ConvertMantissa(int i)
         {
             uint m = (uint)(i << 13); // Zero pad mantissa bits
@@ -32,7 +32,7 @@ namespace System
             while ((m & 0x00800000) == 0)
             {
                 e -= 0x00800000; // Decrement exponent (1<<23)
-                m <<= 1; // Shift mantissa                
+                m <<= 1; // Shift mantissa
             }
             m &= unchecked((uint)~0x00800000); // Clear leading 1 bit
             e += 0x38800000; // Adjust bias ((127-14)<<23)
@@ -54,6 +54,7 @@ namespace System
 
             return mantissaTable;
         }
+
         private static uint[] GenerateExponentTable()
         {
             uint[] exponentTable = new uint[64];
@@ -72,6 +73,7 @@ namespace System
 
             return exponentTable;
         }
+
         private static ushort[] GenerateOffsetTable()
         {
             ushort[] offsetTable = new ushort[64];
@@ -88,6 +90,7 @@ namespace System
 
             return offsetTable;
         }
+
         private static ushort[] GenerateBaseTable()
         {
             ushort[] baseTable = new ushort[512];
@@ -123,6 +126,7 @@ namespace System
 
             return baseTable;
         }
+
         private static sbyte[] GenerateShiftTable()
         {
             sbyte[] shiftTable = new sbyte[512];
@@ -164,6 +168,7 @@ namespace System
             uint result = mantissaTable[offsetTable[half.value >> 10] + (half.value & 0x3ff)] + exponentTable[half.value >> 10];
             return BitConverter.ToSingle(BitConverter.GetBytes(result), 0); // TODO faster
         }
+
         public static Half SingleToHalf(float single)
         {
             uint value = BitConverter.ToUInt32(BitConverter.GetBytes(single), 0); // TODO faster
@@ -176,6 +181,7 @@ namespace System
         {
             return Half.ToHalf((ushort)(half.value ^ 0x8000));
         }
+
         public static Half Abs(Half half)
         {
             return Half.ToHalf((ushort)(half.value & 0x7fff));
@@ -185,14 +191,17 @@ namespace System
         {
             return ((half.value & 0x7fff) > 0x7c00);
         }
+
         public static bool IsInfinity(Half half)
         {
             return ((half.value & 0x7fff) == 0x7c00);
         }
+
         public static bool IsPositiveInfinity(Half half)
         {
             return (half.value == 0x7c00);
         }
+
         public static bool IsNegativeInfinity(Half half)
         {
             return (half.value == 0xfc00);
