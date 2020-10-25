@@ -163,6 +163,7 @@
     <Compile Include="Formats\FormatHelpers\Vertex\VertexDefinition.cs" />
     <Compile Include="Formats\FormatHelpers\Vertex\VertexList.cs" />
     <Compile Include="Formats\FormatHelpers\Vertex\VertexListReference.cs" />
+    <Compile Include="Formats\GHG\Unpacker\ExtractNxgMESH.cs" />
     <Compile Include="Formats\GHG\Structure\GhgMtlSettings.cs" />
     <Compile Include="Formats\GHG\Unpacker\ImageMeta.cs" />
     <Compile Include="Renderer\Audio\AudioPlaybackEngine.cs" />
