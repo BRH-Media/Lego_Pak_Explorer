@@ -5,39 +5,49 @@
 
 trigger:
 - master
+
 pool:
   vmImage: 'windows-latest'
+
 variables:
   solution: '**/*.sln'
   buildPlatform: 'x86'
   buildConfiguration: 'Release'
+
 #run at midnight
 schedules:
 - cron: "0 0 * * *"
-  displayName: 'Nightly Build'
+  displayName: Nightly Build
   branches:
     include:
     - master
+
 steps:
 - task: NuGetToolInstaller@1
+
 - task: NuGetCommand@2
-  displayName: 'NuGet package restore'
   inputs:
     restoreSolution: '$(solution)'
 
 - task: VSBuild@1
-  displayName: 'MSBuild task for all solutions'
   inputs:
     solution: '$(solution)'
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
+
+- task: VSTest@2
+  inputs:
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
+
 - task: CopyFiles@2
   inputs:
     sourceFolder: '$(Build.SourcesDirectory)'
-    contents: '**/bin/$(BuildConfiguration)/**/**/?(*.exe|*.dll|*.pdb)'
+    #exclude obj folder
+    contents: '**/bin/$(buildPlatform)/$(buildConfiguration)/?(*.exe|*.dll|*.pdb)'
     targetFolder: '$(Build.ArtifactStagingDirectory)'
+
 - task: PublishBuildArtifacts@1
-  displayName: 'Publish build artifacts'
   inputs:
     pathToPublish: '$(Build.ArtifactStagingDirectory)'
     artifactName: Build
