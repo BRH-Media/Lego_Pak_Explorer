@@ -8,6 +8,12 @@ What happened to the original? To be honest, I couldn't tell you. The reality is
 ### How did you reverse it?
 Ever heard of JetBrains dotPeek? It's amazing (and free)! The original author left all of his debug symbols embedded inside of the executable, which enabled me to use dotPeek's 'Export to Project' function for an entirely recompilable Visual Studio project including all code, images and resource files.
 
+### Looking for builds?
+These happen @ 10AM GMT+10 every day, as well as on each new commit. You can download new builds from Azure DevOps Pipelines:<br />
+[TT Games Explorer Release Pipeline](https://dev.azure.com/brhmedia/TT%20Games%20Explorer/_build)
+
+**Note: These are development builds pulled directly from `master`. Please be aware parts of the software may become unstable on new commits, as there is currently no version management.**
+
 ### Planned improvements?
 The original purpose of this tool was actually to just browse the DAT archives, but that's not really useful is it? Especially with tools like QuickBMS, it's more a redundant feature than it is a useful one (though it's obviously still going to be present as a feature). Therefore, I've laid down what's to be added in order to provide an effective 'all-in-one' solution:
 - The texture viewer needs to be revamped and allow metadata and proper exports as well as DXT3 support (it only does DXT1 and DXT5 right now; newer games don't use these)
