@@ -1,7 +1,11 @@
-namespace TT_Games_Explorer.Formats.FormatHelpers.Vertex
+﻿namespace TT_Games_Explorer.Formats.FormatHelpers.Vertex
 {
     public class VertexDefinition
     {
+        public VertexDefinition.VariableEnum Variable;
+        public VertexDefinition.VariableTypeEnum VariableType;
+        public int Offset;
+
         public enum VariableEnum
         {
             position,
@@ -17,25 +21,19 @@ namespace TT_Games_Explorer.Formats.FormatHelpers.Vertex
             blendWeight0,
             unknown11,
             lightDirSet,
-            lightColSet
+            lightColSet,
         }
 
         public enum VariableTypeEnum
         {
             vec2float = 2,
-            vec3float,
-            vec4float,
-            vec2half,
-            vec4half,
-            vec4char,
-            vec4mini,
-            color4char
+            vec3float = 3,
+            vec4float = 4,
+            vec2half = 5,
+            vec4half = 6,
+            vec4char = 7,
+            vec4mini = 8,
+            color4char = 9,
         }
-
-        public VariableEnum Variable;
-
-        public VariableTypeEnum VariableType;
-
-        public int Offset;
     }
 }

@@ -1,122 +1,93 @@
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using TT_Games_Explorer.Formats.ExtractHelper;
 using TT_Games_Explorer.Formats.GHG.ExtractHelper;
 
 namespace TT_Games_Explorer.Formats.FormatHelpers.DISP
 {
-    public class DISP15
+    public class DISP15 : DISP0F
     {
-        protected byte[] fileData;
-
-        protected int iPos;
-
         public DISP15(byte[] fileData, int iPos)
+          : base(fileData, iPos)
         {
-            this.fileData = fileData;
-            this.iPos = iPos;
         }
 
-        public virtual int Read()
+        public override int Read()
         {
-            int numberofchars = BigEndianBitConverter.ToInt32(fileData, iPos);
-            iPos += 4;
-            string text = readString(numberofchars);
-            ColoredConsole.WriteLine("{0:x8}       Name: {1}", iPos, text);
-            iPos += 4;
-            int num = BigEndianBitConverter.ToInt32(fileData, iPos);
-            iPos += 4;
-            List<int> list = new List<int>();
-            for (int i = 0; i < num; i++)
+            int int32_1 = BigEndianBitConverter.ToInt32(this.fileData, this.iPos);
+            this.iPos += 4;
+            ColoredConsole.WriteLine("{0:x8}       Name: {1}", (object)this.iPos, (object)this.readString(int32_1));
+            this.iPos += 4;
+            int int32_2 = BigEndianBitConverter.ToInt32(this.fileData, this.iPos);
+            this.iPos += 4;
+            List<int> intList = new List<int>();
+            for (int index = 0; index < int32_2; ++index)
             {
-                short num2 = BigEndianBitConverter.ToInt16(fileData, iPos);
-                iPos += 2;
-                int item = BigEndianBitConverter.ToInt32(fileData, iPos);
-                iPos += 4;
-                if (num2 == -19712)
-                {
-                    list.Add(item);
-                }
+                short int16 = BigEndianBitConverter.ToInt16(this.fileData, this.iPos);
+                this.iPos += 2;
+                int int32_3 = BigEndianBitConverter.ToInt32(this.fileData, this.iPos);
+                this.iPos += 4;
+                if (int16 == (short)-19712)
+                    intList.Add(int32_3);
             }
-            iPos += 4;
-            int num3 = BigEndianBitConverter.ToInt32(fileData, iPos);
-            iPos += 4;
-            for (int i = 0; i < num3; i++)
+            this.iPos += 4;
+            int int32_4 = BigEndianBitConverter.ToInt32(this.fileData, this.iPos);
+            this.iPos += 4;
+            for (int index = 0; index < int32_4; ++index)
             {
-                short num4 = BigEndianBitConverter.ToInt16(fileData, iPos);
-                iPos += 2;
-                int num5 = BigEndianBitConverter.ToInt32(fileData, iPos);
-                iPos += 4;
-                iPos += 4 * num5;
-                int num6 = BigEndianBitConverter.ToInt32(fileData, iPos);
-                iPos += 4;
-                iPos += 4 * num6;
+                BigEndianBitConverter.ToInt16(this.fileData, this.iPos);
+                this.iPos += 2;
+                int int32_3 = BigEndianBitConverter.ToInt32(this.fileData, this.iPos);
+                this.iPos += 4;
+                this.iPos += 4 * int32_3;
+                int int32_5 = BigEndianBitConverter.ToInt32(this.fileData, this.iPos);
+                this.iPos += 4;
+                this.iPos += 4 * int32_5;
             }
-            iPos += 4;
-            int num7 = BigEndianBitConverter.ToInt32(fileData, iPos);
-            iPos += 4;
-            iPos += 2 * num7;
-            iPos += 4;
-            int num8 = BigEndianBitConverter.ToInt32(fileData, iPos);
-            iPos += 4;
-            iPos += 4 * num8;
-            iPos += 4;
-            int num9 = BigEndianBitConverter.ToInt32(fileData, iPos);
-            iPos += 4;
-            for (int i = 0; i < num9; i++)
+            this.iPos += 4;
+            int int32_6 = BigEndianBitConverter.ToInt32(this.fileData, this.iPos);
+            this.iPos += 4;
+            this.iPos += 2 * int32_6;
+            this.iPos += 4;
+            int int32_7 = BigEndianBitConverter.ToInt32(this.fileData, this.iPos);
+            this.iPos += 4;
+            this.iPos += 4 * int32_7;
+            this.iPos += 4;
+            int int32_8 = BigEndianBitConverter.ToInt32(this.fileData, this.iPos);
+            this.iPos += 4;
+            for (int index = 0; index < int32_8; ++index)
             {
-                iPos += 4;
-                iPos += 64;
-                iPos += 16;
-                iPos += 4;
-                iPos += 16;
-                iPos += 4;
-                iPos += 80;
-                int num10 = BigEndianBitConverter.ToInt32(fileData, iPos);
-                iPos += 4;
-                iPos += 4 * num10;
-                iPos += 12;
+                this.iPos += 4;
+                this.iPos += 64;
+                this.iPos += 16;
+                this.iPos += 4;
+                this.iPos += 16;
+                this.iPos += 4;
+                this.iPos += 80;
+                int int32_3 = BigEndianBitConverter.ToInt32(this.fileData, this.iPos);
+                this.iPos += 4;
+                this.iPos += 4 * int32_3;
+                this.iPos += 12;
             }
-            iPos += 4;
-            iPos += 5;
-            iPos += 4;
-            int num11 = BigEndianBitConverter.ToInt32(fileData, iPos);
-            iPos += 4;
-            for (int i = 0; i < num11; i++)
-            {
-                iPos += 16;
-            }
-            iPos += 4;
-            int num12 = BigEndianBitConverter.ToInt32(fileData, iPos);
-            iPos += 4;
-            for (int i = 0; i < num12; i++)
-            {
-                iPos += 16;
-            }
-            iPos += 4;
-            int num13 = BigEndianBitConverter.ToInt32(fileData, iPos);
-            iPos += 4;
-            for (int i = 0; i < num13; i++)
-            {
-                iPos += 44;
-            }
-            iPos += 4;
-            ColoredConsole.WriteLineError("{0:x8}", iPos);
-            return iPos;
-        }
-
-        private string readString(int numberofchars)
-        {
-            StringBuilder stringBuilder = new StringBuilder();
-            for (int i = 0; i < numberofchars; i++)
-            {
-                if (fileData[iPos] != 0)
-                {
-                    stringBuilder.Append((char)fileData[iPos]);
-                }
-                iPos++;
-            }
-            return stringBuilder.ToString();
+            this.iPos += 4;
+            this.iPos += 5;
+            this.iPos += 4;
+            int int32_9 = BigEndianBitConverter.ToInt32(this.fileData, this.iPos);
+            this.iPos += 4;
+            for (int index = 0; index < int32_9; ++index)
+                this.iPos += 16;
+            this.iPos += 4;
+            int int32_10 = BigEndianBitConverter.ToInt32(this.fileData, this.iPos);
+            this.iPos += 4;
+            for (int index = 0; index < int32_10; ++index)
+                this.iPos += 16;
+            this.iPos += 4;
+            int int32_11 = BigEndianBitConverter.ToInt32(this.fileData, this.iPos);
+            this.iPos += 4;
+            for (int index = 0; index < int32_11; ++index)
+                this.iPos += 44;
+            this.iPos += 4;
+            ColoredConsole.WriteLineError("{0:x8}", (object)this.iPos);
+            return this.iPos;
         }
     }
 }

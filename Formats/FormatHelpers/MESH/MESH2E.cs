@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using TT_Games_Explorer.Formats.ExtractHelper;
 using TT_Games_Explorer.Formats.ExtractHelper.VariableTypes;
@@ -10,127 +10,119 @@ namespace TT_Games_Explorer.Formats.FormatHelpers.MESH
     public class MESH2E : MESH05
     {
         public MESH2E(byte[] fileData, int iPos)
-            : base(fileData, iPos)
+          : base(fileData, iPos)
         {
         }
 
         public override int Read(ref int referencecounter)
         {
-            int num = BigEndianBitConverter.ToInt32(fileData, iPos);
-            ColoredConsole.WriteLine("{0:x8}   Number of Parts: 0x{1:x8}", iPos, num);
-            iPos += 4;
-            for (int i = 0; i < num; i++)
+            int int32 = BigEndianBitConverter.ToInt32(this.fileData, this.iPos);
+            ColoredConsole.WriteLine("{0:x8}   Number of Parts: 0x{1:x8}", (object)this.iPos, (object)int32);
+            this.iPos += 4;
+            for (int index = 0; index < int32; ++index)
             {
-                ColoredConsole.WriteLine("{0:x8}   Part 0x{1:x8}", iPos, i);
-                Parts.Add(ReadPart(ref referencecounter));
+                ColoredConsole.WriteLine("{0:x8}   Part 0x{1:x8}", (object)this.iPos, (object)index);
+                this.Parts.Add(this.ReadPart(ref referencecounter));
             }
-            return iPos;
+            return this.iPos;
         }
 
         protected override Part ReadPart(ref int referencecounter)
         {
             Part part = new Part();
-            int num = BigEndianBitConverter.ToInt32(fileData, iPos);
-            ColoredConsole.WriteLine("{0:x8}     Number of Vertex Lists: 0x{1:x8}", iPos, num);
-            iPos += 4;
-            for (int i = 0; i < num; i++)
+            int int32_1 = BigEndianBitConverter.ToInt32(this.fileData, this.iPos);
+            ColoredConsole.WriteLine("{0:x8}     Number of Vertex Lists: 0x{1:x8}", (object)this.iPos, (object)int32_1);
+            this.iPos += 4;
+            for (int index = 0; index < int32_1; ++index)
             {
-                ColoredConsole.WriteLine("{0:x8}       Vertex List 0x{1:x8}", iPos, i);
-                part.VertexListReferences1.Add(GetVertexListReference(ref referencecounter, out var _));
+                ColoredConsole.WriteLine("{0:x8}       Vertex List 0x{1:x8}", (object)this.iPos, (object)index);
+                part.VertexListReferences1.Add(this.GetVertexListReference(ref referencecounter, out int _));
             }
-            int num2 = BigEndianBitConverter.ToInt32(fileData, iPos);
-            ColoredConsole.WriteLine("{0:x8}           Unknown Number of Index Lists ? 0x{1:x8}", iPos, num2);
-            iPos += 4;
-            part.IndexListReference1 = GetIndexListReference(ref referencecounter);
-            part.OffsetIndices = BigEndianBitConverter.ToInt32(fileData, iPos);
-            ColoredConsole.WriteLine("{0:x8}     Offset Indices: 0x{1:x8}", iPos, part.OffsetIndices);
-            iPos += 4;
-            part.NumberIndices = BigEndianBitConverter.ToInt32(fileData, iPos);
-            ColoredConsole.WriteLine("{0:x8}     Number Indices: 0x{1:x8}", iPos, part.NumberIndices);
-            iPos += 4;
-            part.OffsetVertices = BigEndianBitConverter.ToInt32(fileData, iPos);
-            ColoredConsole.WriteLine("{0:x8}     Offset Vertices: 0x{1:x8}", iPos, part.OffsetVertices);
-            iPos += 4;
-            if (BigEndianBitConverter.ToInt16(fileData, iPos) != 0)
-            {
+            ColoredConsole.WriteLine("{0:x8}           Unknown Number of Index Lists ? 0x{1:x8}", (object)this.iPos, (object)BigEndianBitConverter.ToInt32(this.fileData, this.iPos));
+            this.iPos += 4;
+            part.IndexListReference1 = this.GetIndexListReference(ref referencecounter);
+            part.OffsetIndices = BigEndianBitConverter.ToInt32(this.fileData, this.iPos);
+            ColoredConsole.WriteLine("{0:x8}     Offset Indices: 0x{1:x8}", (object)this.iPos, (object)part.OffsetIndices);
+            this.iPos += 4;
+            part.NumberIndices = BigEndianBitConverter.ToInt32(this.fileData, this.iPos);
+            ColoredConsole.WriteLine("{0:x8}     Number Indices: 0x{1:x8}", (object)this.iPos, (object)part.NumberIndices);
+            this.iPos += 4;
+            part.OffsetVertices = BigEndianBitConverter.ToInt32(this.fileData, this.iPos);
+            ColoredConsole.WriteLine("{0:x8}     Offset Vertices: 0x{1:x8}", (object)this.iPos, (object)part.OffsetVertices);
+            this.iPos += 4;
+            if (BigEndianBitConverter.ToInt16(this.fileData, this.iPos) != (short)0)
                 throw new NotSupportedException("ReadPart Offset Vertices + 4");
-            }
-            iPos += 2;
-            part.NumberVertices = BigEndianBitConverter.ToInt32(fileData, iPos);
-            ColoredConsole.WriteLine("{0:x8}     Number Vertices: 0x{1:x8}", iPos, part.NumberVertices);
-            iPos += 4;
-            referencecounter++;
-            iPos += 4;
-            int num3 = BigEndianBitConverter.ToInt32(fileData, iPos);
-            iPos += 4;
-            if (num3 > 0)
+            this.iPos += 2;
+            part.NumberVertices = BigEndianBitConverter.ToInt32(this.fileData, this.iPos);
+            ColoredConsole.WriteLine("{0:x8}     Number Vertices: 0x{1:x8}", (object)this.iPos, (object)part.NumberVertices);
+            this.iPos += 4;
+            ++referencecounter;
+            this.iPos += 4;
+            int int32_2 = BigEndianBitConverter.ToInt32(this.fileData, this.iPos);
+            this.iPos += 4;
+            if (int32_2 > 0)
             {
-                ColoredConsole.Write("{0:x8}     ", iPos);
-                for (int i = 0; i < num3; i++)
+                ColoredConsole.Write("{0:x8}     ", (object)this.iPos);
+                for (int index = 0; index < int32_2; ++index)
                 {
-                    ColoredConsole.Write("{0:x2} ", fileData[iPos]);
-                    iPos++;
+                    ColoredConsole.Write("{0:x2} ", (object)this.fileData[this.iPos]);
+                    ++this.iPos;
                 }
                 ColoredConsole.WriteLine();
-                referencecounter++;
+                ++referencecounter;
             }
-            int num4 = BigEndianBitConverter.ToInt32(fileData, iPos);
-            iPos += 4;
-            if (num4 != 0)
+            int int32_3 = BigEndianBitConverter.ToInt32(this.fileData, this.iPos);
+            this.iPos += 4;
+            if (int32_3 != 0)
             {
-                int num5 = ReadRelativePositionList(0);
-                referencecounter += num5;
+                int num = this.ReadRelativePositionList((byte)0);
+                referencecounter += num;
             }
-            iPos += 4;
-            iPos += 36;
+            this.iPos += 4;
+            this.iPos += 36;
             return part;
         }
 
         protected override int ReadRelativePositionList(byte lastByte)
         {
-            iPos += 4;
-            int num = 1;
+            this.iPos += 4;
+            int num1 = 1;
             int num2 = 0;
-            while (BigEndianBitConverter.ToInt32(fileData, iPos) != 0)
+            while (BigEndianBitConverter.ToInt32(this.fileData, this.iPos) != 0)
             {
-                iPos += 8;
-                num++;
+                this.iPos += 8;
+                ++num1;
             }
-            ColoredConsole.WriteLine("{0:x8}     Relative Position Lists: 0x{1:x8}", iPos, num);
-            iPos += 4;
-            for (int i = 0; i < num; i++)
+            ColoredConsole.WriteLine("{0:x8}     Relative Position Lists: 0x{1:x8}", (object)this.iPos, (object)num1);
+            this.iPos += 4;
+            for (int index1 = 0; index1 < num1; ++index1)
             {
-                int num3 = BigEndianBitConverter.ToInt32(fileData, iPos);
-                iPos += 4;
-                if (num3 == 0)
+                int int32_1 = BigEndianBitConverter.ToInt32(this.fileData, this.iPos);
+                this.iPos += 4;
+                if (int32_1 == 0)
                 {
-                    iPos += 5;
-                    iPos += 4;
-                    iPos += 4;
-                    int num4 = BigEndianBitConverter.ToInt32(fileData, iPos);
-                    ColoredConsole.WriteLine("{0:x8}       Size of Relative Positions: 0x{1:x8}", iPos, num4);
-                    iPos += 4;
-                    iPos += num4;
-                    num2++;
-                    int num5 = BigEndianBitConverter.ToInt32(fileData, iPos);
-                    ColoredConsole.WriteLine("{0:x8}       Relative Position Tupels: 0x{1:x8}", iPos, num5);
-                    iPos += 4;
-                    iPos += 4 * num5;
-                    if (num5 > 0)
-                    {
-                        num2++;
-                    }
-                    num2++;
+                    this.iPos += 5;
+                    this.iPos += 4;
+                    this.iPos += 4;
+                    int int32_2 = BigEndianBitConverter.ToInt32(this.fileData, this.iPos);
+                    ColoredConsole.WriteLine("{0:x8}       Size of Relative Positions: 0x{1:x8}", (object)this.iPos, (object)int32_2);
+                    this.iPos += 4;
+                    this.iPos += int32_2;
+                    int num3 = num2 + 1;
+                    int int32_3 = BigEndianBitConverter.ToInt32(this.fileData, this.iPos);
+                    ColoredConsole.WriteLine("{0:x8}       Relative Position Tupels: 0x{1:x8}", (object)this.iPos, (object)int32_3);
+                    this.iPos += 4;
+                    this.iPos += 4 * int32_3;
+                    if (int32_3 > 0)
+                        ++num3;
+                    num2 = num3 + 1;
                 }
                 else
                 {
-                    num2++;
-                    num2++;
-                    for (int j = 0; j < num3; j++)
-                    {
-                        iPos += 12;
-                    }
-                    iPos += 21;
+                    num2 = num2 + 1 + 1;
+                    for (int index2 = 0; index2 < int32_1; ++index2)
+                        this.iPos += 12;
+                    this.iPos += 21;
                 }
             }
             return num2;
@@ -138,101 +130,90 @@ namespace TT_Games_Explorer.Formats.FormatHelpers.MESH
 
         protected override int GetIndexListReference(ref int referencecounter)
         {
-            int num = -1;
-            if (fileData[iPos] == 192)
+            int num;
+            if (this.fileData[this.iPos] == (byte)192)
             {
-                num = BigEndianBitConverter.ToInt16(fileData, iPos + 2);
-                ColoredConsole.WriteLine("{0:x8}     Index List Reference to 0x{1:x4}", iPos, num);
-                iPos += 4;
-                int num2 = BigEndianBitConverter.ToInt32(fileData, iPos);
-                ColoredConsole.WriteLine("{0:x8}       Unknown 0x{1:x8}", iPos, num2);
-                iPos += 4;
+                num = (int)BigEndianBitConverter.ToInt16(this.fileData, this.iPos + 2);
+                ColoredConsole.WriteLine("{0:x8}     Index List Reference to 0x{1:x4}", (object)this.iPos, (object)num);
+                this.iPos += 4;
+                ColoredConsole.WriteLine("{0:x8}       Unknown 0x{1:x8}", (object)this.iPos, (object)BigEndianBitConverter.ToInt32(this.fileData, this.iPos));
+                this.iPos += 4;
             }
             else
             {
-                ColoredConsole.WriteLineWarn("{0:x8}         New Index List 0x{1:x4}", iPos, referencecounter);
-                int num2 = BigEndianBitConverter.ToInt32(fileData, iPos);
-                ColoredConsole.WriteLine("{0:x8}           Unknown 0x{1:x8}", iPos, num2);
-                iPos += 4;
-                num2 = BigEndianBitConverter.ToInt32(fileData, iPos);
-                ColoredConsole.WriteLine("{0:x8}           Unknown 0x{1:x8}", iPos, num2);
-                iPos += 4;
-                int num3 = BigEndianBitConverter.ToInt32(fileData, iPos);
-                ColoredConsole.WriteLine("{0:x8}           Number of Indices: {1:x8}", iPos, num3);
-                iPos += 4;
-                num2 = BigEndianBitConverter.ToInt32(fileData, iPos);
-                ColoredConsole.WriteLine("{0:x8}           Unknown 0x{1:x8}", iPos, num2);
-                iPos += 4;
-                List<ushort> list = new List<ushort>();
-                for (int i = 0; i < num3; i++)
+                ColoredConsole.WriteLineWarn("{0:x8}         New Index List 0x{1:x4}", (object)this.iPos, (object)referencecounter);
+                ColoredConsole.WriteLine("{0:x8}           Unknown 0x{1:x8}", (object)this.iPos, (object)BigEndianBitConverter.ToInt32(this.fileData, this.iPos));
+                this.iPos += 4;
+                ColoredConsole.WriteLine("{0:x8}           Unknown 0x{1:x8}", (object)this.iPos, (object)BigEndianBitConverter.ToInt32(this.fileData, this.iPos));
+                this.iPos += 4;
+                int int32 = BigEndianBitConverter.ToInt32(this.fileData, this.iPos);
+                ColoredConsole.WriteLine("{0:x8}           Number of Indices: {1:x8}", (object)this.iPos, (object)int32);
+                this.iPos += 4;
+                ColoredConsole.WriteLine("{0:x8}           Unknown 0x{1:x8}", (object)this.iPos, (object)BigEndianBitConverter.ToInt32(this.fileData, this.iPos));
+                this.iPos += 4;
+                List<ushort> ushortList = new List<ushort>();
+                for (int index = 0; index < int32; ++index)
                 {
-                    list.Add(BigEndianBitConverter.ToUInt16(fileData, iPos));
-                    iPos += 2;
+                    ushortList.Add(BigEndianBitConverter.ToUInt16(this.fileData, this.iPos));
+                    this.iPos += 2;
                 }
-                Indexlistsdictionary.Add(referencecounter, list);
+                this.Indexlistsdictionary.Add(referencecounter, ushortList);
                 num = referencecounter++;
             }
             return num;
         }
 
-        protected override VertexListReference GetVertexListReference(ref int referencecounter, out int offset)
+        protected override VertexListReference GetVertexListReference(
+          ref int referencecounter,
+          out int offset)
         {
-            int num = -1;
-            if (fileData[iPos] == 192)
+            int num;
+            if (this.fileData[this.iPos] == (byte)192)
             {
-                num = BigEndianBitConverter.ToInt16(fileData, iPos + 2);
-                ColoredConsole.WriteLineWarn("{0:x8}         Vertex List Reference to 0x{1:x4}", iPos, num);
-                iPos += 4;
-                int num2 = BigEndianBitConverter.ToInt32(fileData, iPos);
-                ColoredConsole.WriteLine("{0:x8}           Unknown 0x{1:x8}", iPos, num2);
-                iPos += 4;
-                offset = BigEndianBitConverter.ToInt32(fileData, iPos);
-                ColoredConsole.WriteLine("{0:x8}           Offset 0x{1:x8}", iPos, offset);
-                iPos += 4;
+                num = (int)BigEndianBitConverter.ToInt16(this.fileData, this.iPos + 2);
+                ColoredConsole.WriteLineWarn("{0:x8}         Vertex List Reference to 0x{1:x4}", (object)this.iPos, (object)num);
+                this.iPos += 4;
+                ColoredConsole.WriteLine("{0:x8}           Unknown 0x{1:x8}", (object)this.iPos, (object)BigEndianBitConverter.ToInt32(this.fileData, this.iPos));
+                this.iPos += 4;
+                offset = BigEndianBitConverter.ToInt32(this.fileData, this.iPos);
+                ColoredConsole.WriteLine("{0:x8}           Offset 0x{1:x8}", (object)this.iPos, (object)offset);
+                this.iPos += 4;
             }
             else
             {
-                ColoredConsole.WriteLineWarn("{0:x8}         New Vertex List 0x{1:x4}", iPos, referencecounter);
-                int num2 = BigEndianBitConverter.ToInt32(fileData, iPos);
-                ColoredConsole.WriteLine("{0:x8}           Unknown 0x{1:x8}", iPos, num2);
-                iPos += 4;
-                num2 = BigEndianBitConverter.ToInt32(fileData, iPos);
-                ColoredConsole.WriteLine("{0:x8}           Unknown 0x{1:x8}", iPos, num2);
-                iPos += 4;
-                int numberofvertices = BigEndianBitConverter.ToInt32(fileData, iPos);
-                iPos += 4;
-                VertexList value = ReadVertexList(numberofvertices);
-                offset = BigEndianBitConverter.ToInt32(fileData, iPos);
-                ColoredConsole.WriteLine("{0:x8}           Offset 0x{1:x8}", iPos, offset);
-                iPos += 4;
-                Vertexlistsdictionary.Add(referencecounter, value);
+                ColoredConsole.WriteLineWarn("{0:x8}         New Vertex List 0x{1:x4}", (object)this.iPos, (object)referencecounter);
+                ColoredConsole.WriteLine("{0:x8}           Unknown 0x{1:x8}", (object)this.iPos, (object)BigEndianBitConverter.ToInt32(this.fileData, this.iPos));
+                this.iPos += 4;
+                ColoredConsole.WriteLine("{0:x8}           Unknown 0x{1:x8}", (object)this.iPos, (object)BigEndianBitConverter.ToInt32(this.fileData, this.iPos));
+                this.iPos += 4;
+                int int32 = BigEndianBitConverter.ToInt32(this.fileData, this.iPos);
+                this.iPos += 4;
+                VertexList vertexList = this.ReadVertexList(int32);
+                offset = BigEndianBitConverter.ToInt32(this.fileData, this.iPos);
+                ColoredConsole.WriteLine("{0:x8}           Offset 0x{1:x8}", (object)this.iPos, (object)offset);
+                this.iPos += 4;
+                this.Vertexlistsdictionary.Add(referencecounter, vertexList);
                 num = referencecounter++;
             }
-            VertexListReference vertexListReference = new VertexListReference();
-            vertexListReference.GlobalOffset = offset;
-            vertexListReference.Reference = num;
-            return vertexListReference;
+            return new VertexListReference()
+            {
+                GlobalOffset = offset,
+                Reference = num
+            };
         }
 
         protected override VertexList ReadVertexList(int numberofvertices)
         {
             VertexList vertexList = new VertexList();
-            int num = BigEndianBitConverter.ToInt32(fileData, iPos);
-            ColoredConsole.WriteLine("{0:x8}           Number of Vertex Definitions: {1:x8}", iPos, num);
-            iPos += 4;
-            for (int i = 0; i < num; i++)
+            int int32 = BigEndianBitConverter.ToInt32(this.fileData, this.iPos);
+            ColoredConsole.WriteLine("{0:x8}           Number of Vertex Definitions: {1:x8}", (object)this.iPos, (object)int32);
+            this.iPos += 4;
+            for (int index = 0; index < int32; ++index)
             {
-                VertexDefinition vertexDefinition = ReadVertexDefinition();
+                VertexDefinition vertexDefinition = this.ReadVertexDefinition();
                 vertexList.VertexDefinitions.Add(vertexDefinition);
                 switch (vertexDefinition.VariableType)
                 {
-                    case VertexDefinition.VariableTypeEnum.vec2half:
-                    case VertexDefinition.VariableTypeEnum.vec4char:
-                    case VertexDefinition.VariableTypeEnum.vec4mini:
-                    case VertexDefinition.VariableTypeEnum.color4char:
-                        vertexList.VertexSize += 4;
-                        break;
-
                     case VertexDefinition.VariableTypeEnum.vec2float:
                     case VertexDefinition.VariableTypeEnum.vec4half:
                         vertexList.VertexSize += 8;
@@ -246,26 +227,31 @@ namespace TT_Games_Explorer.Formats.FormatHelpers.MESH
                         vertexList.VertexSize += 16;
                         break;
 
+                    case VertexDefinition.VariableTypeEnum.vec2half:
+                    case VertexDefinition.VariableTypeEnum.vec4char:
+                    case VertexDefinition.VariableTypeEnum.vec4mini:
+                    case VertexDefinition.VariableTypeEnum.color4char:
+                        vertexList.VertexSize += 4;
+                        break;
+
                     default:
-                        throw new NotSupportedException("VariableType: " + vertexDefinition.VariableType);
+                        throw new NotSupportedException("VariableType: " + (object)vertexDefinition.VariableType);
                 }
             }
-            ColoredConsole.WriteLine("{0:x8}           Number of Vertices: {1:x8}", iPos, numberofvertices);
-            for (int i = 0; i < numberofvertices; i++)
-            {
-                vertexList.Vertices.Add(ReadVertex(vertexList.VertexDefinitions));
-            }
+            ColoredConsole.WriteLine("{0:x8}           Number of Vertices: {1:x8}", (object)this.iPos, (object)numberofvertices);
+            for (int index = 0; index < numberofvertices; ++index)
+                vertexList.Vertices.Add(this.ReadVertex(vertexList.VertexDefinitions));
             return vertexList;
         }
 
         protected virtual VertexDefinition ReadVertexDefinition()
         {
             VertexDefinition vertexDefinition = new VertexDefinition();
-            vertexDefinition.Variable = (VertexDefinition.VariableEnum)fileData[iPos];
-            vertexDefinition.VariableType = (VertexDefinition.VariableTypeEnum)fileData[iPos + 1];
-            vertexDefinition.Offset = fileData[iPos + 2];
-            ColoredConsole.WriteLine("{0:x8}             {1} {2}", iPos, vertexDefinition.VariableType.ToString(), vertexDefinition.Variable.ToString());
-            iPos += 3;
+            vertexDefinition.Variable = (VertexDefinition.VariableEnum)this.fileData[this.iPos];
+            vertexDefinition.VariableType = (VertexDefinition.VariableTypeEnum)this.fileData[this.iPos + 1];
+            vertexDefinition.Offset = (int)this.fileData[this.iPos + 2];
+            ColoredConsole.WriteLine("{0:x8}             {1} {2}", (object)this.iPos, (object)vertexDefinition.VariableType.ToString(), (object)vertexDefinition.Variable.ToString());
+            this.iPos += 3;
             return vertexDefinition;
         }
 
@@ -277,23 +263,15 @@ namespace TT_Games_Explorer.Formats.FormatHelpers.MESH
                 switch (vertexdefinition.Variable)
                 {
                     case VertexDefinition.VariableEnum.position:
-                        vertex.Position = (Vector3)ReadVariableValue(vertexdefinition.VariableType);
+                        vertex.Position = (Vector3)this.ReadVariableValue(vertexdefinition.VariableType);
                         break;
 
                     case VertexDefinition.VariableEnum.normal:
-                        vertex.Normal = (Vector3)ReadVariableValue(vertexdefinition.VariableType);
+                        vertex.Normal = (Vector3)this.ReadVariableValue(vertexdefinition.VariableType);
                         break;
 
                     case VertexDefinition.VariableEnum.colorSet0:
-                        vertex.ColorSet0 = (Color4)ReadVariableValue(vertexdefinition.VariableType);
-                        break;
-
-                    case VertexDefinition.VariableEnum.colorSet1:
-                        vertex.ColorSet1 = (Color4)ReadVariableValue(vertexdefinition.VariableType);
-                        break;
-
-                    case VertexDefinition.VariableEnum.uvSet01:
-                        vertex.UVSet0 = (Vector2)ReadVariableValue(vertexdefinition.VariableType);
+                        vertex.ColorSet0 = (Color4)this.ReadVariableValue(vertexdefinition.VariableType);
                         break;
 
                     case VertexDefinition.VariableEnum.tangent:
@@ -305,7 +283,15 @@ namespace TT_Games_Explorer.Formats.FormatHelpers.MESH
                     case VertexDefinition.VariableEnum.unknown11:
                     case VertexDefinition.VariableEnum.lightDirSet:
                     case VertexDefinition.VariableEnum.lightColSet:
-                        ReadVariableValue(vertexdefinition.VariableType);
+                        this.ReadVariableValue(vertexdefinition.VariableType);
+                        break;
+
+                    case VertexDefinition.VariableEnum.colorSet1:
+                        vertex.ColorSet1 = (Color4)this.ReadVariableValue(vertexdefinition.VariableType);
+                        break;
+
+                    case VertexDefinition.VariableEnum.uvSet01:
+                        vertex.UVSet0 = (Vector2)this.ReadVariableValue(vertexdefinition.VariableType);
                         break;
 
                     default:
@@ -320,81 +306,77 @@ namespace TT_Games_Explorer.Formats.FormatHelpers.MESH
             switch (variabletype)
             {
                 case VertexDefinition.VariableTypeEnum.vec2float:
+                    Vector2 vector2_1 = new Vector2()
                     {
-                        Vector2 vector6 = new Vector2();
-                        vector6.X = BigEndianBitConverter.ToSingle(fileData, iPos);
-                        vector6.Y = BigEndianBitConverter.ToSingle(fileData, iPos + 4);
-                        Vector2 result7 = vector6;
-                        iPos += 8;
-                        return result7;
-                    }
+                        X = BigEndianBitConverter.ToSingle(this.fileData, this.iPos),
+                        Y = BigEndianBitConverter.ToSingle(this.fileData, this.iPos + 4)
+                    };
+                    this.iPos += 8;
+                    return (object)vector2_1;
+
                 case VertexDefinition.VariableTypeEnum.vec3float:
-                    {
-                        Vector3 vector5 = new Vector3();
-                        vector5.X = BigEndianBitConverter.ToSingle(fileData, iPos);
-                        vector5.Y = BigEndianBitConverter.ToSingle(fileData, iPos + 4);
-                        vector5.Z = BigEndianBitConverter.ToSingle(fileData, iPos + 8);
-                        Vector3 result6 = vector5;
-                        iPos += 12;
-                        return result6;
-                    }
+                    Vector3 vector3_1 = new Vector3();
+                    vector3_1.X = BigEndianBitConverter.ToSingle(this.fileData, this.iPos);
+                    vector3_1.Y = BigEndianBitConverter.ToSingle(this.fileData, this.iPos + 4);
+                    vector3_1.Z = BigEndianBitConverter.ToSingle(this.fileData, this.iPos + 8);
+                    Vector3 vector3_2 = vector3_1;
+                    this.iPos += 12;
+                    return (object)vector3_2;
+
                 case VertexDefinition.VariableTypeEnum.vec4float:
-                    {
-                        Vector4 vector4 = new Vector4();
-                        vector4.X = BigEndianBitConverter.ToSingle(fileData, iPos);
-                        vector4.Y = BigEndianBitConverter.ToSingle(fileData, iPos + 4);
-                        vector4.Z = BigEndianBitConverter.ToSingle(fileData, iPos + 8);
-                        vector4.W = BigEndianBitConverter.ToSingle(fileData, iPos + 12);
-                        Vector4 result5 = vector4;
-                        iPos += 16;
-                        return result5;
-                    }
+                    Vector4 vector4_1 = new Vector4();
+                    vector4_1.X = BigEndianBitConverter.ToSingle(this.fileData, this.iPos);
+                    vector4_1.Y = BigEndianBitConverter.ToSingle(this.fileData, this.iPos + 4);
+                    vector4_1.Z = BigEndianBitConverter.ToSingle(this.fileData, this.iPos + 8);
+                    vector4_1.W = BigEndianBitConverter.ToSingle(this.fileData, this.iPos + 12);
+                    Vector4 vector4_2 = vector4_1;
+                    this.iPos += 16;
+                    return (object)vector4_2;
+
                 case VertexDefinition.VariableTypeEnum.vec2half:
+                    Vector2 vector2_2 = new Vector2()
                     {
-                        Vector2 vector3 = new Vector2();
-                        vector3.X = BigEndianBitConverter.ToHalf(fileData, iPos);
-                        vector3.Y = BigEndianBitConverter.ToHalf(fileData, iPos + 2);
-                        Vector2 result4 = vector3;
-                        iPos += 4;
-                        return result4;
-                    }
+                        X = (float)BigEndianBitConverter.ToHalf(this.fileData, this.iPos),
+                        Y = (float)BigEndianBitConverter.ToHalf(this.fileData, this.iPos + 2)
+                    };
+                    this.iPos += 4;
+                    return (object)vector2_2;
+
                 case VertexDefinition.VariableTypeEnum.vec4half:
-                    {
-                        Vector4 vector2 = new Vector4();
-                        vector2.X = BigEndianBitConverter.ToHalf(fileData, iPos);
-                        vector2.Y = BigEndianBitConverter.ToHalf(fileData, iPos + 2);
-                        vector2.Z = BigEndianBitConverter.ToHalf(fileData, iPos + 4);
-                        vector2.W = BigEndianBitConverter.ToHalf(fileData, iPos + 6);
-                        Vector4 result3 = vector2;
-                        iPos += 8;
-                        return result3;
-                    }
+                    Vector4 vector4_3 = new Vector4();
+                    vector4_3.X = (float)BigEndianBitConverter.ToHalf(this.fileData, this.iPos);
+                    vector4_3.Y = (float)BigEndianBitConverter.ToHalf(this.fileData, this.iPos + 2);
+                    vector4_3.Z = (float)BigEndianBitConverter.ToHalf(this.fileData, this.iPos + 4);
+                    vector4_3.W = (float)BigEndianBitConverter.ToHalf(this.fileData, this.iPos + 6);
+                    Vector4 vector4_4 = vector4_3;
+                    this.iPos += 8;
+                    return (object)vector4_4;
+
                 case VertexDefinition.VariableTypeEnum.vec4char:
-                    iPos += 4;
-                    return 1;
+                    this.iPos += 4;
+                    return (object)1;
 
                 case VertexDefinition.VariableTypeEnum.vec4mini:
-                    {
-                        Vector4 vector = new Vector4();
-                        vector.X = base.LookUp[fileData[iPos]];
-                        vector.Y = base.LookUp[fileData[iPos + 1]];
-                        vector.Z = base.LookUp[fileData[iPos + 2]];
-                        vector.W = base.LookUp[fileData[iPos + 3]];
-                        Vector4 result2 = vector;
-                        iPos += 4;
-                        return result2;
-                    }
+                    Vector4 vector4_5 = new Vector4();
+                    vector4_5.X = this.LookUp[(int)this.fileData[this.iPos]];
+                    vector4_5.Y = this.LookUp[(int)this.fileData[this.iPos + 1]];
+                    vector4_5.Z = this.LookUp[(int)this.fileData[this.iPos + 2]];
+                    vector4_5.W = this.LookUp[(int)this.fileData[this.iPos + 3]];
+                    Vector4 vector4_6 = vector4_5;
+                    this.iPos += 4;
+                    return (object)vector4_6;
+
                 case VertexDefinition.VariableTypeEnum.color4char:
+                    Color4 color4 = new Color4()
                     {
-                        Color4 color = new Color4();
-                        color.R = fileData[iPos];
-                        color.G = fileData[iPos + 1];
-                        color.B = fileData[iPos + 2];
-                        color.A = fileData[iPos + 3];
-                        Color4 result = color;
-                        iPos += 4;
-                        return result;
-                    }
+                        R = (int)this.fileData[this.iPos],
+                        G = (int)this.fileData[this.iPos + 1],
+                        B = (int)this.fileData[this.iPos + 2],
+                        A = (int)this.fileData[this.iPos + 3]
+                    };
+                    this.iPos += 4;
+                    return (object)color4;
+
                 default:
                     throw new NotImplementedException(variabletype.ToString());
             }

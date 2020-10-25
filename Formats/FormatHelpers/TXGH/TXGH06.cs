@@ -1,4 +1,4 @@
-using TT_Games_Explorer.Formats.ExtractHelper;
+﻿using TT_Games_Explorer.Formats.ExtractHelper;
 using TT_Games_Explorer.Formats.GHG.ExtractHelper;
 
 namespace TT_Games_Explorer.Formats.FormatHelpers.TXGH
@@ -6,75 +6,66 @@ namespace TT_Games_Explorer.Formats.FormatHelpers.TXGH
     public class TXGH06 : TXGH05
     {
         public TXGH06(byte[] fileData, int iPos)
-            : base(fileData, iPos)
+          : base(fileData, iPos)
         {
         }
 
         public override int Read(ref int referencecounter)
         {
-            int num = BigEndianBitConverter.ToInt32(fileData, iPos);
-            iPos += 4;
-            ColoredConsole.WriteLine("{0:x8}   Number of Unknown: 0x{1:x2}", iPos, num);
-            if (num != 0)
+            int int32_1 = BigEndianBitConverter.ToInt32(this.fileData, this.iPos);
+            this.iPos += 4;
+            ColoredConsole.WriteLine("{0:x8}   Number of Unknown: 0x{1:x2}", (object)this.iPos, (object)int32_1);
+            if (int32_1 != 0)
+                ++referencecounter;
+            this.iPos += 4 * int32_1;
+            int int32_2 = BigEndianBitConverter.ToInt32(this.fileData, this.iPos);
+            this.iPos += 4;
+            ColoredConsole.WriteLine("{0:x8}   Number of Textures: 0x{1:x2}", (object)this.iPos, (object)int32_2);
+            if (int32_2 != 0)
+                ++referencecounter;
+            for (int index = 0; index < int32_2; ++index)
             {
-                referencecounter++;
+                this.ReadTextureMeta();
+                ++referencecounter;
             }
-            iPos += 4 * num;
-            int num2 = BigEndianBitConverter.ToInt32(fileData, iPos);
-            iPos += 4;
-            ColoredConsole.WriteLine("{0:x8}   Number of Textures: 0x{1:x2}", iPos, num2);
-            if (num2 != 0)
-            {
-                referencecounter++;
-            }
-            for (int i = 0; i < num2; i++)
-            {
-                ReadTextureMeta();
-                referencecounter++;
-            }
-            num = BigEndianBitConverter.ToInt32(fileData, iPos);
-            iPos += 4;
-            ColoredConsole.WriteLine("{0:x8}   Number of Unknown: 0x{1:x2}", iPos, num);
-            if (num != 0)
-            {
-                referencecounter++;
-            }
-            iPos += 4 * num;
-            int num3 = BigEndianBitConverter.ToInt32(fileData, iPos);
-            iPos += 4;
-            ColoredConsole.WriteLine("{0:x8}   Number of Cameras: 0x{1:x2}", iPos, num3);
-            if (num3 != 0)
-            {
-                referencecounter++;
-            }
-            for (int i = 0; i < num3; i++)
-            {
-                ReadCam();
-            }
-            num = BigEndianBitConverter.ToInt32(fileData, iPos);
-            iPos += 4;
-            ColoredConsole.WriteLine("{0:x8}   Number of Unknown: 0x{1:x2}", iPos, num);
-            if (num != 0)
-            {
-                referencecounter++;
-            }
-            iPos += 2 * num;
-            return iPos;
+            int int32_3 = BigEndianBitConverter.ToInt32(this.fileData, this.iPos);
+            this.iPos += 4;
+            ColoredConsole.WriteLine("{0:x8}   Number of Unknown: 0x{1:x2}", (object)this.iPos, (object)int32_3);
+            if (int32_3 != 0)
+                ++referencecounter;
+            this.iPos += 4 * int32_3;
+            int int32_4 = BigEndianBitConverter.ToInt32(this.fileData, this.iPos);
+            this.iPos += 4;
+            ColoredConsole.WriteLine("{0:x8}   Number of Cameras: 0x{1:x2}", (object)this.iPos, (object)int32_4);
+            if (int32_4 != 0)
+                ++referencecounter;
+            for (int index = 0; index < int32_4; ++index)
+                this.ReadCam();
+            int int32_5 = BigEndianBitConverter.ToInt32(this.fileData, this.iPos);
+            this.iPos += 4;
+            ColoredConsole.WriteLine("{0:x8}   Number of Unknown: 0x{1:x2}", (object)this.iPos, (object)int32_5);
+            if (int32_5 != 0)
+                ++referencecounter;
+            this.iPos += 2 * int32_5;
+            return this.iPos;
         }
 
         protected override void ReadTextureMeta()
         {
-            iPos += 16;
-            iPos += 4;
-            iPos += 4;
-            iPos += 4;
-            iPos += 4;
-            iPos += 4;
-            iPos += 17;
-            int num = BigEndianBitConverter.ToInt32(fileData, iPos);
-            iPos += 4;
-            iPos += num;
-            iPos += 8;
+            this.iPos += 16;
+            this.iPos += 4;
+            this.iPos += 4;
+            this.iPos += 4;
+            this.iPos += 4;
+            this.iPos += 4;
+            this.iPos += 17;
+            int int32 = BigEndianBitConverter.ToInt32(this.fileData, this.iPos);
+            this.iPos += 4;
+            int iPos = this.iPos;
+            string str = this.readString(int32);
+            ColoredConsole.WriteLineInfo("{0:x8}     {2:0000} {1}", (object)iPos, (object)str, (object)this.Names.Count);
+            this.Names.Add(str);
+            this.iPos += 8;
         }
     }
 }
