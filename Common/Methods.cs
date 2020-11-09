@@ -62,8 +62,13 @@ namespace TT_Games_Explorer.Common
         {
             try
             {
+                //get the file extension of the provided file name/path
                 var ext = Path.GetExtension(fileName);
-                return Globals.LegoFileType[ext.ToLower()];
+
+                //if the extension was empty, that means the file does not have one
+                return !string.IsNullOrEmpty(ext)
+                    ? FileTypes.LegoFileType[ext.ToLower()]
+                    : @"File";
             }
             catch (Exception)
             {

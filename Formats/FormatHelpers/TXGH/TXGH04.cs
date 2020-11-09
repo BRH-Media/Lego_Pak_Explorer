@@ -9,10 +9,10 @@
 
         protected override void ReadTextureMeta()
         {
-            this.iPos += 16;
-            this.iPos += 4;
-            this.iPos += 4;
-            this.iPos += 29;
+            iPos += 16;
+            iPos += 4;
+            iPos += 4;
+            iPos += 29;
         }
     }
 }

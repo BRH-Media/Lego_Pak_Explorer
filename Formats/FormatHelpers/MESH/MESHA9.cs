@@ -14,15 +14,15 @@ namespace TT_Games_Explorer.Formats.FormatHelpers.MESH
 
         protected override VertexList ReadVertexList(int numberofvertices)
         {
-            VertexList vertexList = new VertexList();
-            this.iPos += 4;
-            this.iPos += 4;
-            int int32 = BigEndianBitConverter.ToInt32(this.fileData, this.iPos);
-            ColoredConsole.WriteLine("{0:x8}           Number of Vertex Definitions: {1:x8}", (object)this.iPos, (object)int32);
-            this.iPos += 4;
-            for (int index = 0; index < int32; ++index)
+            var vertexList = new VertexList();
+            iPos += 4;
+            iPos += 4;
+            var int32 = BigEndianBitConverter.ToInt32(fileData, iPos);
+            ColoredConsole.WriteLine("{0:x8}           Number of Vertex Definitions: {1:x8}", (object)iPos, (object)int32);
+            iPos += 4;
+            for (var index = 0; index < int32; ++index)
             {
-                VertexDefinition vertexDefinition = this.ReadVertexDefinition();
+                var vertexDefinition = ReadVertexDefinition();
                 vertexList.VertexDefinitions.Add(vertexDefinition);
                 switch (vertexDefinition.VariableType)
                 {
@@ -50,10 +50,10 @@ namespace TT_Games_Explorer.Formats.FormatHelpers.MESH
                         throw new NotSupportedException("VariableType: " + (object)vertexDefinition.VariableType);
                 }
             }
-            this.iPos += 6;
-            ColoredConsole.WriteLine("{0:x8}           Number of Vertices: {1:x8}", (object)this.iPos, (object)numberofvertices);
-            for (int index = 0; index < numberofvertices; ++index)
-                vertexList.Vertices.Add(this.ReadVertex(vertexList.VertexDefinitions));
+            iPos += 6;
+            ColoredConsole.WriteLine("{0:x8}           Number of Vertices: {1:x8}", (object)iPos, (object)numberofvertices);
+            for (var index = 0; index < numberofvertices; ++index)
+                vertexList.Vertices.Add(ReadVertex(vertexList.VertexDefinitions));
             return vertexList;
         }
     }

@@ -52,7 +52,7 @@ namespace TT_Games_Explorer.Formats.ExtractHelper
             // First we parse the format string to make sure it's proper.
             if (fmt.Length < 1) throw new ArgumentException("Format string cannot be empty.");
 
-            bool endianFlip = false;
+            var endianFlip = false;
             if (fmt.Substring(0, 1) == "<")
             {
                 Debug.WriteLine("  Endian marker found: little endian");
@@ -71,8 +71,8 @@ namespace TT_Games_Explorer.Formats.ExtractHelper
             }
 
             // Now, we find out how long the byte array needs to be
-            int totalByteLength = 0;
-            foreach (char c in fmt.ToCharArray())
+            var totalByteLength = 0;
+            foreach (var c in fmt.ToCharArray())
             {
                 Debug.WriteLine("  Format character found: {0}", c);
                 switch (c)
@@ -110,12 +110,12 @@ namespace TT_Games_Explorer.Formats.ExtractHelper
             if (bytes.Length != totalByteLength) throw new ArgumentException("The number of bytes provided does not match the total length of the format string.");
 
             // Ok, we can go ahead and start parsing bytes!
-            int byteArrayPosition = 0;
-            List<object> outputList = new List<object>();
+            var byteArrayPosition = 0;
+            var outputList = new List<object>();
             byte[] buf;
 
             Debug.WriteLine("Processing byte array...");
-            foreach (char c in fmt.ToCharArray())
+            foreach (var c in fmt.ToCharArray())
             {
                 switch (c)
                 {
@@ -193,18 +193,18 @@ namespace TT_Games_Explorer.Formats.ExtractHelper
         public static byte[] Pack(object[] items, bool LittleEndian, out string NeededFormatStringToRecover)
         {
             // make a byte list to hold the bytes of output
-            List<byte> outputBytes = new List<byte>();
+            var outputBytes = new List<byte>();
 
             // should we be flipping bits for proper endinanness?
-            bool endianFlip = (LittleEndian != BitConverter.IsLittleEndian);
+            var endianFlip = (LittleEndian != BitConverter.IsLittleEndian);
 
             // start working on the output string
-            string outString = (LittleEndian == false ? ">" : "<");
+            var outString = (LittleEndian == false ? ">" : "<");
 
             // convert each item in the objects to the representative bytes
-            foreach (object o in items)
+            foreach (var o in items)
             {
-                byte[] theseBytes = TypeAgnosticGetBytes(o);
+                var theseBytes = TypeAgnosticGetBytes(o);
                 if (endianFlip == true) theseBytes = (byte[])theseBytes.Reverse();
                 outString += GetFormatSpecifierFor(o);
                 outputBytes.AddRange(theseBytes);
@@ -217,7 +217,7 @@ namespace TT_Games_Explorer.Formats.ExtractHelper
 
         public static byte[] Pack(object[] items)
         {
-            string dummy = "";
+            var dummy = "";
             return Pack(items, true, out dummy);
         }
     }

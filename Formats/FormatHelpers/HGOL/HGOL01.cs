@@ -13,11 +13,11 @@ namespace TT_Games_Explorer.Formats.FormatHelpers.HGOL
         {
             this.fileData = fileData;
             this.iPos = iPos;
-            this.version = BigEndianBitConverter.ToInt32(fileData, iPos);
+            version = BigEndianBitConverter.ToInt32(fileData, iPos);
             this.iPos += 4;
-            ColoredConsole.WriteLineInfo("{0:x8}   HGOL Version 0x{1:x2}", (object)iPos, (object)this.version);
+            ColoredConsole.WriteLineInfo("{0:x8}   HGOL Version 0x{1:x2}", (object)iPos, (object)version);
         }
 
-        public virtual int Read() => this.iPos;
+        public virtual int Read() => iPos;
     }
 }

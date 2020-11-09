@@ -115,6 +115,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\FileIcon.cs" />
+    <Compile Include="Common\FileTypes.cs" />
     <Compile Include="Common\Globals.cs" />
     <Compile Include="Common\Methods.cs" />
     <Compile Include="Formats\ExtractHelper\ColoredConsole.cs" />

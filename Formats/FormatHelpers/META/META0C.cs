@@ -19,38 +19,38 @@ namespace TT_Games_Explorer.Formats.FormatHelpers.META
 
         public virtual int Read(string directoryname)
         {
-            List<string> stringList = new List<string>();
-            int int32_1 = BigEndianBitConverter.ToInt32(this.fileData, this.iPos);
-            ColoredConsole.WriteLine("{0:x8}  Number of File Names: {1:x8}", (object)this.iPos, (object)int32_1);
-            this.iPos += 4;
-            for (int index = 0; index < int32_1; ++index)
+            var stringList = new List<string>();
+            var int32_1 = BigEndianBitConverter.ToInt32(fileData, iPos);
+            ColoredConsole.WriteLine("{0:x8}  Number of File Names: {1:x8}", (object)iPos, (object)int32_1);
+            iPos += 4;
+            for (var index = 0; index < int32_1; ++index)
             {
-                int int32_2 = BigEndianBitConverter.ToInt32(this.fileData, this.iPos);
-                this.iPos += 4;
-                string str = this.readString(int32_2);
+                var int32_2 = BigEndianBitConverter.ToInt32(fileData, iPos);
+                iPos += 4;
+                var str = readString(int32_2);
                 stringList.Add(str);
-                ColoredConsole.WriteLine("{0:x8}    Name: {1}", (object)this.iPos, (object)str);
+                ColoredConsole.WriteLine("{0:x8}    Name: {1}", (object)iPos, (object)str);
             }
-            for (int index = 0; index < stringList.Count; ++index)
+            for (var index = 0; index < stringList.Count; ++index)
             {
-                int ddsFileSize = DdsHelper.CalculateDdsFileSize(this.iPos, this.fileData);
-                ColoredConsole.WriteLine("{0:x8}    Size: {1:x8}", (object)this.iPos, (object)ddsFileSize);
-                FileStream fileStream = File.OpenWrite(directoryname + "\\" + string.Format("{0:0000}_", (object)index) + Path.GetFileNameWithoutExtension(stringList[index]) + ".dds");
-                fileStream.Write(this.fileData, this.iPos, ddsFileSize);
+                var ddsFileSize = DdsHelper.CalculateDdsFileSize(iPos, fileData);
+                ColoredConsole.WriteLine("{0:x8}    Size: {1:x8}", (object)iPos, (object)ddsFileSize);
+                var fileStream = File.OpenWrite(directoryname + "\\" + $"{(object)index:0000}_" + Path.GetFileNameWithoutExtension(stringList[index]) + ".dds");
+                fileStream.Write(fileData, iPos, ddsFileSize);
                 fileStream.Close();
-                this.iPos += ddsFileSize;
+                iPos += ddsFileSize;
             }
-            return this.iPos;
+            return iPos;
         }
 
         protected string readString(int numberofchars)
         {
-            StringBuilder stringBuilder = new StringBuilder();
-            for (int index = 0; index < numberofchars; ++index)
+            var stringBuilder = new StringBuilder();
+            for (var index = 0; index < numberofchars; ++index)
             {
-                if (this.fileData[this.iPos] != (byte)0)
-                    stringBuilder.Append((char)this.fileData[this.iPos]);
-                ++this.iPos;
+                if (fileData[iPos] != (byte)0)
+                    stringBuilder.Append((char)fileData[iPos]);
+                ++iPos;
             }
             return stringBuilder.ToString();
         }

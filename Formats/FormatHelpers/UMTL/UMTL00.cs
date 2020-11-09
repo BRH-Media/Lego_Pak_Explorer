@@ -20,12 +20,12 @@ namespace TT_Games_Explorer.Formats.FormatHelpers.UMTL
 
         protected string readString(int numberofchars)
         {
-            StringBuilder stringBuilder = new StringBuilder();
-            for (int index = 0; index < numberofchars; ++index)
+            var stringBuilder = new StringBuilder();
+            for (var index = 0; index < numberofchars; ++index)
             {
-                if (this.fileData[this.iPos] != (byte)0)
-                    stringBuilder.Append((char)this.fileData[this.iPos]);
-                ++this.iPos;
+                if (fileData[iPos] != (byte)0)
+                    stringBuilder.Append((char)fileData[iPos]);
+                ++iPos;
             }
             return stringBuilder.ToString();
         }

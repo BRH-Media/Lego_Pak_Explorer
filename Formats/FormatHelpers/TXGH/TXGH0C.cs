@@ -12,22 +12,22 @@ namespace TT_Games_Explorer.Formats.FormatHelpers.TXGH
 
         public override int Read(ref int referencecounter)
         {
-            this.iPos += 4;
-            int int32 = BigEndianBitConverter.ToInt32(this.fileData, this.iPos);
-            this.iPos += 4;
-            ColoredConsole.WriteLine("{0:x8}   Number of Textures: 0x{1:x2}", (object)this.iPos, (object)int32);
-            for (int index = 0; index < int32; ++index)
+            iPos += 4;
+            var int32 = BigEndianBitConverter.ToInt32(fileData, iPos);
+            iPos += 4;
+            ColoredConsole.WriteLine("{0:x8}   Number of Textures: 0x{1:x2}", (object)iPos, (object)int32);
+            for (var index = 0; index < int32; ++index)
             {
-                this.iPos += 16;
-                this.iPos += 3;
-                int int16 = (int)BigEndianBitConverter.ToInt16(this.fileData, this.iPos);
-                this.iPos += 2;
-                this.iPos += int16;
-                ++this.iPos;
+                iPos += 16;
+                iPos += 3;
+                var int16 = (int)BigEndianBitConverter.ToInt16(fileData, iPos);
+                iPos += 2;
+                iPos += int16;
+                ++iPos;
                 if (int16 != 0)
                     ++referencecounter;
             }
-            return this.iPos;
+            return iPos;
         }
     }
 }

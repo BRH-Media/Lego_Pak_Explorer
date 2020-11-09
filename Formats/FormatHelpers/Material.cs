@@ -8,9 +8,9 @@
 
         public Material(string name, int texture, int norm)
         {
-            this.Name = name;
-            this.Texture = texture;
-            this.NormalTexture = norm;
+            Name = name;
+            Texture = texture;
+            NormalTexture = norm;
         }
     }
 }

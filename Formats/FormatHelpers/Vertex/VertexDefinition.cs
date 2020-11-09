@@ -2,8 +2,8 @@
 {
     public class VertexDefinition
     {
-        public VertexDefinition.VariableEnum Variable;
-        public VertexDefinition.VariableTypeEnum VariableType;
+        public VariableEnum Variable;
+        public VariableTypeEnum VariableType;
         public int Offset;
 
         public enum VariableEnum

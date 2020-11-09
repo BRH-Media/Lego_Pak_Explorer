@@ -25,7 +25,7 @@ namespace System
         // Transforms the subnormal representation to a normalized one.
         private static uint ConvertMantissa(int i)
         {
-            uint m = (uint)(i << 13); // Zero pad mantissa bits
+            var m = (uint)(i << 13); // Zero pad mantissa bits
             uint e = 0; // Zero exponent
 
             // While not normalized
@@ -41,13 +41,13 @@ namespace System
 
         private static uint[] GenerateMantissaTable()
         {
-            uint[] mantissaTable = new uint[2048];
+            var mantissaTable = new uint[2048];
             mantissaTable[0] = 0;
-            for (int i = 1; i < 1024; i++)
+            for (var i = 1; i < 1024; i++)
             {
                 mantissaTable[i] = ConvertMantissa(i);
             }
-            for (int i = 1024; i < 2048; i++)
+            for (var i = 1024; i < 2048; i++)
             {
                 mantissaTable[i] = (uint)(0x38000000 + ((i - 1024) << 13));
             }
@@ -57,15 +57,15 @@ namespace System
 
         private static uint[] GenerateExponentTable()
         {
-            uint[] exponentTable = new uint[64];
+            var exponentTable = new uint[64];
             exponentTable[0] = 0;
-            for (int i = 1; i < 31; i++)
+            for (var i = 1; i < 31; i++)
             {
                 exponentTable[i] = (uint)(i << 23);
             }
             exponentTable[31] = 0x47800000;
             exponentTable[32] = 0x80000000;
-            for (int i = 33; i < 63; i++)
+            for (var i = 33; i < 63; i++)
             {
                 exponentTable[i] = (uint)(0x80000000 + ((i - 32) << 23));
             }
@@ -76,14 +76,14 @@ namespace System
 
         private static ushort[] GenerateOffsetTable()
         {
-            ushort[] offsetTable = new ushort[64];
+            var offsetTable = new ushort[64];
             offsetTable[0] = 0;
-            for (int i = 1; i < 32; i++)
+            for (var i = 1; i < 32; i++)
             {
                 offsetTable[i] = 1024;
             }
             offsetTable[32] = 0;
-            for (int i = 33; i < 64; i++)
+            for (var i = 33; i < 64; i++)
             {
                 offsetTable[i] = 1024;
             }
@@ -93,10 +93,10 @@ namespace System
 
         private static ushort[] GenerateBaseTable()
         {
-            ushort[] baseTable = new ushort[512];
-            for (int i = 0; i < 256; ++i)
+            var baseTable = new ushort[512];
+            for (var i = 0; i < 256; ++i)
             {
-                sbyte e = (sbyte)(127 - i);
+                var e = (sbyte)(127 - i);
                 if (e > 24)
                 { // Very small numbers map to zero
                     baseTable[i | 0x000] = 0x0000;
@@ -129,10 +129,10 @@ namespace System
 
         private static sbyte[] GenerateShiftTable()
         {
-            sbyte[] shiftTable = new sbyte[512];
-            for (int i = 0; i < 256; ++i)
+            var shiftTable = new sbyte[512];
+            for (var i = 0; i < 256; ++i)
             {
-                sbyte e = (sbyte)(127 - i);
+                var e = (sbyte)(127 - i);
                 if (e > 24)
                 { // Very small numbers map to zero
                     shiftTable[i | 0x000] = 24;
@@ -165,15 +165,15 @@ namespace System
 
         public static float HalfToSingle(Half half)
         {
-            uint result = mantissaTable[offsetTable[half.value >> 10] + (half.value & 0x3ff)] + exponentTable[half.value >> 10];
+            var result = mantissaTable[offsetTable[half.value >> 10] + (half.value & 0x3ff)] + exponentTable[half.value >> 10];
             return BitConverter.ToSingle(BitConverter.GetBytes(result), 0); // TODO faster
         }
 
         public static Half SingleToHalf(float single)
         {
-            uint value = BitConverter.ToUInt32(BitConverter.GetBytes(single), 0); // TODO faster
+            var value = BitConverter.ToUInt32(BitConverter.GetBytes(single), 0); // TODO faster
 
-            ushort result = (ushort)(baseTable[(value >> 23) & 0x1ff] + ((value & 0x007fffff) >> shiftTable[value >> 23]));
+            var result = (ushort)(baseTable[(value >> 23) & 0x1ff] + ((value & 0x007fffff) >> shiftTable[value >> 23]));
             return Half.ToHalf(result);
         }
 

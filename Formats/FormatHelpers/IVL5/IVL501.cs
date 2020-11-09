@@ -20,24 +20,25 @@ namespace TT_Games_Explorer.Formats.FormatHelpers.IVL5
 
         public virtual int Read()
         {
-            this.iPos += 4;
-            this.iPos += 4;
-            int int32 = BigEndianBitConverter.ToInt32(this.fileData, this.iPos);
-            ColoredConsole.WriteLine("{0:x8}   Number of LoD: 0x{1:x8}", (object)this.iPos, (object)int32);
-            this.iPos += 4;
-            for (int i = 0; i < int32; ++i)
-                this.readHGOL(i);
-            this.iPos += 4;
-            return this.iPos;
+            iPos += 4;
+            iPos += 4;
+            var int32 = BigEndianBitConverter.ToInt32(fileData, iPos);
+            ColoredConsole.WriteLine("{0:x8}   Number of LoD: 0x{1:x8}", (object)iPos, (object)int32);
+            iPos += 4;
+            for (var i = 0; i < int32; ++i)
+                readHGOL(i);
+            iPos += 4;
+            return iPos;
         }
 
         private void readHGOL(int i)
         {
-            if (this.fileData[this.iPos] != (byte)76 || this.fileData[this.iPos + 1] != (byte)79 || this.fileData[this.iPos + 2] != (byte)71 || this.fileData[this.iPos + 3] != (byte)72)
+            if (fileData[iPos] != (byte)76 || fileData[iPos + 1] != (byte)79 || fileData[iPos + 2] != (byte)71 || fileData[iPos + 3] != (byte)72)
                 return;
-            this.iPos += 4;
-            this.hgol = BigEndianBitConverter.ToInt32(this.fileData, this.iPos) == 16 ? (HGOL01)new HGOL10(this.fileData, this.iPos) : throw new NotSupportedException(string.Format("HGOL Version {0:x2}", (object)BigEndianBitConverter.ToInt32(this.fileData, this.iPos)));
-            this.iPos = this.hgol.Read();
+            iPos += 4;
+            hgol = BigEndianBitConverter.ToInt32(fileData, iPos) == 16 ? (HGOL01)new HGOL10(fileData, iPos) : throw new NotSupportedException(
+                $"HGOL Version {(object)BigEndianBitConverter.ToInt32(fileData, iPos):x2}");
+            iPos = hgol.Read();
         }
     }
 }

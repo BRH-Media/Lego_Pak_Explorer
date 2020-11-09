@@ -19,12 +19,12 @@ namespace TT_Games_Explorer.Formats.FormatHelpers.TXGH
             this.iPos += 4;
             this.iPos += 4;
             this.iPos += 17;
-            int int32 = BigEndianBitConverter.ToInt32(this.fileData, this.iPos);
+            var int32 = BigEndianBitConverter.ToInt32(fileData, this.iPos);
             this.iPos += 4;
-            int iPos = this.iPos;
-            string str = this.readString(int32);
-            ColoredConsole.WriteLineInfo("{0:x8}     {2:0000} {1}", (object)iPos, (object)str, (object)this.Names.Count);
-            this.Names.Add(str);
+            var iPos = this.iPos;
+            var str = readString(int32);
+            ColoredConsole.WriteLineInfo("{0:x8}     {2:0000} {1}", (object)iPos, (object)str, (object)Names.Count);
+            Names.Add(str);
             this.iPos += 10;
         }
     }

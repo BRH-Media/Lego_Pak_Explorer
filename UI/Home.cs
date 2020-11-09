@@ -108,64 +108,7 @@ namespace TT_Games_Explorer.UI
             foreach (var file in nodeDirInfo.GetFiles())
             {
                 //index 1 is the 'Unknown File' icon
-                var imageIndex = 1;
-
-                //go through and attempt icon assignations
-                switch (Path.GetExtension(file.Name).ToLower())
-                {
-                    //code files
-                    case ".txt":
-                    case ".csv":
-                    case ".sub":
-                    case ".bms":
-                    case ".sf":
-                    case ".scp":
-                    case ".cfg":
-                    case ".ini":
-                    case ".inf":
-                    case ".vdf":
-                    case ".gip":
-                    case ".gix":
-                    case ".giz":
-                    case ".gin":
-                    case ".ats":
-                        imageIndex = 2;
-                        break;
-
-                    //archive files
-                    case ".dat":
-                    case ".hdr":
-                    case ".pak":
-                        imageIndex = 3;
-                        break;
-
-                    //image files
-                    case ".tex":
-                    case ".dds":
-                    case ".png":
-                    case ".bmp":
-                    case ".raw":
-                    case ".tga":
-                    case ".jpg":
-                    case ".jpeg":
-                    case ".gif":
-                    case ".giff":
-                    case ".tif":
-                    case ".tiff":
-                        imageIndex = 4;
-                        break;
-
-                    //executables
-                    case ".exe":
-                    case ".dll":
-                    case ".bat":
-                    case ".com":
-                    case ".cmd":
-                    case ".sh":
-                    case ".so":
-                        imageIndex = 5;
-                        break;
-                }
+                var imageIndex = FileIcon.FileIconIndex(file.Name);
 
                 //the new item to add
                 item = new ListViewItem(file.Name, imageIndex);
@@ -383,7 +326,9 @@ namespace TT_Games_Explorer.UI
                     MessageBox.Show(@"Please open the *.DAT instead of the *.HDR");
                     break;
 
+                case ".pac":
                 case ".pak":
+                case ".fpk":
                     new PakExtractor(_listviewFileSelected).ShowDialog();
                     break;
 

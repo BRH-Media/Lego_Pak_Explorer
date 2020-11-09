@@ -130,7 +130,9 @@ namespace TT_Games_Explorer.UI
                             MessageBox.Show(@"You cannot open *.HDR files from within a *.DAT file");
                             break;
 
+                        case ".pac":
                         case ".pak":
+                        case ".fpk":
                             new PakExtractor(buffer, fileName).ShowDialog();
                             break;
 
@@ -321,64 +323,7 @@ namespace TT_Games_Explorer.UI
             var fileType = Methods.GetLegoFileType(fileName);
 
             //icon assignation (default is the 'Unknown File' icon)
-            var imageIndex = 1;
-
-            //go through and attempt icon assignations
-            switch (Path.GetExtension(fileName).ToLower())
-            {
-                //code files
-                case ".txt":
-                case ".csv":
-                case ".sub":
-                case ".bms":
-                case ".sf":
-                case ".scp":
-                case ".cfg":
-                case ".ini":
-                case ".inf":
-                case ".vdf":
-                case ".gip":
-                case ".gix":
-                case ".giz":
-                case ".gin":
-                case ".ats":
-                    imageIndex = 2;
-                    break;
-
-                //archive files
-                case ".dat":
-                case ".hdr":
-                case ".pak":
-                    imageIndex = 3;
-                    break;
-
-                //image files
-                case ".tex":
-                case ".dds":
-                case ".png":
-                case ".bmp":
-                case ".raw":
-                case ".tga":
-                case ".jpg":
-                case ".jpeg":
-                case ".gif":
-                case ".giff":
-                case ".tif":
-                case ".tiff":
-                    imageIndex = 4;
-                    break;
-
-                //executables
-                case ".exe":
-                case ".dll":
-                case ".bat":
-                case ".com":
-                case ".cmd":
-                case ".sh":
-                case ".so":
-                    imageIndex = 5;
-                    break;
-            }
+            var imageIndex = FileIcon.FileIconIndex(fileName);
 
             //item to add to the list view
             var newItem = new ListViewItem(@"", imageIndex);
